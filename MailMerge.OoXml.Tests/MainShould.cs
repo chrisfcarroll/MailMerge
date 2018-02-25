@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TestBase;
 
 namespace MailMerge.OoXml.Tests

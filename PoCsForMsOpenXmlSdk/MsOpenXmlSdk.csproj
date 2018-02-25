@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="AddressListForMerge.csv" />
+    <None Remove="ATemplate DocxAsZip\docProps\app.xml" />
+    <None Remove="ATemplate DocxAsZip\docProps\core.xml" />
+    <None Remove="ATemplate DocxAsZip\word\document.xml" />
+    <None Remove="ATemplate DocxAsZip\word\fontTable.xml" />
+    <None Remove="ATemplate DocxAsZip\word\settings.xml" />
+    <None Remove="ATemplate DocxAsZip\word\styles.xml" />
+    <None Remove="ATemplate DocxAsZip\word\theme\theme1.xml" />
+    <None Remove="ATemplate DocxAsZip\word\webSettings.xml" />
+    <None Remove="ATemplate DocxAsZip\word\_rels\document.xml.rels" />
+    <None Remove="ATemplate DocxAsZip\word\_rels\settings.xml.rels" />
+    <None Remove="ATemplate DocxAsZip\[Content_Types].xml" />
+    <None Remove="ATemplate DocxAsZip\_rels\.rels" />
+    <None Remove="ATemplate.docx" />
+    <None Remove="template-cc-tag.docx" />
+    <None Remove="template-cc.docx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="AddressListForMerge.csv" />
+    <Content Include="ATemplate DocxAsZip\docProps\app.xml" />
+    <Content Include="ATemplate DocxAsZip\docProps\core.xml" />
+    <Content Include="ATemplate DocxAsZip\word\document.xml" />
+    <Content Include="ATemplate DocxAsZip\word\fontTable.xml" />
+    <Content Include="ATemplate DocxAsZip\word\settings.xml" />
+    <Content Include="ATemplate DocxAsZip\word\styles.xml" />
+    <Content Include="ATemplate DocxAsZip\word\theme\theme1.xml" />
+    <Content Include="ATemplate DocxAsZip\word\webSettings.xml" />
+    <Content Include="ATemplate DocxAsZip\word\_rels\document.xml.rels" />
+    <Content Include="ATemplate DocxAsZip\word\_rels\settings.xml.rels" />
+    <Content Include="ATemplate DocxAsZip\[Content_Types].xml" />
+    <Content Include="ATemplate DocxAsZip\_rels\.rels" />
+    <Content Include="ATemplate.docx" />
+    <Content Include="template-cc-tag.docx" />
+    <Content Include="template-cc.docx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
+  </ItemGroup>
+
+</Project>

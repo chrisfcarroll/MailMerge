@@ -35,7 +35,19 @@ namespace MailMerge.OoXml.Tests
                 {"a", "aa"}
             };
             //
-            var (errors,result)= new MailMerge(logger, new Settings()).Merge(null,mergefields);
+            var (result,errors)= new MailMerge(logger, new Settings()).Merge(null,mergefields);
+            //
+            errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
+        }
+        [Test]
+        public void ReturnException__GivenNullInput__GivenOutputFilepath()
+        {
+            var mergefields = new Dictionary<string, string>()
+            {
+                {"a", "aa"}
+            };
+            //
+            var (result,errors)= new MailMerge(logger, new Settings()).Merge(null,mergefields, "");
             //
             errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
         }

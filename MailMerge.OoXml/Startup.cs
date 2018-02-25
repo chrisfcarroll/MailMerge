@@ -25,7 +25,7 @@ namespace MailMerge.OoXml
 
             foreach (var (filein,fileout) in files)
             {
-                component.Merge(filein.Open(FileMode.Open,FileAccess.Read,FileShare.Read), mergefields, fileout );
+                component.Merge(filein.Open(FileMode.Open,FileAccess.Read,FileShare.Read), mergefields, fileout.FullName );
             }
         }
 
