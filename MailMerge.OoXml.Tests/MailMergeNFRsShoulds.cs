@@ -28,14 +28,26 @@ namespace MailMerge.OoXml.Tests
         }
         
         [Test]
-        public void ReturnException__GivenNullInput()
+        public void ReturnException__GivenNullStreamInput()
         {
             var mergefields = new Dictionary<string, string>()
             {
                 {"a", "aa"}
             };
             //
-            var (result,errors)= new MailMerge(logger, new Settings()).Merge(null,mergefields);
+            var (result,errors)= new MailMerge(logger, new Settings()).Merge(null as FileStream,mergefields);
+            //
+            errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
+        }
+        [Test]
+        public void ReturnException__GivenNullInputFile()
+        {
+            var mergefields = new Dictionary<string, string>()
+            {
+                {"a", "aa"}
+            };
+            //
+            var (result,errors)= new MailMerge(logger, new Settings()).Merge(null as string, mergefields);
             //
             errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
         }
