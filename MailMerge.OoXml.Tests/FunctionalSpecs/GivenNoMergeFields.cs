@@ -12,7 +12,8 @@ using Is = TestBase.Is;
 
 namespace MailMerge.OoXml.Tests
 {
-    public class MailMergeFunctionalityShoulds
+    [TestFixture]
+    public class GivenNoMergeFields
     {
         MailMerge sut;
         StringListLogger logger;
@@ -22,7 +23,7 @@ namespace MailMerge.OoXml.Tests
         [SetUp]public void Setup(){ sut = new MailMerge(logger = new StringListLogger(), new Settings()); }
 
         [Test]
-        public void ShouldReturnOriginalDocument__GivenNoMergeFields()
+        public void ShouldReturnOriginalDocument()
         {
             Stream output=null;
             AggregateException exceptions;

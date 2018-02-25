@@ -3,7 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-## And Rider on Mac
+##Working with Docx and mailmerge temp files
+~$*.*
+
+## Rider on Mac
 .DS_Store
 .idea
 
