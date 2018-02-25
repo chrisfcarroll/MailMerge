@@ -17,8 +17,7 @@ namespace MailMerge.OoXml.Tests
         [SetUp]
         public void Setup()
         {
-            logger = new StringListLogger();
-            sut = new MailMerge(logger, new Settings());
+            sut = new MailMerge(logger = new StringListLogger(), new Settings());
         }
 
         [Test]
@@ -28,5 +27,17 @@ namespace MailMerge.OoXml.Tests
             Assert.That(logger.LoggedLines, Is.NotEmpty);
         }
         
+        [Test]
+        public void ReturnException__GivenNullInput()
+        {
+            var mergefields = new Dictionary<string, string>()
+            {
+                {"a", "aa"}
+            };
+            //
+            var (errors,result)= new MailMerge(logger, new Settings()).Merge(null,mergefields);
+            //
+            errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
+        }
     }
 }

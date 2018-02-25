@@ -9,7 +9,7 @@ using Is = TestBase.Is;
 
 namespace MailMerge.OoXml.Tests
 {
-    public class MailMergeXmlShoulds
+    public class MailMergeShouldReturnExceptions
     {
         MailMerge sut;
         StringListLogger logger;
@@ -17,15 +17,7 @@ namespace MailMerge.OoXml.Tests
         [SetUp]
         public void Setup()
         {
-            logger = new StringListLogger();
-            sut = new MailMerge(logger, new Settings());
-        }
-
-        [Test]
-        public void ParseInputWordDocAsXml()
-        {
-
-        }
-        
+            sut = new MailMerge(logger = new StringListLogger(), new Settings());
+        }        
     }
 }
