@@ -4,26 +4,25 @@ MailMerge for docx Documents
 CommandLine Usage
 -----------------
 
-MailMerge inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
+    dotnet MailMerge.dll inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
 
-    Settings can be read from the app-settings.json file.
+Settings can be read from the app-settings.json file.
 
-    Example
+Example
 
-    MailMerge input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
+    dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
 
 
 
 Component Usage
 ---------------
 
-(outputStream, errors) = new MailMerge().Merge(outputStream, Dictionary);
+    (outputStream, errors) = new MailMerge().Merge(inputStream, Dictionary);
 
-        (bool, errors) = new MailMerge().Merge(inputFileName, Dictionary, outputFileName);
+    (bool, errors) = new MailMerge().Merge(inputFileName, Dictionary, outputFileName);
         
 
 MailMerge does not use any desktop automation components, and should be suitable for serverside use. 
-
 
 TODO
 ----
