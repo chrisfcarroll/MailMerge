@@ -3,11 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailMerge.OoXml", "MailMerge.OoXml\MailMerge.OoXml.csproj", "{7F098373-9BEB-410B-B73C-4CBF63D1BC1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailMerge.OoXml", "MailMerge.OoXml\MailMerge.OoXml.csproj", "{7F098373-9BEB-410B-B73C-4CBF63D1BC1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailMerge.OoXml.Tests", "MailMerge.OoXml.Tests\MailMerge.OoXml.Tests.csproj", "{9EC8A6BB-B112-4237-BB0F-0BBCB0CFF00C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailMerge.OoXml.Tests", "MailMerge.OoXml.Tests\MailMerge.OoXml.Tests.csproj", "{9EC8A6BB-B112-4237-BB0F-0BBCB0CFF00C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsOpenXmlSdk", "PoCsForMsOpenXmlSdk\MsOpenXmlSdk.csproj", "{1E1C0CC1-1F77-453D-AC02-0AAEC6B71763}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsOpenXmlSdk", "PoCsForMsOpenXmlSdk\MsOpenXmlSdk.csproj", "{1E1C0CC1-1F77-453D-AC02-0AAEC6B71763}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestDocuments", "TestDocuments", "{4039CC77-B162-48F8-A79C-8E043C8BFFA5}"
+	ProjectSection(SolutionItems) = preProject
+		MailMerge.OoXml.Tests\AddressListForMerge.csv = MailMerge.OoXml.Tests\AddressListForMerge.csv
+		MailMerge.OoXml.Tests\ATemplate.docx = MailMerge.OoXml.Tests\ATemplate.docx
+		MailMerge.OoXml.Tests\TemplateAsIndentedXml.xml = MailMerge.OoXml.Tests\TemplateAsIndentedXml.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,5 +40,14 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4CD08DFE-219D-4FC2-A000-BC035C91A427}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 150
+		$1.TabsToSpaces = True
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.scope = text/x-csharp
 	EndGlobalSection
 EndGlobal

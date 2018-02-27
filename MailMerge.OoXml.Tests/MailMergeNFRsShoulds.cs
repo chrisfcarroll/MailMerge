@@ -23,10 +23,10 @@ namespace MailMerge.OoXml.Tests
         [Test]
         public void Log()
         {
-            sut.Merge(new MemoryStream(new byte[0]), new Dictionary<string,string>());
+            sut.Merge(new MemoryStream(new byte[0]), new Dictionary<string, string>());
             Assert.That(logger.LoggedLines, Is.NotEmpty);
         }
-        
+
         [Test]
         public void ReturnException__GivenNullStreamInput()
         {
@@ -35,10 +35,11 @@ namespace MailMerge.OoXml.Tests
                 {"a", "aa"}
             };
             //
-            var (result,errors)= new MailMerge(logger, new Settings()).Merge(null as FileStream,mergefields);
+            var (result, errors) = new MailMerge(logger, new Settings()).Merge(null as FileStream, mergefields);
             //
             errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
         }
+
         [Test]
         public void ReturnException__GivenNullInputFile()
         {
@@ -47,10 +48,11 @@ namespace MailMerge.OoXml.Tests
                 {"a", "aa"}
             };
             //
-            var (result,errors)= new MailMerge(logger, new Settings()).Merge(null as string, mergefields);
+            var (result, errors) = new MailMerge(logger, new Settings()).Merge(null as string, mergefields);
             //
             errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
         }
+
         [Test]
         public void ReturnException__GivenNullInput__GivenOutputFilepath()
         {
@@ -58,10 +60,48 @@ namespace MailMerge.OoXml.Tests
             {
                 {"a", "aa"}
             };
-            //
-            var (result,errors)= new MailMerge(logger, new Settings()).Merge(null,mergefields, "");
-            //
+
+            var (result, errors) = new MailMerge(logger, new Settings()).Merge(null as Stream, mergefields, "");
             errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
+        }
+
+        [Test]
+        public void ReturnException__GivenEmptyInputFilePath()
+        {
+            var mergefields = new Dictionary<string, string>()
+            {
+                {"a", "aa"}
+            };
+            //
+            var (result, errors) = new MailMerge(logger, new Settings()).Merge("", mergefields);
+            //
+            errors.InnerExceptions.ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void ReturnException__GivenInvalidInputFilePath()
+        {
+            var mergefields = new Dictionary<string, string>()
+            {
+                {"a", "aa"}
+            };
+            //
+            var (result, errors) = new MailMerge(logger, new Settings()).Merge(" ", mergefields);
+            //
+            errors.InnerExceptions.ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void ReturnTwoException__GivenInvalidInputFilePathAndInvalidOutputFilePath()
+        {
+            var mergefields = new Dictionary<string, string>()
+            {
+                {"a", "aa"}
+            };
+            //
+            var (result, errors) = new MailMerge(logger, new Settings()).Merge("", mergefields, "");
+            //
+            errors.InnerExceptions.ShouldBeOfLength(2);
         }
     }
 }

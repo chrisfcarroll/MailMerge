@@ -25,7 +25,7 @@ namespace MailMerge.OoXml
 
             foreach (var (filein,fileout) in files)
             {
-                component.Merge(filein.Open(FileMode.Open,FileAccess.Read,FileShare.Read), mergefields, fileout.FullName );
+                component.Merge(filein.FullName, mergefields, fileout.FullName );
             }
         }
 
@@ -72,11 +72,16 @@ namespace MailMerge.OoXml
         static readonly string Help =
             @"Help string for command line invocation here.
 
-    Usage: MailMerge [fileName[...]] [ key=value[...] ]
+    Usage: MailMerge inputFile1 outputFile1 [...] [ key=value[...] ]
 
     Settings can re read from the app-settings.json section {nameof(MailMerge)}
 
-    Output is to StdOut.";
+    Output is to StdOut.
+
+    Example
+
+    MailMerge input1.docx output1Bill.docx  FirstName=Bill 'Greeting=Hello there!'
+";
 
     }
 
