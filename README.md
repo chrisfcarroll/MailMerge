@@ -22,6 +22,8 @@ Component Usage
         (bool, errors) = new MailMerge().Merge(inputFileName, Dictionary, outputFileName);
         
 
+MailMerge does not use any desktop automation components, and should be suitable for serverside use. 
+
 
 TODO
 ----
