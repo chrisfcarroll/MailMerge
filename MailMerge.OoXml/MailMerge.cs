@@ -59,6 +59,7 @@ namespace MailMerge.OoXml
                 using (var inputStream = new FileInfo(inputDocxFileName).Open(FileMode.Open, FileAccess.Read, FileShare.Read) )
                 {
                     var (result, exceptions) = MergeInternal(inputStream, fieldValues);
+                    result.Position = 0;
                     result.CopyTo(outstream);
                     return (true, new AggregateException(exceptions));
                 }
@@ -97,6 +98,7 @@ namespace MailMerge.OoXml
                 {
                     using (var outstream = new FileInfo(outputPath).Create())
                     {
+                        result.Position = 0;
                         result.CopyToAsync(outstream);
                         return (true, new AggregateException(exceptions));
                     }
