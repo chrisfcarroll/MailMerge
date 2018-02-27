@@ -6,8 +6,6 @@ CommandLine Usage
 
     dotnet MailMerge.dll inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
 
-Settings can be read from the app-settings.json file.
-
 Example
 
     dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
