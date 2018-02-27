@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MailMerge.OoXml.Properties;
+using MailMerge.Properties;
 using NUnit.Framework;
 using TestBase;
 
-namespace MailMerge.OoXml.Tests
+namespace MailMerge.OoXml.Tests.FunctionalSpecs
 {
     [TestFixture]
     public class GivenNoMergeFields

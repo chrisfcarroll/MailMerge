@@ -5,14 +5,14 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 
-namespace MailMerge.OoXml.Properties
+namespace MailMerge.Properties
 {
     static class LoggingConfig
     {
         static string LoggingConfigurationSectionName = "Logging";
         static string LogLevelSettingName = "LogLevel";
         
-        public static ILoggerFactory FromConfiguration(this LoggerFactory loggerFactory, IConfiguration configuration)
+        public static ILoggerFactory FromConfiguration(this ILoggerFactory loggerFactory, IConfiguration configuration)
         {
             var logconfig = new LoggerConfiguration();
             var logLevelSetting = configuration.GetSection(LoggingConfigurationSectionName)[LogLevelSettingName];

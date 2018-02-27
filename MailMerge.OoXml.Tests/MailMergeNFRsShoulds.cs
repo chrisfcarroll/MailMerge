@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using MailMerge.OoXml.Properties;
+using MailMerge.Properties;
 using NUnit.Framework;
 using TestBase;
 using Assert = TestBase.Assert;

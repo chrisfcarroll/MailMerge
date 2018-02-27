@@ -5,6 +5,7 @@
 
 ##Working with Docx and mailmerge temp files
 ~$*.*
+/[Tt]est*.docx
 
 ## Rider on Mac
 .DS_Store

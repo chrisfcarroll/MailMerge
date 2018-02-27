@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DocumentFormat.OpenXml.Packaging;
-using MailMerge.OoXml.Properties;
+using MailMerge.Helpers;
+using MailMerge.Properties;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using TestBase;
 
-namespace MailMerge.OoXml.Tests
+namespace MailMerge.OoXml.Tests.FunctionalSpecs
 {
     [TestFixture]
     public class WhenMergingADocumentWithASingleRecordOfFields

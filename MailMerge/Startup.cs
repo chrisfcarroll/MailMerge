@@ -2,22 +2,45 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using MailMerge.OoXml.Properties;
+using MailMerge.Properties;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace MailMerge.OoXml
+namespace MailMerge
 {
+    static class Startup
+    {
+        public static IConfiguration Configuration;
+        public static ILoggerFactory LoggerFactory;
+        public static Settings Settings;
+        public static ILogger CreateLogger<T>() { return LoggerFactory.CreateLogger<T>(); }
+
+        public static void Configure(string settingsName=null)
+        {
+            settingsName = settingsName ?? nameof(MailMerge);
+            Configuration = new ConfigurationBuilder()
+                           .SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))
+                           .AddJsonFile("appsettings.json", false)
+                           .Build();
+            Configuration.GetSection(settingsName).Bind(Settings = new Settings());
+
+            LoggerFactory = new LoggerFactory().FromConfiguration(Configuration);
+            LoggerFactory.CreateLogger("StartUp").LogDebug("Settings: {@Settings}",Settings);
+        }
+    }
+
     public static class Program
     {
         public static void Main(string[] args)
         {
             HelpAndExitIfNot( args.Length>0 );
             
-            Startup.Configure(nameof(MailMerge));
+            Startup.Configure();
 
             var component = new MailMerge(
-                                           Startup.LoggerFactory.CreateLogger<MailMerge>(),
+                                           Startup.CreateLogger<MailMerge>(),
                                            Startup.Settings
                                           );
 
@@ -69,39 +92,17 @@ namespace MailMerge.OoXml
             Environment.Exit(0);
         }
         
-        static readonly string Help =
-            @"Help string for command line invocation here.
+        static readonly string Help = 
+            @"
+MailMerge inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
 
-    Usage: MailMerge inputFile1 outputFile1 [...] [ key=value[...] ]
-
-    Settings can re read from the app-settings.json section {nameof(MailMerge)}
-
-    Output is to StdOut.
+    Settings can be read from the app-settings.json file.
 
     Example
 
-    MailMerge input1.docx output1Bill.docx  FirstName=Bill 'Greeting=Hello there!'
+    MailMerge input1.docx output1Bill.docx  FirstName=Bill  'LastName=O Reilly'
+
 ";
 
-    }
-
-    static class Startup
-    {
-        public static IConfiguration Configuration;
-        public static ILoggerFactory LoggerFactory;
-        public static Settings Settings;
-
-
-        public static void Configure(string settingsName)
-        {
-            Configuration = new ConfigurationBuilder()
-                           .SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))
-                           .AddJsonFile("appsettings.json", false)
-                           .Build();
-            Configuration.GetSection(settingsName).Bind(Settings = new Settings());
-
-            LoggerFactory =  new LoggerFactory().FromConfiguration(Configuration);
-        }
-        
     }
 }

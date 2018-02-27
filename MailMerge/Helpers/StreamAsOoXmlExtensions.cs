@@ -1,10 +1,8 @@
 ﻿using System.IO;
-using System.Xml;
 using System.Xml.XPath;
-using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 
-namespace MailMerge.OoXml
+namespace MailMerge.Helpers
 {
     public static class StreamAsOoXmlExtensions
     {

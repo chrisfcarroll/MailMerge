@@ -4,19 +4,31 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using DocumentFormat.OpenXml.Packaging;
-using MailMerge.OoXml.Properties;
+using MailMerge.Helpers;
+using MailMerge.Properties;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace MailMerge.OoXml
+namespace MailMerge
 {
     /// <summary>
-    /// A component for manipulating Word Docx files, and in particular for populating merge fields.
+    /// A component for editing Word Docx files, and in particular for populating merge fields.
     /// </summary>
     public class MailMerge
     {
         internal readonly ILogger Logger;
         internal readonly Settings Settings;
+
         public MailMerge(ILogger logger, Settings settings){ Logger = logger; Settings = settings; }
+        
+        /// <summary>Create a new MailMerge with Logger and Settings from <see cref="Startup"/></summary>
+        public MailMerge()
+        {
+            Startup.Configure();
+            Logger = Startup.CreateLogger<MailMerge>();
+            Settings = Startup.Settings;
+        }
 
         /// <summary>
         /// Open the given <paramref name="inputDocxFileName"/> and merge fieldValues into it.

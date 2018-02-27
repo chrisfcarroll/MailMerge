@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailMerge.OoXml", "MailMerge.OoXml\MailMerge.OoXml.csproj", "{7F098373-9BEB-410B-B73C-4CBF63D1BC1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailMerge", "MailMerge\MailMerge.csproj", "{7F098373-9BEB-410B-B73C-4CBF63D1BC1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailMerge.OoXml.Tests", "MailMerge.OoXml.Tests\MailMerge.OoXml.Tests.csproj", "{9EC8A6BB-B112-4237-BB0F-0BBCB0CFF00C}"
 EndProject
@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestDocuments", "TestDocume
 		MailMerge.OoXml.Tests\AddressListForMerge.csv = MailMerge.OoXml.Tests\AddressListForMerge.csv
 		MailMerge.OoXml.Tests\ATemplate.docx = MailMerge.OoXml.Tests\ATemplate.docx
 		MailMerge.OoXml.Tests\TemplateAsIndentedXml.xml = MailMerge.OoXml.Tests\TemplateAsIndentedXml.xml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

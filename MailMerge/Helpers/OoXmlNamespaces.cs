@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Xml;
 
-namespace MailMerge.OoXml
+namespace MailMerge.Helpers
 {
     public class OoXmlNamespaces : Dictionary<string,string>
     {

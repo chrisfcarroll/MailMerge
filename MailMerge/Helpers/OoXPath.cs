@@ -1,5 +1,4 @@
-﻿using System;
-namespace MailMerge.OoXml
+﻿namespace MailMerge.Helpers
 {
     public class OoXPath
     {
