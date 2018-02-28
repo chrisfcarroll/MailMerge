@@ -4,7 +4,7 @@
     <LangVersion>latest</LangVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-    <PackageId>MailMerge</PackageId>
+    <AssemblyProduct>MailMerge</AssemblyProduct>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
