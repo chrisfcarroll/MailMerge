@@ -18,7 +18,7 @@
     <PackageReference Include="nunit" Version="3.9.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
-    <PackageReference Include="TestBase" Version="4.0.4" />
+    <PackageReference Include="TestBase" Version="4.0.4.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestDocuments\ATemplate.docx">
