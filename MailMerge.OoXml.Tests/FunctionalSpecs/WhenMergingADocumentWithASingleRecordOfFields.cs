@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MailMerge.Helpers;
-using MailMerge.Properties;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using TestBase;
 
@@ -14,8 +12,7 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
     public class WhenMergingADocumentWithASingleRecordOfFields
     {
         MailMerge sut;
-        ILogger logger;
-        const string TemplateDocx = "ATemplate.docx";
+        const string TemplateDocx = "TestDocuments\\ATemplate.docx";
 
         Dictionary<string, string> MergeFieldsForTemplateDocx = new Dictionary<string, string>
         {
@@ -26,10 +23,7 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         [SetUp]
         public void Setup()
         {
-            sut = new MailMerge(
-                logger = new LoggerFactory().AddConsole(LogLevel.Trace, true).CreateLogger(this.GetType()),
-                new Settings()
-            );
+            sut = new MailMerge(Startup.Configure().CreateLogger(GetType()), Startup.Settings);
         }
 
         [Test]
@@ -57,7 +51,7 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
 
                     MergeFieldsForTemplateDocx
                         .Keys
-                    .ShouldAll(k => output.AsWordprocessingDocument().MainDocumentPart.Document.OuterXml.Contains($"MERGEFIELD {k}"));
+                    .ShouldAll(k => output.AsWordprocessingDocument().MainDocumentPart.Document.OuterXml.ShouldContain($"MERGEFIELD {k}"));
 
                 }
                 finally

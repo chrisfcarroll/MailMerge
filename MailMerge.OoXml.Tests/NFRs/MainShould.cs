@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using TestBase;
 
-namespace MailMerge.OoXml.Tests
+namespace MailMerge.OoXml.Tests.NFRs
 {
     public class MainShould
     {

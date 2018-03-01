@@ -7,9 +7,9 @@ using TestBase;
 using Assert = TestBase.Assert;
 using Is = TestBase.Is;
 
-namespace MailMerge.OoXml.Tests
+namespace MailMerge.OoXml.Tests.NFRs
 {
-    public class MailMergeNFRsShoulds
+    public class MailMergeNFRs
     {
         MailMerge sut;
         StringListLogger logger;
@@ -21,14 +21,14 @@ namespace MailMerge.OoXml.Tests
         }
 
         [Test]
-        public void Log()
+        public void Logs_ToSpecifiedLogger()
         {
             sut.Merge(new MemoryStream(new byte[0]), new Dictionary<string, string>());
             Assert.That(logger.LoggedLines, Is.NotEmpty);
         }
 
         [Test]
-        public void ReturnException__GivenNullStreamInput()
+        public void ReturnsException__GivenNullStreamInput()
         {
             var mergefields = new Dictionary<string, string>()
             {
@@ -41,7 +41,7 @@ namespace MailMerge.OoXml.Tests
         }
 
         [Test]
-        public void ReturnException__GivenNullInputFile()
+        public void ReturnsException__GivenNullInputFile()
         {
             var mergefields = new Dictionary<string, string>()
             {
@@ -54,7 +54,7 @@ namespace MailMerge.OoXml.Tests
         }
 
         [Test]
-        public void ReturnException__GivenNullInput__GivenOutputFilepath()
+        public void ReturnsException__GivenNullInput__GivenOutputFilepath()
         {
             var mergefields = new Dictionary<string, string>()
             {
@@ -66,7 +66,7 @@ namespace MailMerge.OoXml.Tests
         }
 
         [Test]
-        public void ReturnException__GivenEmptyInputFilePath()
+        public void ReturnsException__GivenEmptyInputFilePath()
         {
             var mergefields = new Dictionary<string, string>()
             {
@@ -79,7 +79,7 @@ namespace MailMerge.OoXml.Tests
         }
 
         [Test]
-        public void ReturnException__GivenInvalidInputFilePath()
+        public void ReturnsException__GivenInvalidInputFilePath()
         {
             var mergefields = new Dictionary<string, string>()
             {
@@ -92,7 +92,7 @@ namespace MailMerge.OoXml.Tests
         }
 
         [Test]
-        public void ReturnTwoException__GivenInvalidInputFilePathAndInvalidOutputFilePath()
+        public void ReturnsTwoExceptions__GivenInvalidInputFilePathAndInvalidOutputFilePath()
         {
             var mergefields = new Dictionary<string, string>()
             {

@@ -21,10 +21,10 @@
     <PackageReference Include="TestBase" Version="4.0.4" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ATemplate.docx">
+    <Content Include="TestDocuments\ATemplate.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AddressListForMerge.csv">
+    <Content Include="TestDocuments\AddressListForMerge.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

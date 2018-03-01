@@ -3,10 +3,11 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
+    <LangVersion>latest</LangVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <AssemblyProduct>MailMerge</AssemblyProduct>
-    <LangVersion>latest</LangVersion>
+    <AssemblyCompany>Chris F Carroll</AssemblyCompany>
     <AssemblyVersion>1.0.1.1</AssemblyVersion>
     <AssemblyFileVersion>1.0.1.1</AssemblyFileVersion>
     <PackageVersion>1.0.1.1</PackageVersion>
@@ -14,42 +15,34 @@
     <Title>.Net and Commandline MailMerge for docx</Title>
     <Summary><![CDATA[Component Usage
 ---------------
-
+```
 (outputStream, errors) = new MailMerge().Merge(outputStream, Dictionary);
-
 (bool, errors) = new MailMerge().Merge(inputFileName, Dictionary, outputFileName);
-        
+```        
 
 CommandLine Usage
 -----------------
-
-MailMerge inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
-
+```
+dotnet MailMerge.dll inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
+```
 Example
 
-dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
+`dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"`
 
 TODO
 ----
 Overloads for multiline datasources: Lists, CSV files & .xmlx files.
 Platform executables
 ]]></Summary>
-    <Description><![CDATA[Component Usage
----------------
-
+    <Description><![CDATA[```
 (outputStream, errors) = new MailMerge().Merge(outputStream, Dictionary);
-
 (bool, errors) = new MailMerge().Merge(inputFileName, Dictionary, outputFileName);
-        
+```
+`C:> MailMerge inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]`
 
-CommandLine Usage
------------------
+Example:
 
-MailMerge inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
-
-Example
-
-dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
+`dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"`
 ]]></Description>
     <PackageReleaseNotes>1.0.1.0</PackageReleaseNotes>
     <Copyright>(c) Chris F. Carroll, 2013-2018</Copyright>

@@ -12,13 +12,12 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
     public class GivenNoMergeFields
     {
         MailMerge sut;
-        StringListLogger logger;
-        string inputFile = "ATemplate.docx";
+        string inputFile = "TestDocuments\\ATemplate.docx";
 
-        [SetUp]public void Setup(){ sut = new MailMerge(logger = new StringListLogger(), new Settings()); }
+        [SetUp]public void Setup(){ sut = new MailMerge(Startup.Configure().CreateLogger<GivenNoMergeFields>(), new Settings()); }
 
         [Test]
-        public void ShouldReturnOriginalDocument()
+        public void Returns_OriginalDocument()
         {
             Stream output=null;
             AggregateException exceptions;
