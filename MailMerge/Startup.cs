@@ -24,6 +24,11 @@ namespace MailMerge
 
         public static Instance Configure(string settingsName=null)
         {
+            //
+            ILoggerProvider provider = null /*, add your preferred LoggerProvider() here */;
+            ILoggerFactory factory = null /*Add your preferred ILoggerFactory here*/;
+            //
+
             settingsName = settingsName ?? nameof(MailMerge);
             Configuration = new ConfigurationBuilder()
                            .SetBasePath(Path.GetDirectoryName(typeof(Startup).Assembly.Location))
@@ -31,7 +36,7 @@ namespace MailMerge
                            .Build();
             Configuration.GetSection(settingsName).Bind(Settings = new Settings());
 
-            LoggerFactory = new LoggerFactory().FromConfiguration(Configuration);
+            LoggerFactory = factory.FromConfiguration(Configuration, provider);
             LoggerFactory.CreateLogger("StartUp").LogDebug("Settings: {@Settings}",Settings);
             return new Instance();
         }

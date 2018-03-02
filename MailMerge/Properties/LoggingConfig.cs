@@ -1,47 +1,26 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Events;
 
 namespace MailMerge.Properties
 {
     static class LoggingConfig
     {
-        static string LoggingConfigurationSectionName = "Logging";
-        static string LogLevelSettingName = "LogLevel";
-        
-        public static ILoggerFactory FromConfiguration(this ILoggerFactory loggerFactory, IConfiguration configuration)
-        {
-            var logconfig = new LoggerConfiguration();
-            var logLevelSetting = configuration.GetSection(LoggingConfigurationSectionName)[LogLevelSettingName];
-            
-            if (!Enum.TryParse<LogEventLevel>(logLevelSetting, out var serilogLevel))
-            {
-                if (Enum.TryParse<LogLevel>(logLevelSetting, out var mslogLevel))
-                {
-                    serilogLevel = MsLevelToSerilogLevel[mslogLevel];
-                    if (mslogLevel == LogLevel.None) { logconfig = logconfig.Filter.ByExcluding(x => true); }
-                }
-                else
-                {
-                    serilogLevel = LogEventLevel.Information;
-                }
-            }
+        public static Instance FromConfig;
+        const string LoggingConfigurationSectionName = "Logging";
 
-            return loggerFactory.AddSerilog(logconfig.MinimumLevel.Is(serilogLevel).WriteTo.Console().CreateLogger());
+        public static ILoggerFactory FromConfiguration(this ILoggerFactory loggerFactory, IConfiguration configuration, ILoggerProvider provider=null)
+        {
+            var configurationSection = configuration.GetSection(LoggingConfigurationSectionName);
+            configurationSection.Bind(FromConfig=new Instance());
+            loggerFactory = loggerFactory ?? new FallbackLoggerFactory();
+            loggerFactory.AddProvider( FromConfig.Provider= provider??new FallbackLoggerProvider());
+            return loggerFactory;
         }
 
-        static readonly Dictionary<LogLevel,LogEventLevel> MsLevelToSerilogLevel= new Dictionary<LogLevel,LogEventLevel>
+        public class Instance
         {
-            {LogLevel.Critical,LogEventLevel.Fatal},
-            {LogLevel.Debug,LogEventLevel.Debug},
-            {LogLevel.Error,LogEventLevel.Error},
-            {LogLevel.Information,LogEventLevel.Information},
-            {LogLevel.None,LogEventLevel.Fatal},
-            {LogLevel.Trace,LogEventLevel.Verbose},
-            {LogLevel.Warning,LogEventLevel.Warning},
-        };
+            public string LogLevel { get; set; }
+            public ILoggerProvider Provider { get; set; }
+        }
     }
 }

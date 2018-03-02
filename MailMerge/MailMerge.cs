@@ -7,8 +7,6 @@ using DocumentFormat.OpenXml.Packaging;
 using MailMerge.Helpers;
 using MailMerge.Properties;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace MailMerge
 {
