@@ -8,16 +8,16 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <AssemblyProduct>MailMerge</AssemblyProduct>
     <AssemblyCompany>Chris F Carroll</AssemblyCompany>
-    <AssemblyVersion>1.0.1.1</AssemblyVersion>
-    <AssemblyFileVersion>1.0.1.1</AssemblyFileVersion>
-    <PackageVersion>1.0.1.1</PackageVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyFileVersion>2.0.0.0</AssemblyFileVersion>
+    <PackageVersion>2.0.0.0</PackageVersion>
     <PackageId>MailMerge</PackageId>
     <Title>.Net and Commandline MailMerge for docx</Title>
-    <Summary><![CDATA[Component Usage
+    <PackageDescription><![CDATA[Component Usage
 ---------------
 ```
-(outputStream, errors) = new MailMerge().Merge(outputStream, Dictionary);
-(bool, errors) = new MailMerge().Merge(inputFileName, Dictionary, outputFileName);
+(outputStream, errors) = new MailMerger().Merge(outputStream, Dictionary);
+(bool, errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```        
 
 CommandLine Usage
@@ -33,25 +33,15 @@ TODO
 ----
 Overloads for multiline datasources: Lists, CSV files & .xmlx files.
 Platform executables
-]]></Summary>
-    <Description><![CDATA[```
-(outputStream, errors) = new MailMerge().Merge(outputStream, Dictionary);
-(bool, errors) = new MailMerge().Merge(inputFileName, Dictionary, outputFileName);
-```
-`C:> MailMerge inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]`
-
-Example:
-
-`dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"`
-]]></Description>
-    <PackageReleaseNotes>1.0.1.0</PackageReleaseNotes>
+]]></PackageDescription>
+    <PackageReleaseNotes>2.0.0.0 renamed component MailMerge.MailMerge to MailMerge.MailMerger</PackageReleaseNotes>
     <Copyright>(c) Chris F. Carroll, 2013-2018</Copyright>
     <Authors>Chris F Carroll</Authors>
     <Owners>Chris F Carroll</Owners>
     <PackageProjectUrl>https://github.com/chrisfcarroll/MailMerge</PackageProjectUrl>
     <RepositoryUrl>https://github.com/chrisfcarroll/MailMerge</RepositoryUrl>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-    <Tags>mailmerge merge docx ooxml word</Tags>
+    <PackageTags>mailmerge;merge;docx;ooxml;word</PackageTags>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

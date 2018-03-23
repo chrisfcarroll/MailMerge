@@ -11,13 +11,13 @@ namespace MailMerge.OoXml.Tests.NFRs
 {
     public class MailMergeNFRs
     {
-        MailMerge sut;
+        MailMerger sut;
         StringListLogger logger;
 
         [SetUp]
         public void Setup()
         {
-            sut = new MailMerge(logger = new StringListLogger(), new Settings());
+            sut = new MailMerger(logger = new StringListLogger(), new Settings());
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace MailMerge.OoXml.Tests.NFRs
                 {"a", "aa"}
             };
             //
-            var (result, errors) = new MailMerge(logger, new Settings()).Merge(null as FileStream, mergefields);
+            var (result, errors) = new MailMerger(logger, new Settings()).Merge(null as FileStream, mergefields);
             //
             errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
         }
@@ -48,7 +48,7 @@ namespace MailMerge.OoXml.Tests.NFRs
                 {"a", "aa"}
             };
             //
-            var (result, errors) = new MailMerge(logger, new Settings()).Merge(null as string, mergefields);
+            var (result, errors) = new MailMerger(logger, new Settings()).Merge(null as string, mergefields);
             //
             errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
         }
@@ -61,7 +61,7 @@ namespace MailMerge.OoXml.Tests.NFRs
                 {"a", "aa"}
             };
 
-            var (result, errors) = new MailMerge(logger, new Settings()).Merge(null as Stream, mergefields, "");
+            var (result, errors) = new MailMerger(logger, new Settings()).Merge(null as Stream, mergefields, "");
             errors.InnerExceptions.ShouldNotBeEmpty()[0].ShouldBeAssignableTo<ArgumentNullException>();
         }
 
@@ -73,7 +73,7 @@ namespace MailMerge.OoXml.Tests.NFRs
                 {"a", "aa"}
             };
             //
-            var (result, errors) = new MailMerge(logger, new Settings()).Merge("", mergefields);
+            var (result, errors) = new MailMerger(logger, new Settings()).Merge("", mergefields);
             //
             errors.InnerExceptions.ShouldNotBeEmpty();
         }
@@ -86,7 +86,7 @@ namespace MailMerge.OoXml.Tests.NFRs
                 {"a", "aa"}
             };
             //
-            var (result, errors) = new MailMerge(logger, new Settings()).Merge(" ", mergefields);
+            var (result, errors) = new MailMerger(logger, new Settings()).Merge(" ", mergefields);
             //
             errors.InnerExceptions.ShouldNotBeEmpty();
         }
@@ -99,7 +99,7 @@ namespace MailMerge.OoXml.Tests.NFRs
                 {"a", "aa"}
             };
             //
-            var (result, errors) = new MailMerge(logger, new Settings()).Merge("", mergefields, "");
+            var (result, errors) = new MailMerger(logger, new Settings()).Merge("", mergefields, "");
             //
             errors.InnerExceptions.ShouldBeOfLength(2);
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
@@ -11,53 +12,58 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
     [TestFixture]
     public class WhenMergingADocumentWithASingleRecordOfFields
     {
-        MailMerge sut;
+        MailMerger sut;
         const string TemplateDocx = "TestDocuments\\ATemplate.docx";
 
         Dictionary<string, string> MergeFieldsForTemplateDocx = new Dictionary<string, string>
         {
             {"FirstName","FakeFirst"},
-            {"LastName","FakeLast"}
+            {"LastName","FakeLast"},
+        };
+        Dictionary<string, string> MergeFieldsForClientCareLetter = new Dictionary<string, string>
+        {
+            {"Recipient.Salutation","Mr Test"},
+            {"Matter.ClientsReference","TheClientsReference"},
+            {"PropertyAddressOnOneLine","Here I am"}
         };
 
         [SetUp]
         public void Setup()
         {
-            sut = new MailMerge(Startup.Configure().CreateLogger(GetType()), Startup.Settings);
+            sut = new MailMerger(Startup.Configure().CreateLogger(GetType()), Startup.Settings);
         }
 
-        [Test]
-        public void Returns_TheDocumentWithMergeFieldsReplaced()
+        [TestCase("TestDocuments\\ATemplate.docx", nameof(MergeFieldsForTemplateDocx))]
+        [TestCase("TestDocuments\\Client Care Letter.docx", nameof(MergeFieldsForClientCareLetter))]
+        public void Returns_TheDocumentWithMergeFieldsReplaced(string source, string sourceFieldsSource)
         {
+            var sourceFields = GetType().GetField(sourceFieldsSource,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(this) as Dictionary<string,string>;
+
             Stream output = null; AggregateException exceptions;
 
-            using (var original = new FileStream(TemplateDocx, FileMode.Open, FileAccess.Read, FileShare.Read))
-                try
-                {
+            using (var original = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read))
+            try
+            {
+                (output, exceptions) = sut.Merge(source, sourceFields);
 
-                    (output, exceptions) = sut.Merge(TemplateDocx, MergeFieldsForTemplateDocx);
+                if (exceptions.InnerExceptions.Any()) { throw exceptions; }
 
-                    if (exceptions.InnerExceptions.Any()) { throw exceptions; }
+                var outputText = output.AsWordprocessingDocument(false).MainDocumentPart.Document.InnerText;
 
-                    var outputText = output.AsWordprocessingDocument(false).MainDocumentPart.Document.InnerText;
+                sourceFields
+                    .Values
+                    .ShouldAll(v => outputText.ShouldContain(v));
 
-                    MergeFieldsForTemplateDocx
-                        .Values
-                        .ShouldAll(v => outputText.ShouldContain(v, "Didn't find merge value in output text"));
+                sourceFields
+                    .Keys
+                    .ShouldAll(k => outputText.ShouldNotContain("«" + k + "»"));
 
-                    MergeFieldsForTemplateDocx
-                        .Keys
-                        .ShouldAll(k => outputText.ShouldNotContain("«" + k + "»", "Found mergefield name in output text"));
+                sourceFields
+                    .Keys
+                .ShouldAll(k => output.AsWordprocessingDocument().MainDocumentPart.Document.OuterXml.ShouldContain($"MERGEFIELD {k}"));
 
-                    MergeFieldsForTemplateDocx
-                        .Keys
-                    .ShouldAll(k => output.AsWordprocessingDocument().MainDocumentPart.Document.OuterXml.ShouldContain($"MERGEFIELD {k}"));
-
-                }
-                finally
-                {
-                    output?.Dispose();
-                }
+            }
+            finally{ output?.Dispose(); }
         }
 
         [OneTimeSetUp]

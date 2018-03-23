@@ -1,0 +1,8 @@
+<w:fldSimple w:instr=" MERGEFIELD  Sender  \* MERGEFORMAT " xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+	<w:r w:rsidR="007C448C">
+		<w:rPr>
+			<w:noProof/>
+		</w:rPr>
+		<w:t>«Sender»</w:t>
+	</w:r>
+</w:fldSimple>

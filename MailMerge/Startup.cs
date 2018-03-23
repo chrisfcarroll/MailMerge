@@ -29,7 +29,7 @@ namespace MailMerge
             ILoggerFactory factory = null /*Add your preferred ILoggerFactory here*/;
             //
 
-            settingsName = settingsName ?? nameof(MailMerge);
+            settingsName = settingsName ?? nameof(MailMerger);
             Configuration = new ConfigurationBuilder()
                            .SetBasePath(Path.GetDirectoryName(typeof(Startup).Assembly.Location))
                            .AddJsonFile("appsettings.json", false)
@@ -61,8 +61,8 @@ namespace MailMerge
             
             Startup.Configure();
 
-            var component = new MailMerge(
-                                           Startup.CreateLogger<MailMerge>(),
+            var component = new MailMerger(
+                                           Startup.CreateLogger<MailMerger>(),
                                            Startup.Settings
                                           );
 

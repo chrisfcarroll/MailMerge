@@ -13,18 +13,18 @@ namespace MailMerge
     /// <summary>
     /// A component for editing Word Docx files, and in particular for populating merge fields.
     /// </summary>
-    public class MailMerge
+    public class MailMerger
     {
         internal readonly ILogger Logger;
         internal readonly Settings Settings;
 
-        public MailMerge(ILogger logger, Settings settings){ Logger = logger; Settings = settings; }
+        public MailMerger(ILogger logger, Settings settings){ Logger = logger; Settings = settings; }
         
-        /// <summary>Create a new MailMerge with Logger and Settings from <see cref="Startup"/></summary>
-        public MailMerge()
+        /// <summary>Create a new MailMerger with Logger and Settings from <see cref="Startup"/></summary>
+        public MailMerger()
         {
             Startup.Configure();
-            Logger = Startup.CreateLogger<MailMerge>();
+            Logger = Startup.CreateLogger<MailMerger>();
             Settings = Startup.Settings;
         }
 
@@ -37,6 +37,8 @@ namespace MailMerge
         /// </returns>
         /// <param name="inputDocxFileName">Input file.</param>
         /// <param name="fieldValues">A dictionary keyed on mergefield names used in the document.</param>
+        /// <remarks>Error handling: 
+        /// You can inspect the returned <seealso cref="AggregateException.InnerExceptions"/> , or simply <code>throw</code it.</remarks>
         public (Stream, AggregateException) Merge(string inputDocxFileName, Dictionary<string, string> fieldValues)
         {
             var exception = ValidateParameterInputFile(inputDocxFileName);
@@ -161,20 +163,8 @@ namespace MailMerge
                 var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
                 xdoc.Load(docOutStream);
 
-                var simpleMergeFields = xdoc.SelectNodes( $"//w:fldSimple[contains(@w:instr,'MERGEFIELD ')]", OoXmlNamespaces.Manager );
-                foreach (XmlNode node in simpleMergeFields)
-                {
-                    var fldName = node.Attributes[OoXPath.winstr].Value.Replace("MERGEFIELD","").Trim();
-                    if (fieldValues.ContainsKey(fldName))
-                    {
-                        var aNode = node["w:r"]["w:t"];
-                        foreach (XmlNode txtNode in node.SelectNodes(".//w:t", OoXmlNamespaces.Manager))
-                        {
-                            Logger.LogDebug($"Replacing <w:fldSimple w:instr='{fldName}'>...<w:t>{txtNode.InnerText}</w:t> with {fieldValues[fldName]}");
-                            txtNode.InnerText= fieldValues[fldName];
-                        } 
-                    }
-                }
+                xdoc.MergeField(fieldValues, Logger);
+                xdoc.MergeDate(Logger);
 
                 docOutStream.Position = 0; /* <-Innocuous looking, yet VITAL before save*/
                 xdoc.Save(docOutStream);
@@ -186,6 +176,7 @@ namespace MailMerge
                 Logger.LogDebug("Merging field {@MergeFieldName}=@{MergeFieldValue}", key,value);
             }   
         }
+
 
         Dictionary<string, string> LogAndEnsureFieldValues(Dictionary<string, string> fieldValues, Dictionary<string, string> @default)
         {

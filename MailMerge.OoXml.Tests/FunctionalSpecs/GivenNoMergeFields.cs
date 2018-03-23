@@ -11,10 +11,10 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
     [TestFixture]
     public class GivenNoMergeFields
     {
-        MailMerge sut;
+        MailMerger sut;
         string inputFile = "TestDocuments\\ATemplate.docx";
 
-        [SetUp]public void Setup(){ sut = new MailMerge(Startup.Configure().CreateLogger<GivenNoMergeFields>(), new Settings()); }
+        [SetUp]public void Setup(){ sut = new MailMerger(Startup.Configure().CreateLogger<GivenNoMergeFields>(), new Settings()); }
 
         [Test]
         public void Returns_OriginalDocument()
