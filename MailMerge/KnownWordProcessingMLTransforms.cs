@@ -16,7 +16,7 @@ namespace MailMerge
         /// <param name="mainDocumentPart">The document to mutate</param>
         /// <param name="fieldValues">The dictionary of MERGEFIELD values to use for replacement</param>
         /// <param name="logger"></param>
-        public static void MergeField(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger logger)
+        public static void SimpleMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger logger)
         {
             var simpleMergeFields = mainDocumentPart.SelectNodes("//w:fldSimple[contains(@w:instr,'MERGEFIELD ')]", OoXmlNamespaces.Manager);
             foreach (XmlNode node in simpleMergeFields)
@@ -33,21 +33,61 @@ namespace MailMerge
                     }
                 }
             }
+        }
 
-            //While loop not foreach because of deleting as we go.
-            var winstrNode = mainDocumentPart.SelectSingleNode("//w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespaces.Manager);
-            while (winstrNode != null)
+        public static void ComplexMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger logger)
+        {
+            int expectedNodeCount = 5;
+
+            XmlNode beginRun;
+            while (null!= (beginRun= mainDocumentPart.SelectSingleNode("//w:r[w:fldChar/@w:fldCharType='begin']", OoXmlNamespaces.Manager)))
             {
-                var fieldName = winstrNode.InnerText
-                    .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-                    .Skip(1).FirstOrDefault();
-                if (fieldValues.ContainsKey(fieldName))
+                var nodesToRemove= new List<XmlNode>{beginRun};
+                XmlNode instrRun=null, instrNode=null, separatorRun = null, textRun = null, endRun = null;
+                string replacementText = "";
+
+                int i = 0;
+                var sibling = beginRun.NextSibling;
+                while (endRun== null && i<expectedNodeCount && sibling!=null)
                 {
-                    logger.LogDebug($"Replacing <w:instrText '{fieldName} '>...</w:instrText> with " + fieldValues[fieldName]);
-                    winstrNode.ParentNode.InsertAfter(mainDocumentPart.CreateElement($"<w:t>{fieldValues[fieldName]}</w:t>"), winstrNode);
-                    winstrNode.ParentNode.RemoveChild(winstrNode);
+                    if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='separate']", OoXmlNamespaces.Manager))
+                    {
+                        nodesToRemove.Add(separatorRun = sibling);
+                    }
+                    if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='end']", OoXmlNamespaces.Manager))
+                    {
+                        nodesToRemove.Add(endRun=sibling);
+                    }
+                    if (null != (instrNode=sibling.SelectSingleNode("w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespaces.Manager)))
+                    {
+                        nodesToRemove.Add(instrRun = sibling);
+                        var fieldName = instrNode.InnerText
+                                                .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+                                                .Skip(1).FirstOrDefault();
+                        if (fieldValues.ContainsKey(fieldName))
+                        {
+                            replacementText = fieldValues[fieldName];
+                            logger.LogDebug($"Noting <w:instrText '{fieldName} '>...</w:instrText> for replacement with " + replacementText);
+                        }
+                        else
+                        {
+                            logger.LogWarning($"Nothing in the fieldValue dictionary for {instrRun.InnerText}");
+                        }
+
+                    }
+                    if (endRun==null && separatorRun!=null /*17.16.18 only do replacement after a separator. no separator implies no replacement*/)
+                    {
+                        textRun = sibling;
+                    }
+                    sibling = sibling.NextSibling;
+                    i++;
                 }
-                winstrNode = mainDocumentPart.SelectSingleNode("//w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespaces.Manager);
+
+                if (textRun != null )
+                {
+                    textRun.SelectSingleNode("w:t",OoXmlNamespaces.Manager).InnerText = replacementText;
+                }
+                nodesToRemove.ForEach(n=>n.ParentNode.RemoveChild(n));
             }
         }
 

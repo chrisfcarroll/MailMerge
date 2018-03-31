@@ -145,7 +145,7 @@ namespace MailMerge
                 {
                     Logger.LogTrace("{@numberOfMergeFieldsToProcess}",fieldValues.Count);
                     
-                    MergeSimpleFields(fieldValues, outputStream);
+                    ApplyAllKnownMergeTransformationsToDocumentMainPart(fieldValues, outputStream);
                 }
                 else{ Logger.LogDebug("No fields to merge, copying input to output."); }
                 
@@ -155,7 +155,7 @@ namespace MailMerge
             return (Stream.Null, exceptions);
         }
 
-        void MergeSimpleFields(Dictionary<string, string> fieldValues, Stream outputStream)
+        void ApplyAllKnownMergeTransformationsToDocumentMainPart(Dictionary<string, string> fieldValues, Stream outputStream)
         {
             using (var wpDocx = WordprocessingDocument.Open(outputStream, true))
             using(var docOutStream = wpDocx.MainDocumentPart.GetStream())
@@ -163,7 +163,8 @@ namespace MailMerge
                 var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
                 xdoc.Load(docOutStream);
 
-                xdoc.MergeField(fieldValues, Logger);
+                xdoc.SimpleMergeFields(fieldValues, Logger);
+                xdoc.ComplexMergeFields(fieldValues,Logger);
                 xdoc.MergeDate(Logger);
 
                 docOutStream.Position = 0; /* <-Innocuous looking, yet VITAL before save*/

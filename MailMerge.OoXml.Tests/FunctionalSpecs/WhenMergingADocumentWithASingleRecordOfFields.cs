@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
@@ -15,16 +16,18 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         MailMerger sut;
         const string TemplateDocx = "TestDocuments\\ATemplate.docx";
 
-        Dictionary<string, string> MergeFieldsForTemplateDocx = new Dictionary<string, string>
+        static Dictionary<string, string> MergeFieldsForTemplateDocx = new Dictionary<string, string>
         {
             {"FirstName","FakeFirst"},
             {"LastName","FakeLast"},
         };
-        Dictionary<string, string> MergeFieldsForClientCareLetter = new Dictionary<string, string>
+        static Dictionary<string, string> MergeFieldsForClientCareLetter = new Dictionary<string, string>
         {
             {"Recipient.Salutation","Mr Test"},
             {"Matter.ClientsReference","TheClientsReference"},
-            {"PropertyAddressOnOneLine","Here I am"}
+            {"Matter.Reference","TestMatterRef-000-000-etc"},
+            {"PropertyAddressOnOneLine","1, The Line, Property Address"},
+            {"Sender","Test Letterwriter"},
         };
 
         [SetUp]
@@ -37,14 +40,20 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         [TestCase("TestDocuments\\Client Care Letter.docx", nameof(MergeFieldsForClientCareLetter))]
         public void Returns_TheDocumentWithMergeFieldsReplaced(string source, string sourceFieldsSource)
         {
-            var sourceFields = GetType().GetField(sourceFieldsSource,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(this) as Dictionary<string,string>;
+            var sourceFields = GetType().GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.NonPublic).GetValue(this) as Dictionary<string,string>;
 
             Stream output = null; AggregateException exceptions;
 
             using (var original = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read))
             try
             {
-                (output, exceptions) = sut.Merge(source, sourceFields);
+                (output, exceptions) = sut.Merge(original, sourceFields);
+
+                using (var outFile = new FileInfo(source.Replace(".", " Output.")).OpenWrite())
+                {
+                    output.Position = 0;
+                    output.CopyTo(outFile);
+                }
 
                 if (exceptions.InnerExceptions.Any()) { throw exceptions; }
 
@@ -58,9 +67,8 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
                     .Keys
                     .ShouldAll(k => outputText.ShouldNotContain("«" + k + "»"));
 
-                sourceFields
-                    .Keys
-                .ShouldAll(k => output.AsWordprocessingDocument().MainDocumentPart.Document.OuterXml.ShouldContain($"MERGEFIELD {k}"));
+
+                Regex.IsMatch(outputText, @"\<w:instrText [^>]*>MERGEFIELD").ShouldBeFalse("Merge should have remove all complex field sequences (whether or not they were replaced with text).");
 
             }
             finally{ output?.Dispose(); }

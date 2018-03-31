@@ -18,10 +18,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
-    <PackageReference Include="nunit" Version="3.9.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
-    <PackageReference Include="TestBase" Version="4.0.4.1" />
+    <PackageReference Include="Extensions.Logging.ListOfString" Version="4.0.8" />
+    <PackageReference Include="nunit" Version="3.10.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="TestBase" Version="4.0.9.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestDocuments\ATemplate.docx">

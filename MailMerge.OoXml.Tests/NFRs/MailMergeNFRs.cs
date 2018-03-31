@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Extensions.Logging.ListOfString;
 using MailMerge.Properties;
 using NUnit.Framework;
 using TestBase;
