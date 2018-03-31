@@ -68,6 +68,8 @@ namespace MailMerge
 
             var(files, mergefields) = ParseArgs.FromStringArray(args);
 
+            HelpAndExitIfNot(files.Length>0);
+
             foreach (var (filein,fileout) in files)
             {
                 component.Merge(filein.FullName, mergefields, fileout.FullName );

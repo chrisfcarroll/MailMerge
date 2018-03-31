@@ -8,33 +8,44 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <AssemblyProduct>MailMerge</AssemblyProduct>
     <AssemblyCompany>Chris F Carroll</AssemblyCompany>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <AssemblyFileVersion>2.0.0.0</AssemblyFileVersion>
-    <PackageVersion>2.0.0.0</PackageVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+    <AssemblyFileVersion>2.1.0.0</AssemblyFileVersion>
+    <PackageVersion>2.1.0.0</PackageVersion>
     <PackageId>MailMerge</PackageId>
     <Title>.Net and Commandline MailMerge for docx</Title>
-    <PackageDescription><![CDATA[Component Usage
+    <PackageDescription><![CDATA[MailMerge replaces simple and complex merge fields in WordProcessingML .docx files.
+
+Component Usage
 ---------------
 ```
 (outputStream, errors) = new MailMerger().Merge(outputStream, Dictionary);
 (bool, errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```        
+or
+```
+new MailMerger{DateTime=...}.Merge(inputFileName, Dictionary, outputFileName);
+```
 
 CommandLine Usage
 -----------------
 ```
-dotnet MailMerge.dll inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
+dotnet MailMerge.dll inputFile1 outputFile1 \[\[inputFileN outputFileN]...] [ key=value[...] ]
 ```
 Example
 
 `dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"`
 
-TODO
+
+Doesn't do
 ----
+Anything except Merge fields and Dates
 Overloads for multiline datasources: Lists, CSV files & .xmlx files.
 Platform executables
 ]]></PackageDescription>
-    <PackageReleaseNotes>2.0.0.0 renamed component MailMerge.MailMerge to MailMerge.MailMerger</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      2.0.1.0 Added support for Complex Field Character sequences.
+      2.0.0.0 renamed component MailMerge.MailMerge to MailMerge.MailMerger
+    </PackageReleaseNotes>
     <Copyright>(c) Chris F. Carroll, 2013-2018</Copyright>
     <Authors>Chris F Carroll</Authors>
     <Owners>Chris F Carroll</Owners>

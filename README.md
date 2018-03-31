@@ -1,28 +1,31 @@
 MailMerge for docx Documents
 ============================
 
-CommandLine Usage
------------------
-
-    dotnet MailMerge.dll inputFile1 outputFile1 [[inputFileN outputFileN]...] [ key=value[...] ]
-
-Example
-
-    dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
-
-
+MailMerge replaces simple and complex merge fields in WordProcessingML .docx files.
 
 Component Usage
 ---------------
+```
+(outputStream, errors) = new MailMerger().Merge(outputStream, Dictionary);
+(bool, errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
+```
+or
+```
+new MailMerger{DateTime=...}.Merge(inputFileName, Dictionary, outputFileName);
+```
 
-    (outputStream, errors) = new MailMerge().Merge(inputStream, Dictionary);
+CommandLine Usage
+-----------------
+```
+dotnet MailMerge.dll inputFile1 outputFile1 \[\[inputFileN outputFileN]...] [ key=value[...] ]
+```
+Example
 
-    (bool, errors) = new MailMerge().Merge(inputFileName, Dictionary, outputFileName);
-        
+`dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"`
 
-MailMerge does not use any desktop automation components, and should be suitable for serverside use. 
 
-TODO
-----
-Overloads for multiline datasources: Lists, CSV files & .xmlx files.
+Doesn't do
+----------
+Anything except Merge fields and Dates
+Overloads for multiline datasources
 Platform executables

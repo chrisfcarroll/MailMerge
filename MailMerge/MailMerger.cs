@@ -15,10 +15,21 @@ namespace MailMerge
     /// </summary>
     public class MailMerger
     {
+        public const string DATEKey = "DATE";
         internal readonly ILogger Logger;
         internal readonly Settings Settings;
 
-        public MailMerger(ILogger logger, Settings settings){ Logger = logger; Settings = settings; }
+        /// <summary>
+        /// Use this property for DATE substitions if you require rudimentary WordProcessingML MergeFormat handling.
+        /// Otherwise, a simpler choice is to add an entry with <code>Key=</code><seealso cref="DATEKey"/> to the fieldValues 
+        /// passed in to <seealso cref="Merge(string,Dictionary{string,string})"/>
+        /// </summary>
+        public DateTime? DateTime { get; set; }
+
+        public MailMerger(ILogger logger, Settings settings, DateTime? dateTime = null)
+        {
+            Logger = logger; Settings = settings; DateTime = dateTime;
+        }
         
         /// <summary>Create a new MailMerger with Logger and Settings from <see cref="Startup"/></summary>
         public MailMerger()
@@ -26,6 +37,7 @@ namespace MailMerge
             Startup.Configure();
             Logger = Startup.CreateLogger<MailMerger>();
             Settings = Startup.Settings;
+            DateTime=null;
         }
 
         /// <summary>
@@ -155,7 +167,7 @@ namespace MailMerge
             return (Stream.Null, exceptions);
         }
 
-        void ApplyAllKnownMergeTransformationsToDocumentMainPart(Dictionary<string, string> fieldValues, Stream outputStream)
+        internal void ApplyAllKnownMergeTransformationsToDocumentMainPart(Dictionary<string, string> fieldValues, Stream outputStream)
         {
             using (var wpDocx = WordprocessingDocument.Open(outputStream, true))
             using(var docOutStream = wpDocx.MainDocumentPart.GetStream())
@@ -165,9 +177,9 @@ namespace MailMerge
 
                 xdoc.SimpleMergeFields(fieldValues, Logger);
                 xdoc.ComplexMergeFields(fieldValues,Logger);
-                xdoc.MergeDate(Logger);
+                xdoc.MergeDate(Logger,  DateTime, fieldValues.ContainsKey(DATEKey) ? fieldValues[DATEKey] : DateTime?.ToLongDateString());
 
-                docOutStream.Position = 0; /* <-Innocuous looking, yet VITAL before save*/
+                docOutStream.Position = 0; /* <- Must do this before save*/
                 xdoc.Save(docOutStream);
                 wpDocx.Save();
             }            

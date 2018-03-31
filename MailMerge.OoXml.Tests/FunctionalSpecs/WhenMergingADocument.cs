@@ -11,7 +11,7 @@ using TestBase;
 namespace MailMerge.OoXml.Tests.FunctionalSpecs
 {
     [TestFixture]
-    public class WhenMergingADocumentWithASingleRecordOfFields
+    public class WhenMergingADocument
     {
         MailMerger sut;
         const string TemplateDocx = "TestDocuments\\ATemplate.docx";
