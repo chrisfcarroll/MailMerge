@@ -35,6 +35,12 @@ namespace MailMerge
             }
         }
 
+        /// <summary>
+        /// ECMA-376 Part 1 17.16
+        /// </summary>
+        /// <param name="mainDocumentPart">The document to mutate</param>
+        /// <param name="fieldValues">The dictionary of MERGEFIELD values to use for replacement</param>
+        /// <param name="logger"></param>
         public static void ComplexMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger logger)
         {
             /* Each winstrText MergeField is found inside a sequence of 5 or more <w:r> nodes, known as Runs:

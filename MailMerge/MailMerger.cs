@@ -141,14 +141,12 @@ namespace MailMerge
             fieldValues = LogAndEnsureFieldValues(fieldValues, new Dictionary<string, string>());
             var exceptions = ValidateParameters(input, fieldValues);
             if (exceptions.Any()) { return (Stream.Null, exceptions); }
-            var estimateOutputLength = 1024 + (int)(input.Length * Settings.OutputHeadroomFactor)
-                                            + (2 * fieldValues?.Sum(p => p.Key?.Length + p.Value?.Length) ?? 0);
             try
             {
                 //Failed to get MMFs to work because on save get NotSupportedException MMviewStreams are of fixed length
                 //var outputMMF = MemoryMappedFile.CreateNew(null, (int)(estimateOutputLength * Settings.OutputHeadroomFactor), MemoryMappedFileAccess.ReadWrite);
                 //var outputStream = outputMMF.CreateViewStream(0, input.Length);
-                var outputStream= new MemoryStream( estimateOutputLength);
+                var outputStream= new MemoryStream();
 
                 input.CopyTo(outputStream);
                 outputStream.Position = 0;

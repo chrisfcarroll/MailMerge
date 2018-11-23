@@ -14,7 +14,9 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
     public class WhenMergingADocument
     {
         MailMerger sut;
-        const string TemplateDocx = "TestDocuments\\ATemplate.docx";
+        const string TestDocDir = "TestDocuments\\";
+        const string TemplateDocx = "ATemplate.docx";
+        const string ClientCareLetterDocx = "Client Care Letter.docx";
 
         static Dictionary<string, string> MergeFieldsForTemplateDocx = new Dictionary<string, string>
         {
@@ -36,10 +38,11 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
             sut = new MailMerger(Startup.Configure().CreateLogger(GetType()), Startup.Settings);
         }
 
-        [TestCase("TestDocuments\\ATemplate.docx", nameof(MergeFieldsForTemplateDocx))]
-        [TestCase("TestDocuments\\Client Care Letter.docx", nameof(MergeFieldsForClientCareLetter))]
-        public void Returns_TheDocumentWithMergeFieldsReplaced(string source, string sourceFieldsSource)
+        [TestCase(TemplateDocx, nameof(MergeFieldsForTemplateDocx))]
+        [TestCase(ClientCareLetterDocx, nameof(MergeFieldsForClientCareLetter))]
+        public void ReturnsDocWithReplacedMergeFields(string source, string sourceFieldsSource)
         {
+            source = TestDocDir + source;
             var sourceFields = GetType().GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.NonPublic).GetValue(this) as Dictionary<string,string>;
 
             Stream output = null; AggregateException exceptions;
@@ -77,7 +80,16 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         [OneTimeSetUp]
         public void EnsureTestDependencies()
         {
-            File.Exists(TemplateDocx).ShouldBeTrue($"TestDependency: \"{TemplateDocx}\" should be marked as CopyToOutputDirectory but didn't find it at {new FileInfo(TemplateDocx).FullName}");
+            foreach(var testDoc in new[]{TemplateDocx, ClientCareLetterDocx})
+            {
+                var expectedTestDoc = TestDocDir + testDoc;
+                File.Exists(expectedTestDoc)
+                    .ShouldBeTrue(
+                        $"Expected to find TestDependency \n\n\"{expectedTestDoc}\"\n\n at "
+                        + new FileInfo(expectedTestDoc).FullName + " but didn't. \n"
+                        + "Include it in the test project and mark it as as BuildAction=Content, CopyToOutputDirectory=Copy if Newer."
+                    );
+            }
         }
 
     }

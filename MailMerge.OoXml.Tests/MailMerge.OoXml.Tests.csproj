@@ -17,6 +17,7 @@
     <None Remove="TestDocuments\Client Care Letter.docx" />
     <None Remove="TestDocuments\DocWithoutSplitMergeField.docx" />
     <None Remove="TestDocuments\DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx" />
+    <None Remove="TestDocuments\DocWithProblem1.docx" />
     <None Remove="TestDocuments\DocWithSplitMergeField.docx" />
     <None Remove="TestDocuments\DocWithWinstrTextDateRun.docx" />
   </ItemGroup>
@@ -39,6 +40,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestDocuments\DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDocuments\DocWithProblem1.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestDocuments\DocWithSplitMergeField.docx">

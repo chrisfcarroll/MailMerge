@@ -13,11 +13,13 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
     [TestFixture]
     public class WhenMergingADocumentWithSplitMergeFields
     {
+        const string TestDocDir = "TestDocuments\\";
         MailMerger sut;
-        const string DocWithSplitMergeFieldDocx = "TestDocuments\\DocWithSplitMergeField.docx";
-        const string DocWithoutSplitMergeFieldOrWinstrTextDateRunDocx = "TestDocuments\\DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx";
-        const string DocWithWinstrTextDateRundocx = "TestDocuments\\DocWithWinstrTextDateRun.docx";
-        
+        const string DocWithSplitMergeFieldDocx = "DocWithSplitMergeField.docx";
+        const string DocWithoutSplitMergeFieldOrWinstrTextDateRunDocx = "DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx";
+        const string DocWithWinstrTextDateRundocx = "DocWithWinstrTextDateRun.docx";
+        const string DocWithProblem1docx = "DocWithProblem1.docx";
+        //
         static Dictionary<string, string> SplitField = new Dictionary<string, string>
         {
             {"CurrentUser:LastName","CurrentUserLastName"},
@@ -31,6 +33,11 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
             {"CurrentUser:FirstName","CurrentUserFirstName"}
         };
 
+        static Dictionary<string, string> Problem1 = new Dictionary<string, string>
+        {
+            {"CurrentUser:FirstName","CurrentUserFirstName"}
+        };
+
         static Dictionary<string, string> DateOnly = new Dictionary<string, string>();
 
         [SetUp]
@@ -39,12 +46,16 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
             sut = new MailMerger(Startup.Configure().CreateLogger(GetType()), Startup.Settings);
         }
 
+        [TestCase(DocWithProblem1docx, nameof(Problem1))]
         [TestCase(DocWithWinstrTextDateRundocx, nameof(DateOnly))]
         [TestCase(DocWithSplitMergeFieldDocx, nameof(SplitField))]
         [TestCase(DocWithoutSplitMergeFieldOrWinstrTextDateRunDocx, nameof(NoSplitMergeFieldOrWinstrTextDateRun))]
-        public void Returns_TheDocumentWithMergeFieldsReplaced(string source, string sourceFieldsSource)
+        public void Merges(string source, string sourceFieldsSource)
         {
-            var sourceFields = GetType().GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.NonPublic).GetValue(this) as Dictionary<string,string>;
+            source = TestDocDir + source;
+            var sourceFields = GetType()
+                                .GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.NonPublic)
+                                .GetValue(this) as Dictionary<string,string>;
 
             Stream output = null; AggregateException exceptions;
 
@@ -82,8 +93,9 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         [OneTimeSetUp]
         public void EnsureTestDependencies()
         {
-            foreach(var expectedTestDoc in new[]{DocWithSplitMergeFieldDocx, DocWithoutSplitMergeFieldOrWinstrTextDateRunDocx})
+            foreach(var testDoc in new[]{DocWithSplitMergeFieldDocx, DocWithoutSplitMergeFieldOrWinstrTextDateRunDocx})
             {
+                var expectedTestDoc = TestDocDir + testDoc;
                 File.Exists(expectedTestDoc)
                     .ShouldBeTrue(
                         $"Expected to find TestDependency \n\n\"{expectedTestDoc}\"\n\n at "
