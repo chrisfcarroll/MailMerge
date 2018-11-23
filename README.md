@@ -26,6 +26,6 @@ Example
 
 Doesn't do
 ----------
-Anything except Merge fields and Dates
-Overloads for multiline datasources
-Platform executables
+- Anything except Merge fields and Dates
+- Overloads for multiline datasources
+
