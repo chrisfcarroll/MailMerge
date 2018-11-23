@@ -16,8 +16,9 @@
   <ItemGroup>
     <None Remove="TestDocuments\Client Care Letter.docx" />
     <None Remove="TestDocuments\DocWithoutSplitMergeField.docx" />
+    <None Remove="TestDocuments\DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx" />
     <None Remove="TestDocuments\DocWithSplitMergeField.docx" />
-    <None Remove="TestDocuments\DocWithSplitMergeFieldOffice16.docx" />
+    <None Remove="TestDocuments\DocWithWinstrTextDateRun.docx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
@@ -37,13 +38,13 @@
     <Content Include="TestDocuments\Client Care Letter.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDocuments\DocWithoutSplitMergeField.docx">
+    <Content Include="TestDocuments\DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestDocuments\DocWithSplitMergeField.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDocuments\DocWithSplitMergeFieldOffice16.docx">
+    <Content Include="TestDocuments\DocWithWinstrTextDateRun.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
