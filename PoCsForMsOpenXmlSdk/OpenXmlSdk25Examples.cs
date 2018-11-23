@@ -37,12 +37,5 @@ namespace MsOpenXmlSdk
             if (props.Manager != null)Say("Manager = " + props.Manager.Text);
 
         }
-
-
-        public static void MindlessFieldReplace(WordprocessingDocument document,  string fieldName, string replacement)
-        {
-
-        }
-
     }
 }

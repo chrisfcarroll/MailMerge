@@ -37,33 +37,64 @@ namespace MailMerge
 
         public static void ComplexMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger logger)
         {
-            int expectedNodeCount = 5;
+            /* Each winstrText MergeField is found inside a sequence of 5 or more <w:r> nodes, known as Runs:
+             *  beginRun, instrRuns[0..], separatorRun, textRun, endRun.
+             * We update the textRun from fieldValues, and remove the other Runs.
+             */
+            int boilerPlateNodeCount = 5; 
 
             XmlNode beginRun;
             while (null!= (beginRun= mainDocumentPart.SelectSingleNode("//w:r[w:fldChar/@w:fldCharType='begin']", OoXmlNamespaces.Manager)))
             {
-                var nodesToRemove= new List<XmlNode>{beginRun};
-                XmlNode instrRun=null, instrNode=null, separatorRun = null, textRun = null, endRun = null;
+                var boilerPlateNodes= new List<XmlNode>{beginRun};
+                XmlNode separatorRun = null, textRun = null, endRun = null;
+                List<XmlNode> instrRuns= new List<XmlNode>();
                 string replacementText = "";
+                bool statePendingFieldName = false;
 
                 int i = 0;
                 var sibling = beginRun.NextSibling;
-                while (endRun== null && i<expectedNodeCount && sibling!=null)
+                while (endRun== null && sibling!= null && i < boilerPlateNodeCount + instrRuns.Count )
                 {
                     if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='separate']", OoXmlNamespaces.Manager))
                     {
-                        nodesToRemove.Add(separatorRun = sibling);
+                        boilerPlateNodes.Add(separatorRun = sibling);
                     }
                     if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='end']", OoXmlNamespaces.Manager))
                     {
-                        nodesToRemove.Add(endRun=sibling);
+                        boilerPlateNodes.Add(endRun=sibling);
                     }
+
+                    XmlNode instrNode;
                     if (null != (instrNode=sibling.SelectSingleNode("w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespaces.Manager)))
                     {
-                        nodesToRemove.Add(instrRun = sibling);
+                        instrRuns.Add(sibling);
                         var fieldName = instrNode.InnerText
                                                 .Split(" ", StringSplitOptions.RemoveEmptyEntries)
                                                 .Skip(1).FirstOrDefault();
+                        if (fieldName==null)
+                        {
+                            statePendingFieldName = true;
+                            logger.LogDebug("Noting <w:instrText MERGEFIELD *with no FieldName* >...</w:instrText> for potential replacement");
+                        }
+                        else if (fieldValues.ContainsKey(fieldName))
+                        {
+                            replacementText = fieldValues[fieldName];
+                            logger.LogDebug($"Noting <w:instrText '{fieldName} '>...</w:instrText> for replacement with " + replacementText);
+                        }
+                        else
+                        {
+                            logger.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
+                        }
+                    }
+                    if (statePendingFieldName && null != (instrNode=sibling.SelectSingleNode("w:instrText[not( contains(text(),'MERGEFIELD '))]", OoXmlNamespaces.Manager)))
+                    {
+                        statePendingFieldName = false;
+                        instrRuns.Add(sibling);
+                        var fieldName = instrNode.InnerText
+                            .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+                            .FirstOrDefault();
+
                         if (fieldValues.ContainsKey(fieldName))
                         {
                             replacementText = fieldValues[fieldName];
@@ -71,10 +102,10 @@ namespace MailMerge
                         }
                         else
                         {
-                            logger.LogWarning($"Nothing in the fieldValue dictionary for {instrRun.InnerText}");
+                            logger.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
                         }
-
                     }
+
                     if (endRun==null && separatorRun!=null /*17.16.18 only do replacement after a separator. no separator implies no replacement*/)
                     {
                         textRun = sibling;
@@ -87,7 +118,9 @@ namespace MailMerge
                 {
                     textRun.SelectSingleNode("w:t",OoXmlNamespaces.Manager).InnerText = replacementText;
                 }
-                nodesToRemove.ForEach(n=>n.ParentNode.RemoveChild(n));
+                //We expect to remove 3 boilerplate nodes (begin, separator, end) and all winstrText nodes. The textRun node stays.
+                boilerPlateNodes.ForEach(n=>n.ParentNode.RemoveChild(n));
+                instrRuns.ForEach(n=> n.ParentNode.RemoveChild(n));
             }
         }
 

@@ -15,6 +15,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="TestDocuments\Client Care Letter.docx" />
+    <None Remove="TestDocuments\DocWithoutSplitMergeField.docx" />
+    <None Remove="TestDocuments\DocWithSplitMergeField.docx" />
+    <None Remove="TestDocuments\DocWithSplitMergeFieldOffice16.docx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
@@ -33,6 +36,15 @@
     </Content>
     <Content Include="TestDocuments\Client Care Letter.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDocuments\DocWithoutSplitMergeField.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDocuments\DocWithSplitMergeField.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDocuments\DocWithSplitMergeFieldOffice16.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
