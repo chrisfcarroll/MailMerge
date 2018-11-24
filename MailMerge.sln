@@ -9,13 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailMerge.OoXml.Tests", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsOpenXmlSdk", "PoCsForMsOpenXmlSdk\MsOpenXmlSdk.csproj", "{1E1C0CC1-1F77-453D-AC02-0AAEC6B71763}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestDocuments", "TestDocuments", "{4039CC77-B162-48F8-A79C-8E043C8BFFA5}"
-	ProjectSection(SolutionItems) = preProject
-		MailMerge.OoXml.Tests\AddressListForMerge.csv = MailMerge.OoXml.Tests\AddressListForMerge.csv
-		MailMerge.OoXml.Tests\ATemplate.docx = MailMerge.OoXml.Tests\ATemplate.docx
-		MailMerge.OoXml.Tests\TemplateAsIndentedXml.xml = MailMerge.OoXml.Tests\TemplateAsIndentedXml.xml
-		README.md = README.md
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{7741C152-66A0-4B8D-A96E-3FBD920C1B4B}"
+ProjectSection(SolutionItems) = preProject
+	README.md = README.md
+	LICENSE = LICENSE
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

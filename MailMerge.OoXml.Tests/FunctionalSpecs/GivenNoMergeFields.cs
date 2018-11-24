@@ -12,7 +12,7 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
     public class GivenNoMergeFields
     {
         MailMerger sut;
-        string inputFile = "TestDocuments\\ATemplate.docx";
+        string inputFile = Path.Combine("TestDocuments","ATemplate.docx");
 
         [SetUp]public void Setup(){ sut = new MailMerger(Startup.Configure().CreateLogger<GivenNoMergeFields>(), new Settings()); }
 

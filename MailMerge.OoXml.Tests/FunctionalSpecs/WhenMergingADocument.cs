@@ -13,10 +13,9 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
     [TestFixture]
     public class WhenMergingADocument
     {
-        MailMerger sut;
-        const string TestDocDir = "TestDocuments\\";
-        const string TemplateDocx = "ATemplate.docx";
         const string ClientCareLetterDocx = "Client Care Letter.docx";
+        const string TemplateDocx = "ATemplate.docx";
+        MailMerger sut;
 
         static Dictionary<string, string> MergeFieldsForTemplateDocx = new Dictionary<string, string>
         {
@@ -40,10 +39,12 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
 
         [TestCase(TemplateDocx, nameof(MergeFieldsForTemplateDocx))]
         [TestCase(ClientCareLetterDocx, nameof(MergeFieldsForClientCareLetter))]
-        public void ReturnsDocWithReplacedMergeFields(string source, string sourceFieldsSource)
+        public void Returns_TheDocumentWithMergeFieldsReplaced(string source, string sourceFieldsSource)
         {
-            source = TestDocDir + source;
-            var sourceFields = GetType().GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.NonPublic).GetValue(this) as Dictionary<string,string>;
+            source = Path.Combine("TestDocuments", source);
+            var sourceFields = GetType()
+                              .GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.NonPublic)
+                              .GetValue(this) as Dictionary<string,string>;
 
             Stream output = null; AggregateException exceptions;
 
@@ -82,13 +83,13 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         {
             foreach(var testDoc in new[]{TemplateDocx, ClientCareLetterDocx})
             {
-                var expectedTestDoc = TestDocDir + testDoc;
+                var expectedTestDoc = Path.Combine("TestDocuments", testDoc);
                 File.Exists(expectedTestDoc)
                     .ShouldBeTrue(
-                        $"Expected to find TestDependency \n\n\"{expectedTestDoc}\"\n\n at "
-                        + new FileInfo(expectedTestDoc).FullName + " but didn't. \n"
-                        + "Include it in the test project and mark it as as BuildAction=Content, CopyToOutputDirectory=Copy if Newer."
-                    );
+                                  $"Expected to find TestDependency \n\n\"{expectedTestDoc}\"\n\n at "
+                                + new FileInfo(expectedTestDoc).FullName + " but didn't. \n"
+                                + "Include it in the test project and mark it as as BuildAction=Content, CopyToOutputDirectory=Copy if Newer."
+                                 );
             }
         }
 

@@ -45,13 +45,13 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         [Test]
         public void ReplacesWithGivenFieldValuesDate()
         {
-            using(var instream= new FileStream("TestDocuments\\ATemplate.docx",FileMode.Open))
+            using(var instream= new FileStream(Path.Combine("TestDocuments","ATemplate.docx"),FileMode.Open))
             using (var outStream = new MemoryStream( new byte[instream.Length * 2] ))
             {
                 const string myFormattedDate = "thisismydate";
                 instream.CopyTo(outStream);
 
-                sut.ApplyAllKnownMergeTransformationsToDocumentMainPart(new Dictionary<string, string>{{MailMerger.DATEKey,myFormattedDate}}, outStream);
+                sut.ApplyAllKnownMergeTransformationsToMainDocumentPart(new Dictionary<string, string>{{MailMerger.DATEKey,myFormattedDate}}, outStream);
                 
                 outStream.Position = 0;
                 var output = outStream.AsXElementOfWordprocessingMainDocument().ToString();
