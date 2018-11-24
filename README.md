@@ -6,7 +6,7 @@ MailMerge replaces simple and complex merge fields in WordProcessingML .docx fil
 Component Usage
 ---------------
 ```
-(outputStream, errors) = new MailMerger().Merge(outputStream, Dictionary);
+(outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
 (bool, errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```
 or
@@ -19,13 +19,14 @@ CommandLine Usage
 ```
 dotnet MailMerge.dll inputFile1 outputFile1 \[\[inputFileN outputFileN]...] [ key=value[...] ]
 ```
-Example
 
-`dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"`
+Example
+```
+dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
+```
 
 
 Doesn't do
 ----------
 - Anything except Merge fields and Dates
 - Overloads for multiline datasources
-
