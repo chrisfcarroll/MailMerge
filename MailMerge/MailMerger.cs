@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Xml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Validation;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MailMerge.Helpers;
-using MailMerge.Properties;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Settings = MailMerge.Properties.Settings;
 
 namespace MailMerge
 {
@@ -138,28 +142,15 @@ namespace MailMerge
         /// <param name="fieldValues">A dictionary keyed on mergefield names used in the document.</param>
         (Stream, List<Exception>) MergeInternal(Stream input, Dictionary<string, string> fieldValues)
         {
-            fieldValues = LogAndEnsureFieldValues(fieldValues, new Dictionary<string, string>());
             var exceptions = ValidateParameters(input, fieldValues);
-            if (exceptions.Any()) { return (Stream.Null, exceptions); }
-            var estimateOutputLength = 1024 + (int)(input.Length * Settings.OutputHeadroomFactor)
-                                            + (2 * fieldValues?.Sum(p => p.Key?.Length + p.Value?.Length) ?? 0);
+            if (exceptions.Any() ) { return (Stream.Null, exceptions); }
             try
             {
-                //Failed to get MMFs to work because on save get NotSupportedException MMviewStreams are of fixed length
-                //var outputMMF = MemoryMappedFile.CreateNew(null, (int)(estimateOutputLength * Settings.OutputHeadroomFactor), MemoryMappedFileAccess.ReadWrite);
-                //var outputStream = outputMMF.CreateViewStream(0, input.Length);
-                var outputStream= new MemoryStream( estimateOutputLength);
-
-                input.CopyTo(outputStream);
-                outputStream.Position = 0;
+                var outputStream= new MemoryStream(); 
+                input.CopyTo(outputStream);                
+                fieldValues = LogAndEnsureFieldValues(fieldValues, new Dictionary<string, string>());
                 
-                if (fieldValues?.Count > 0)
-                {
-                    Logger.LogTrace("{@numberOfMergeFieldsToProcess}",fieldValues.Count);
-                    
-                    ApplyAllKnownMergeTransformationsToDocumentMainPart(fieldValues, outputStream);
-                }
-                else{ Logger.LogDebug("No fields to merge, copying input to output."); }
+                if (fieldValues.Any()){ApplyAllKnownMergeTransformationsToMainDocumentPart(fieldValues, outputStream);}
                 
                 return (outputStream, exceptions);
             }
@@ -167,29 +158,26 @@ namespace MailMerge
             return (Stream.Null, exceptions);
         }
 
-        internal void ApplyAllKnownMergeTransformationsToDocumentMainPart(Dictionary<string, string> fieldValues, Stream outputStream)
+        internal void ApplyAllKnownMergeTransformationsToMainDocumentPart(Dictionary<string, string> fieldValues, Stream outputStream)
         {
-            using (var wpDocx = WordprocessingDocument.Open(outputStream, true))
-            using(var docOutStream = wpDocx.MainDocumentPart.GetStream())
+            var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
+            using(var wpDocx = WordprocessingDocument.Open(outputStream, false))
+            using(var docOutStream = wpDocx.MainDocumentPart.GetStream(FileMode.Open,FileAccess.Read))
             {
-                var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
                 xdoc.Load(docOutStream);
+            }
+            
+            xdoc.SimpleMergeFields(fieldValues, Logger);
+            xdoc.ComplexMergeFields(fieldValues,Logger);
+            xdoc.MergeDate(Logger,  DateTime, fieldValues.ContainsKey(DATEKey) ? fieldValues[DATEKey] : DateTime?.ToLongDateString());
 
-                xdoc.SimpleMergeFields(fieldValues, Logger);
-                xdoc.ComplexMergeFields(fieldValues,Logger);
-                xdoc.MergeDate(Logger,  DateTime, fieldValues.ContainsKey(DATEKey) ? fieldValues[DATEKey] : DateTime?.ToLongDateString());
-
-                docOutStream.Position = 0; /* <- Must do this before save*/
-                xdoc.Save(docOutStream);
-                wpDocx.Save();
-            }            
-                
-            foreach (var (key, value) in fieldValues.Select(p => (p.Key, p.Value)))
+            using (var wpDocx = WordprocessingDocument.Open(outputStream, true))
             {
-                Logger.LogDebug("Merging field {@MergeFieldName}=@{MergeFieldValue}", key,value);
-            }   
+                var bodyNode = xdoc.SelectSingleNode("/w:document/w:body", OoXmlNamespaces.Manager);
+                var documentBody = new Body(bodyNode.OuterXml);
+                wpDocx.MainDocumentPart.Document.Body = documentBody;
+            }
         }
-
 
         Dictionary<string, string> LogAndEnsureFieldValues(Dictionary<string, string> fieldValues, Dictionary<string, string> @default)
         {
@@ -238,5 +226,9 @@ namespace MailMerge
 
             return null;
         }
+    }
+
+    static class OoXmlWPValidator
+    {
     }
 }

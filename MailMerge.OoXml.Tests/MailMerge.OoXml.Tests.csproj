@@ -19,6 +19,7 @@
     <None Remove="TestDocuments\DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx" />
     <None Remove="TestDocuments\DocWithSplitMergeField.docx" />
     <None Remove="TestDocuments\DocWithWinstrTextDateRun.docx" />
+    <None Remove="TestDocuments\DocProblem1.docx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
@@ -45,6 +46,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestDocuments\DocWithWinstrTextDateRun.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestDocuments\DocProblem1.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

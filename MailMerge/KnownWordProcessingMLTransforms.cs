@@ -35,16 +35,17 @@ namespace MailMerge
             }
         }
 
-        public static void ComplexMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger logger)
+        public static void ComplexMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger log)
         {
             /* Each winstrText MergeField is found inside a sequence of 5 or more <w:r> nodes, known as Runs:
              *  beginRun, instrRuns[0..], separatorRun, textRun, endRun.
              * We update the textRun from fieldValues, and remove the other Runs.
              */
-            int boilerPlateNodeCount = 5; 
+            int boilerPlateNodeCount = 3; 
 
-            XmlNode beginRun;
-            while (null!= (beginRun= mainDocumentPart.SelectSingleNode("//w:r[w:fldChar/@w:fldCharType='begin']", OoXmlNamespaces.Manager)))
+            var beginRuns= mainDocumentPart.SelectNodes("//w:r[w:fldChar/@w:fldCharType='begin']", OoXmlNamespaces.Manager);
+            log.LogDebug("Found " + beginRuns.Count + " begin nodes");
+            foreach(XmlNode beginRun in beginRuns)
             {
                 var boilerPlateNodes= new List<XmlNode>{beginRun};
                 XmlNode separatorRun = null, textRun = null, endRun = null;
@@ -75,16 +76,16 @@ namespace MailMerge
                         if (fieldName==null)
                         {
                             statePendingFieldName = true;
-                            logger.LogDebug("Noting <w:instrText MERGEFIELD *with no FieldName* >...</w:instrText> for potential replacement");
+                            log.LogDebug("Noting <w:instrText MERGEFIELD *with no FieldName* >...</w:instrText> for potential replacement");
                         }
                         else if (fieldValues.ContainsKey(fieldName))
                         {
                             replacementText = fieldValues[fieldName];
-                            logger.LogDebug($"Noting <w:instrText '{fieldName} '>...</w:instrText> for replacement with " + replacementText);
+                            log.LogDebug($"Noting <w:instrText '{fieldName} '>...</w:instrText> for replacement with " + replacementText);
                         }
                         else
                         {
-                            logger.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
+                            log.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
                         }
                     }
                     if (statePendingFieldName && null != (instrNode=sibling.SelectSingleNode("w:instrText[not( contains(text(),'MERGEFIELD '))]", OoXmlNamespaces.Manager)))
@@ -98,11 +99,11 @@ namespace MailMerge
                         if (fieldValues.ContainsKey(fieldName))
                         {
                             replacementText = fieldValues[fieldName];
-                            logger.LogDebug($"Noting <w:instrText '{fieldName} '>...</w:instrText> for replacement with " + replacementText);
+                            log.LogDebug($"Noting <w:instrText '{fieldName} '>...</w:instrText> for replacement with " + replacementText);
                         }
                         else
                         {
-                            logger.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
+                            log.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
                         }
                     }
 
