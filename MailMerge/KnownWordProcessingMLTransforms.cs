@@ -11,12 +11,20 @@ namespace MailMerge
     public static class KnownWordProcessingMLTransforms
     {
         /// <summary>
-        /// ECMA-376 Part 1 17.16.5.35 MERGEFIELD  
+        /// ECMA-376 Part 1 17.16.5.35
+        /// <![CDATA[<w:fldSimple w:instr=" MERGEFIELD Name "><w:t>«Name»</w:t></w:fldSimple>]]>  
         /// </summary>
         /// <param name="mainDocumentPart">The document to mutate</param>
         /// <param name="fieldValues">The dictionary of MERGEFIELD values to use for replacement</param>
-        /// <param name="logger"></param>
-        public static void SimpleMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger logger)
+        /// <param name="log"></param>
+        /// <example><![CDATA[
+        /// <w:fldSimple w:instr=" MERGEFIELD FirstName " xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+        /// 	<w:r w:rsidR="00F73BE2">
+        /// 		<w:rPr><w:noProof /></w:rPr>
+        /// 		<w:t>«FirstName»</w:t>
+        /// 	</w:r>
+        /// </w:fldSimple>]]></example>
+        public static void SimpleMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger log)
         {
             var simpleMergeFields = mainDocumentPart.SelectNodes("//w:fldSimple[contains(@w:instr,'MERGEFIELD ')]", OoXmlNamespaces.Manager);
             foreach (XmlNode node in simpleMergeFields)
@@ -28,46 +36,80 @@ namespace MailMerge
                 {
                     foreach (XmlNode txtNode in node.SelectNodes(".//w:t", OoXmlNamespaces.Manager))
                     {
-                        logger.LogDebug($"Replacing <w:fldSimple w:instr='MERGEFIELD {fieldName}'>...<w:t>{txtNode.InnerText}</w:t> with {fieldValues[fieldName]}");
+                        log.LogDebug($"Replacing <w:fldSimple w:instr='MERGEFIELD {fieldName}'>...<w:t>{txtNode.InnerText}</w:t> with {fieldValues[fieldName]}");
                         txtNode.InnerText = fieldValues[fieldName];
                     }
                 }
             }
         }
 
+        /// <summary>ECMA-376 Part 1 17.16  <![CDATA[<w:instrText> MERGEFIELD</w:instrText>]]>
+        /// Each <![CDATA[<w:instrText> MERGEFIELD</w:instrText>]]> is found inside a sequence of 5 or more <![CDATA[<w:r >]]>
+        /// nodes, known as Runs:
+        /// <list type="bullet">
+        /// <item><![CDATA[<w:r><w:fldChar w:fldCharType='begin'></w:r>]]> Begin Run</item>
+        /// <item><![CDATA[<w:r><w:instrText></w:r>]]> - 1 or more of these which may need to be stuck back together</item>
+        /// <item><![CDATA[<w:r><w:fldChar fldCharType='separator'></w:r>]]>Separator Run</item>
+        /// <item><![CDATA[<w:r><w:t></w:r>]]>Text Run</item>
+        /// <item><![CDATA[<w:r><w:fldChar fldCharType='end'></w:r>]]>End Run</item>
+        /// </list>
+        /// We update the textRun from fieldValues, and remove the other Runs.
+        /// </summary>
+        /// <param name="mainDocumentPart"></param>
+        /// <param name="fieldValues">Dictionary of merge replacement fields</param>
+        /// <param name="log"></param>
+        /// <example>
+        /// <![CDATA[
+        /// <w:r>
+        ///    <w:fldChar w:fldCharType="begin"/>
+        ///  </w:r>
+        /// <!-- The <w:r><w:instrText></w:r> node may be split out over several <w:r> nodes -->
+        ///  <w:r>
+        ///    <w:instrText xml:space="preserve">MERGEFIELD  Name  \* MERGEFORMAT </w:instrText>
+        ///  </w:r>
+        ///  <w:r>
+        ///    <w:fldChar w:fldCharType="separate"/>
+        ///  </w:r>
+        ///  <w:r>
+        ///    <w:t>«Name»</w:t>
+        ///  </w:r>
+        ///  <w:r>
+        ///    <w:fldChar w:fldCharType="end"/>
+        ///  </w:r>]]></example>
         public static void ComplexMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger log)
         {
-            /* Each winstrText MergeField is found inside a sequence of 5 or more <w:r> nodes, known as Runs:
-             *  beginRun, instrRuns[0..], separatorRun, textRun, endRun.
-             * We update the textRun from fieldValues, and remove the other Runs.
-             */
-            int boilerPlateNodeCount = 3; 
+            const int boilerplateCount = 3; 
 
             var beginRuns= mainDocumentPart.SelectNodes("//w:r[w:fldChar/@w:fldCharType='begin']", OoXmlNamespaces.Manager);
-            log.LogDebug("Found " + beginRuns.Count + " begin nodes");
+            log.LogDebug("Found " + beginRuns.Count + " <w:fldChar w:fldCharType='begin'> nodes.");
             foreach(XmlNode beginRun in beginRuns)
             {
                 var boilerPlateNodes= new List<XmlNode>{beginRun};
-                XmlNode separatorRun = null, textRun = null, endRun = null;
-                List<XmlNode> instrRuns= new List<XmlNode>();
+                var instrRuns= new List<XmlNode>();
+                XmlNode separatorRun = null, textRun = null, instrNode;
                 string replacementText = "";
                 bool statePendingFieldName = false;
-
                 int i = 0;
-                var sibling = beginRun.NextSibling;
-                while (endRun== null && sibling!= null && i < boilerPlateNodeCount + instrRuns.Count )
+
+                var sibling = beginRun;
+                while (   (sibling = sibling.NextSibling)!= null 
+                       && (++i < boilerplateCount + instrRuns.Count ))
                 {
-                    if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='separate']", OoXmlNamespaces.Manager))
+                    if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='end']", OoXmlNamespaces.Manager))
+                    {
+                        boilerPlateNodes.Add(sibling);
+                        break;
+                    }
+                    else if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='separate']", OoXmlNamespaces.Manager))
                     {
                         boilerPlateNodes.Add(separatorRun = sibling);
                     }
-                    if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='end']", OoXmlNamespaces.Manager))
+                    else if (separatorRun != null /*17.16.18 only replace after a separator; no separator=no replace*/
+                        && sibling.SelectNodes("w:t", OoXmlNamespaces.Manager).Count>0 )
                     {
-                        boilerPlateNodes.Add(endRun=sibling);
+                        textRun = sibling;
                     }
-
-                    XmlNode instrNode;
-                    if (null != (instrNode=sibling.SelectSingleNode("w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespaces.Manager)))
+                    else if (null != (instrNode=sibling.SelectSingleNode("w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespaces.Manager)))
                     {
                         instrRuns.Add(sibling);
                         var fieldName = instrNode.InnerText
@@ -88,7 +130,7 @@ namespace MailMerge
                             log.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
                         }
                     }
-                    if (statePendingFieldName && null != (instrNode=sibling.SelectSingleNode("w:instrText[not( contains(text(),'MERGEFIELD '))]", OoXmlNamespaces.Manager)))
+                    else if (statePendingFieldName && null != (instrNode=sibling.SelectSingleNode("w:instrText[not( contains(text(),'MERGEFIELD '))]", OoXmlNamespaces.Manager)))
                     {
                         statePendingFieldName = false;
                         instrRuns.Add(sibling);
@@ -106,22 +148,21 @@ namespace MailMerge
                             log.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
                         }
                     }
-
-                    if (endRun==null && separatorRun!=null /*17.16.18 only do replacement after a separator. no separator implies no replacement*/)
-                    {
-                        textRun = sibling;
-                    }
-                    sibling = sibling.NextSibling;
-                    i++;
                 }
 
                 if (textRun != null )
                 {
-                    textRun.SelectSingleNode("w:t",OoXmlNamespaces.Manager).InnerText = replacementText;
+                    textRun
+                        .SelectSingleNode("w:t",OoXmlNamespaces.Manager).InnerText = replacementText;
+                    boilerPlateNodes
+                        .ForEach(n=>n.RemoveMe());
+                    instrRuns
+                        .ForEach(n=> n.RemoveMe());
                 }
-                //We expect to remove 3 boilerplate nodes (begin, separator, end) and all winstrText nodes. The textRun node stays.
-                boilerPlateNodes.ForEach(n=>n.ParentNode.RemoveChild(n));
-                instrRuns.ForEach(n=> n.ParentNode.RemoveChild(n));
+                else if(instrRuns.Any())
+                {
+                    log.LogWarning($"Ignored sequence containing {instrRuns.Last()} because it was incomplete");
+                }
             }
         }
 

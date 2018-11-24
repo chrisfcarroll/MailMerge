@@ -11,14 +11,13 @@ using TestBase;
 namespace MailMerge.OoXml.Tests.FunctionalSpecs
 {
     [TestFixture]
-    public class WhenMergingADocumentWithSplitMergeFields
+    public class WhenMergingSplitWinstrFields
     {
-        const string TestDocDir = "TestDocuments\\";
-        MailMerger sut;
+        const string TestDocDir = "TestDocuments";
         const string DocWithSplitMergeFieldDocx = "DocWithSplitMergeField.docx";
         const string DocProblem1Docx = "DocProblem1.docx";
         const string DocWithWinstrTextDateRundocx = "DocWithWinstrTextDateRun.docx";
-        const string Testdocuments = "TestDocuments";
+        MailMerger sut;
 
         static Dictionary<string, string> SplitField = new Dictionary<string, string>
         {
@@ -26,11 +25,6 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         };
 
         static Dictionary<string, string> DocProblem1Fields = new Dictionary<string, string>
-        {
-            {"CurrentUser:FirstName","CurrentUserFirstName"}
-        };
-
-        static Dictionary<string, string> Problem1 = new Dictionary<string, string>
         {
             {"CurrentUser:FirstName","CurrentUserFirstName"}
         };
@@ -43,13 +37,12 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
             sut = new MailMerger(Startup.Configure().CreateLogger(GetType()), Startup.Settings);
         }
 
-        [TestCase(DocWithProblem1docx, nameof(Problem1))]
         [TestCase(DocWithWinstrTextDateRundocx, nameof(DateOnly))]
         [TestCase(DocWithSplitMergeFieldDocx, nameof(SplitField))]
         [TestCase(DocProblem1Docx, nameof(DocProblem1Fields))]
         public void Returns_TheDocumentWithMergeFieldsReplaced(string source, string sourceFieldsSource)
         {
-            source = Path.Combine(Testdocuments, source);
+            source = Path.Combine(TestDocDir, source);
             var sourceFields = GetType()
                               .GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.NonPublic)
                               .GetValue(this) as Dictionary<string,string>;
@@ -92,7 +85,7 @@ namespace MailMerge.OoXml.Tests.FunctionalSpecs
         {
             foreach(var testDoc in new[]{DocWithSplitMergeFieldDocx, DocProblem1Docx})
             {
-                var expectedTestDoc = Path.Combine(Testdocuments, testDoc);
+                var expectedTestDoc = Path.Combine(TestDocDir, testDoc);
                 File.Exists(expectedTestDoc)
                     .ShouldBeTrue(
                         $"Expected to find TestDependency \n\n\"{expectedTestDoc}\"\n\n at "
