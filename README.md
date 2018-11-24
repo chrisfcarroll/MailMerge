@@ -7,7 +7,6 @@ Component Usage
 ---------------
 ```
 (outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
-(bool, errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```
 or
 ```
@@ -17,7 +16,7 @@ new MailMerger{DateTime=...}.Merge(inputFileName, Dictionary, outputFileName);
 CommandLine Usage
 -----------------
 ```
-dotnet MailMerge.dll inputFile1 outputFile1 \[\[inputFileN outputFileN]...] [ key=value[...] ]
+dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value[...] ]
 ```
 
 Example
