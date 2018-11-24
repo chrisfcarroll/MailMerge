@@ -6,11 +6,11 @@ MailMerge replaces simple and complex merge fields in WordProcessingML .docx fil
 Component Usage
 ---------------
 ```
-(outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
+var (outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
 ```
 or
 ```
-new MailMerger{DateTime=...}.Merge(inputFileName, Dictionary, outputFileName);
+var (ok,errors) = new MailMerger{DateTime=...}.Merge(inputFileName, Dictionary, outputFileName);
 ```
 
 CommandLine Usage
