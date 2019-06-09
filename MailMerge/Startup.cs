@@ -30,12 +30,20 @@ namespace MailMerge
             //
 
             settingsName = settingsName ?? nameof(MailMerger);
-            Configuration = new ConfigurationBuilder()
-                           .SetBasePath(Path.GetDirectoryName(typeof(Startup).Assembly.Location))
-                           .AddJsonFile("appsettings.json", false)
-                           .Build();
-            Configuration.GetSection(settingsName).Bind(Settings = new Settings());
-
+            var startupLocation = Path.GetDirectoryName(typeof(Startup).Assembly.Location);
+            if (File.Exists(Path.Combine(startupLocation, "appsettings.json")))
+            {
+                Configuration = new ConfigurationBuilder()
+                    .SetBasePath(startupLocation)
+                    .AddJsonFile("appsettings.json", false)
+                    .Build();
+                Configuration.GetSection(settingsName).Bind(Settings = new Settings());
+            }
+            else
+            {
+                Configuration = new ConfigurationBuilder().Build();
+                Settings=new Settings();
+            }
             LoggerFactory = factory.FromConfiguration(Configuration, provider);
             LoggerFactory.CreateLogger("StartUp").LogDebug("Settings: {@Settings}",Settings);
             return new Instance();
@@ -55,7 +63,7 @@ namespace MailMerge
 
     public static class Program
     {
-        public static void Main(string[] args)
+        public static void Main(params string[] args)
         {
             HelpAndExitIfNot( args.Length>0 );
             
