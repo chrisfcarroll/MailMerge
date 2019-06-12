@@ -24,6 +24,10 @@ Example
 dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
 ```
 
+Settings
+--------
+None really, but see https://github.com/chrisfcarroll/MailMerge/blob/master/MailMerge/appsettings.json for settable limits.
+
 
 Doesn't do
 ----------
