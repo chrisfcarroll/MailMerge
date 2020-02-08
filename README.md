@@ -28,8 +28,11 @@ Settings
 --------
 None really, but see https://github.com/chrisfcarroll/MailMerge/blob/master/MailMerge/appsettings.json for settable limits.
 
-
 Doesn't do
 ----------
 - Anything except Merge fields and Dates
 - Overloads for multiline datasources
+
+NuGet
+-----
+https://www.nuget.org/packages/MailMerge/
