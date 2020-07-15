@@ -38,5 +38,5 @@ NuGet
 https://www.nuget.org/packages/MailMerge/
 
 
-##### How do create a Word document with merge fields, it demands a datasource for mailmerge?
+##### How do I just create a Word document with merge fields when it insists on mailmerge datasource?
 https://www.cafe-encounter.net/p2247/add-merge-fields-to-a-word-document-before-adding-a-datasource
