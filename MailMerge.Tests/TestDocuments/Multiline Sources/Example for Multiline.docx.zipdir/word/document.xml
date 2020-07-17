@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex wp14">
+  <w:background w:color="FCF6EF"/>
+  <w:body>
+    <w:p w:rsidR="00EF630E" w:rsidRDefault="001A0012" w:rsidP="00EF630E">
+      <w:r>
+        <w:t xml:space="preserve">Single Line</w:t>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:fldChar w:fldCharType="begin"/>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:instrText xml:space="preserve">MERGEFIELD SingleLine</w:instrText>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t>«SingleLine»</w:t>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="end"/>
+      </w:r>
+    </w:p>
+    <w:p w:rsidR="001A0012" w:rsidRDefault="001A0012" w:rsidP="00EF630E">
+      <w:r>
+        <w:t xml:space="preserve">Multiline</w:t>
+      </w:r>
+      <w:fldSimple w:instr=" MERGEFIELD Multiline \* MERGEFORMAT ">
+        <w:r w:rsidR="000B2F3F">
+          <w:rPr>
+            <w:noProof/>
+          </w:rPr>
+          <w:t>«Multiline»</w:t>
+        </w:r>
+      </w:fldSimple>
+    </w:p>
+    <w:p w:rsidR="001A0012" w:rsidRDefault="001A0012" w:rsidP="00EF630E">
+      <w:proofErr w:type="spellStart"/>
+      <w:r>
+        <w:t>Singleline</w:t>
+      </w:r>
+      <w:proofErr w:type="spellEnd"/>
+      <w:r>
+        <w:t xml:space="preserve">uppercase</w:t>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:fldChar w:fldCharType="begin"/>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:instrText xml:space="preserve">MERGEFIELD SinglelineUpperCase</w:instrText>
+      </w:r>
+      <w:r w:rsidR="00AE40E4">
+        <w:instrText xml:space="preserve"></w:instrText>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:instrText xml:space="preserve">\*</w:instrText>
+      </w:r>
+      <w:r w:rsidR="00AE40E4">
+        <w:instrText>Upper \*</w:instrText>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:instrText xml:space="preserve"></w:instrText>
+      </w:r>
+      <w:r w:rsidR="00AE40E4">
+        <w:instrText>MERGEFORMAT</w:instrText>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t>«SINGLELINEUPPERCASE»</w:t>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="end"/>
+      </w:r>
+    </w:p>
+    <w:p w:rsidR="001A0012" w:rsidRDefault="001A0012" w:rsidP="00EF630E">
+      <w:pPr>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:t xml:space="preserve">Multiline uppercase</w:t>
+      </w:r>
+      <w:fldSimple w:instr=" MERGEFIELD MultilineUpperCase \* Upper \* MERGEFORMAT ">
+        <w:r w:rsidR="000B2F3F">
+          <w:rPr>
+            <w:noProof/>
+          </w:rPr>
+          <w:t>«MULTILINEUPPERCASE»</w:t>
+        </w:r>
+      </w:fldSimple>
+    </w:p>
+    <w:p w:rsidR="00EE2193" w:rsidRDefault="00EE2193" w:rsidP="00EF630E">
+      <w:pPr>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+      </w:pPr>
+    </w:p>
+    <w:p w:rsidR="00EE2193" w:rsidRDefault="00EE2193" w:rsidP="00EF630E">
+      <w:pPr>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t xml:space="preserve">Title:</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="begin"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:instrText xml:space="preserve">MERGEFIELD Title</w:instrText>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t>«Title»</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="end"/>
+      </w:r>
+    </w:p>
+    <w:p w:rsidR="00EE2193" w:rsidRDefault="00EE2193" w:rsidP="00EF630E">
+      <w:pPr>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t xml:space="preserve">Firstname:</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="begin"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:instrText xml:space="preserve">MERGEFIELD FirstName</w:instrText>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t>«FirstName»</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="end"/>
+      </w:r>
+    </w:p>
+    <w:p w:rsidR="00EE2193" w:rsidRDefault="00EE2193" w:rsidP="00EF630E">
+      <w:pPr>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t xml:space="preserve">Address1:</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="begin"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:instrText xml:space="preserve">MERGEFIELD Address1</w:instrText>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t>«Address1»</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="end"/>
+      </w:r>
+    </w:p>
+    <w:p w:rsidR="00EE2193" w:rsidRPr="00EF630E" w:rsidRDefault="00EE2193" w:rsidP="00EF630E">
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t xml:space="preserve">Address2:</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="begin"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:instrText xml:space="preserve">MERGEFIELD Address2</w:instrText>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t>«Address2»</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="end"/>
+      </w:r>
+    </w:p>
+    <w:sectPr w:rsidR="00EE2193" w:rsidRPr="00EF630E" w:rsidSect="002B6A5E">
+      <w:headerReference w:type="even" r:id="rId6"/>
+      <w:headerReference w:type="default" r:id="rId7"/>
+      <w:footerReference w:type="even" r:id="rId8"/>
+      <w:footerReference w:type="default" r:id="rId9"/>
+      <w:headerReference w:type="first" r:id="rId10"/>
+      <w:footerReference w:type="first" r:id="rId11"/>
+      <w:pgSz w:w="11900" w:h="16840"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0"/>
+      <w:cols w:space="708"/>
+      <w:docGrid w:linePitch="360"/>
+    </w:sectPr>
+  </w:body>
+</w:document>

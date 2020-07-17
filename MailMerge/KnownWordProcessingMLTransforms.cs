@@ -8,6 +8,16 @@ using Microsoft.Extensions.Logging;
 namespace MailMerge
 {
 
+    /// <summary>
+    /// <para>KnownWordProcessingMLTransforms - a subset of OfficeOpenXml that should be sufficient for
+    /// programmatically merging documents.</para>
+    /// <para>For a helpful, explanatory, mini-reference: http://officeopenxml.com/</para>
+    /// <para>For the full specification: https://www.ecma-international.org/publications/standards/Ecma-376.htm</para>
+    /// </summary>
+    /// <remarks>
+    /// <para>For a helpful, explanatory, mini-reference: http://officeopenxml.com/</para>
+    /// <para>For the full specification: https://www.ecma-international.org/publications/standards/Ecma-376.htm</para>
+    /// </remarks>
     public static class KnownWordProcessingMLTransforms
     {
         /// <summary>
@@ -37,7 +47,8 @@ namespace MailMerge
                     foreach (XmlNode txtNode in node.SelectNodes(".//w:t", OoXmlNamespaces.Manager))
                     {
                         log.LogDebug($"Replacing <w:fldSimple w:instr='MERGEFIELD {fieldName}'>...<w:t>{txtNode.InnerText}</w:t> with {fieldValues[fieldName]}");
-                        txtNode.InnerText = fieldValues[fieldName];
+                        //txtNode.InnerText = fieldValues[fieldName];
+                        txtNode.ReplaceInnerText(fieldValues[fieldName],mainDocumentPart,log);
                     }
                 }
             }
@@ -152,8 +163,7 @@ namespace MailMerge
 
                 if (textRun != null )
                 {
-                    textRun
-                        .SelectSingleNode("w:t",OoXmlNamespaces.Manager).InnerText = replacementText;
+                    textRun.ReplaceInnerText(replacementText, mainDocumentPart, log);
                     boilerPlateNodes
                         .ForEach(n=>n.RemoveMe());
                     instrRuns
@@ -227,6 +237,45 @@ namespace MailMerge
                     var replacementNode = mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.Instance["w"]);
                     replacementNode.InnerText = formattedFixedDate ?? (date??DateTime.Now).ToLongDateString();
                     node.ParentNode.ReplaceChild(replacementNode, node);
+                }
+            }
+        }
+
+        static void ReplaceInnerText(
+                        this XmlNode wrTextOrRunNode, string replacementText, XmlDocument mainDocumentPart, ILogger logger)
+        {
+            
+            if (string.IsNullOrEmpty(replacementText)) return;
+            if ( (wrTextOrRunNode?.LocalName != "r" && wrTextOrRunNode?.LocalName != "t") || wrTextOrRunNode.Prefix!="w") 
+            {
+                logger.LogWarning("ReplaceInnerText called with a node type " + wrTextOrRunNode.Name);
+            }
+
+            var lines = replacementText.Split(new[] {"\n", "\n\r"}, StringSplitOptions.None);
+            if (lines.Length == 0)
+            {
+                return;
+            }
+            else
+            {
+                XmlNode ItselfOrItsInnerTextNode(XmlNode n) => n.SelectSingleNode("w:t", OoXmlNamespaces.Manager) ?? n;
+
+                var wtTextNode = ItselfOrItsInnerTextNode(wrTextOrRunNode);
+                
+                wtTextNode.InnerText = lines[0];
+                var lastNodeWritten = wtTextNode;
+                const string template = @"<w:r> <w:t>*</w:t>  <w:br/><w:t>*</w:t> [<w:br/><w:t>*</w:t> ...] </w:r>";
+                foreach (var line in lines.Skip(1))
+                {
+                    var nodeForLine= 
+                        mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.Instance["w"]);
+                    var nodeForLinebreak=
+                        mainDocumentPart.CreateElement("w", "br", OoXmlNamespaces.Instance["w"]);
+                    var textNode= mainDocumentPart.CreateTextNode(line);
+                    nodeForLine.AppendChild(nodeForLinebreak);
+                    nodeForLine.AppendChild(textNode);
+                    wtTextNode.ParentNode.InsertAfter(nodeForLine, lastNodeWritten);
+                    lastNodeWritten = nodeForLine;
                 }
             }
         }

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-[assembly: InternalsVisibleTo("MailMerge.OoXml.Tests")]
+[assembly: InternalsVisibleTo("MailMerge.Tests")]
 [assembly: Guid("d1c4ab83-c553-4e3b-8e75-c9e76498206b")]
 
 namespace MailMerge

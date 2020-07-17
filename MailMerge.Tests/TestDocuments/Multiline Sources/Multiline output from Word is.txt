@@ -1,0 +1,210 @@
+Multiline output based on line breaks is:
+  run with text line 1
+  run with br and text line 2
+  run with br and text line 3
+
+=============================================================================
+From:
+<w:p w:rsidR="001A0012" w:rsidRDefault="001A0012" w:rsidP="00EF630E">
+  <w:r>
+    <w:t xml:space="preserve">Multiline</w:t>
+  </w:r>
+  <w:fldSimple w:instr=" MERGEFIELD Multiline \* MERGEFORMAT ">
+    <w:r w:rsidR="000B2F3F">
+      <w:rPr>
+        <w:noProof/>
+      </w:rPr>
+      <w:t>«Multiline»</w:t>
+    </w:r>
+  </w:fldSimple>
+</w:p>
+
+To
+<w:p w:rsidR="006B190C" w:rsidRDefault="006B190C" w:rsidP="00EF630E">
+  <w:r>
+    <w:t xml:space="preserve">Multiline</w:t>
+  </w:r>
+  <w:r w:rsidRPr="005E604D">
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t>Multiline</w:t>
+  </w:r>
+  <w:r w:rsidRPr="005E604D">
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:br/>
+    <w:t>linebreak2</w:t>
+  </w:r>
+  <w:r w:rsidRPr="005E604D">
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:br/>
+    <w:t>linebreak3</w:t>
+  </w:r>
+</w:p>
+=============================================================================
+
+Multiline output based on paragraph breaks is:
+  paragraph with run with text line 1
+  paragraph with run with text line 2
+
+<w:p w:rsidR="006B190C" w:rsidRPr="005E604D" w:rsidRDefault="006B190C" w:rsidP="00942727">
+  <w:pPr>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t xml:space="preserve">Address2:</w:t>
+  </w:r>
+  <w:r w:rsidRPr="005E604D">
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t>Address 2</w:t>
+  </w:r>
+</w:p>
+<w:p w:rsidR="006B190C" w:rsidRDefault="006B190C" w:rsidP="00EF630E">
+  <w:pPr>
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:sectPr w:rsidR="006B190C" w:rsidSect="006B190C">
+      <w:headerReference w:type="even" r:id="rId6"/>
+      <w:headerReference w:type="default" r:id="rId7"/>
+      <w:footerReference w:type="even" r:id="rId8"/>
+      <w:footerReference w:type="default" r:id="rId9"/>
+      <w:headerReference w:type="first" r:id="rId10"/>
+      <w:footerReference w:type="first" r:id="rId11"/>
+      <w:pgSz w:w="11900" w:h="16840"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="708" w:footer="708" w:gutter="0"/>
+      <w:pgNumType w:start="1"/>
+      <w:cols w:space="708"/>
+      <w:docGrid w:linePitch="360"/>
+    </w:sectPr>
+  </w:pPr>
+  <w:r w:rsidRPr="005E604D">
+    <w:rPr>
+      <w:noProof/>
+    </w:rPr>
+    <w:t>Address Para 2</w:t>
+  </w:r>
+</w:p>
+=====================================================
+
+Template Was:
+
+Example fldSimple---------------------------
+
+    <w:p w:rsidR="001A0012" w:rsidRDefault="001A0012" w:rsidP="00EF630E">
+      <w:fldSimple w:instr=" MERGEFIELD MultilineUpperCase \* Upper \* MERGEFORMAT ">
+        <w:r w:rsidR="000B2F3F">
+          <w:t>«MULTILINEUPPERCASE»</w:t>
+        </w:r>
+      </w:fldSimple>
+    </w:p>
+
+Example fldChar instrText--------------------
+
+    <w:p w:rsidR="001A0012" w:rsidRDefault="001A0012" w:rsidP="00EF630E">
+      <w:proofErr w:type="spellStart"/>
+      <w:r>
+        <w:t>Singleline</w:t>
+      </w:r>
+      <w:proofErr w:type="spellEnd"/>
+      <w:r>
+        <w:t xml:space="preserve">uppercase</w:t>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:fldChar w:fldCharType="begin"/>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:instrText xml:space="preserve">MERGEFIELD SinglelineUpperCase</w:instrText>
+      </w:r>
+      <w:r w:rsidR="00AE40E4">
+        <w:instrText xml:space="preserve"></w:instrText>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:instrText xml:space="preserve">\*</w:instrText>
+      </w:r>
+      <w:r w:rsidR="00AE40E4">
+        <w:instrText>Upper \*</w:instrText>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:instrText xml:space="preserve"></w:instrText>
+      </w:r>
+      <w:r w:rsidR="00AE40E4">
+        <w:instrText>MERGEFORMAT</w:instrText>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:fldChar w:fldCharType="separate"/>
+      </w:r>
+      <w:r w:rsidR="000B2F3F">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:t>«SINGLELINEUPPERCASE»</w:t>
+      </w:r>
+      <w:r w:rsidR="00297831">
+        <w:rPr>
+          <w:noProof/>
+        </w:rPr>
+        <w:fldChar w:fldCharType="end"/>
+      </w:r>
+    </w:p>
+
+====================================================
+Word Doc input sources
+Linebreaks example:
+
+  <w:p w:rsidR="004C7401" w:rsidRPr="004C7401" w:rsidRDefault="004C7401" w:rsidP="005759CB">
+    <w:r w:rsidRPr="004C7401">
+      <w:rPr>
+        <w:sz w:val="18"/>
+        <w:szCs w:val="18"/>
+      </w:rPr>
+      <w:t>Multiline</w:t>
+    </w:r>
+    <w:r w:rsidR="005759CB">
+      <w:rPr>
+        <w:sz w:val="18"/>
+        <w:szCs w:val="18"/>
+      </w:rPr>
+      <w:br/>
+      <w:t>linebreak2</w:t>
+    </w:r>
+    <w:r w:rsidR="005759CB">
+      <w:rPr>
+        <w:sz w:val="18"/>
+        <w:szCs w:val="18"/>
+      </w:rPr>
+      <w:br/>
+      <w:t>linebreak3</w:t>
+    </w:r>
+  </w:p>
+
+Paragraph Example
+
+  <w:p w:rsidR="004C7401" w:rsidRPr="004C7401" w:rsidRDefault="004C7401" w:rsidP="00942727">
+    <w:r w:rsidRPr="004C7401">
+      <w:t>Address 2</w:t>
+    </w:r>
+  </w:p>
+  <w:p w:rsidR="004C7401" w:rsidRPr="004C7401" w:rsidRDefault="004C7401" w:rsidP="00942727">
+    <w:r w:rsidRPr="004C7401">
+      <w:t>Address</w:t>
+    </w:r>
+    <w:r>
+      <w:t xml:space="preserve">Para</w:t>
+    </w:r>
+    <w:r w:rsidRPr="004C7401">
+      <w:t xml:space="preserve">2</w:t>
+    </w:r>
+  </w:p>
+======================================================
