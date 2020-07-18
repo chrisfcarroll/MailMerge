@@ -14,14 +14,6 @@
     <NoWarn>1701;1702;1705;NU1701</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="TestDocuments\DocWithoutSplitMergeField.docx" />
-    <None Remove="TestDocuments\DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx" />
-    <None Remove="TestDocuments\DocWithProblem1.docx" />
-    <None Remove="TestDocuments\DocWithSplitMergeField.docx" />
-    <None Remove="TestDocuments\DocWithWinstrTextDateRun.docx" />
-    <None Remove="TestDocuments\DocProblem1.docx" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
     <PackageReference Include="Extensions.Logging.ListOfString" Version="4.0.8" />
     <PackageReference Include="nunit" Version="3.10.1" />
@@ -30,25 +22,7 @@
     <PackageReference Include="TestBase" Version="4.0.9.1" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestDocuments\ATemplate.docx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDocuments\TestTemplate2.docx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDocuments\DocWithoutSplitMergeFieldOrWinstrTextDateRun.docx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDocuments\DocWithProblem1.docx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDocuments\DocWithSplitMergeField.docx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDocuments\DocWithWinstrTextDateRun.docx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDocuments\DocProblem1.docx">
+    <Content Include="TestDocuments\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

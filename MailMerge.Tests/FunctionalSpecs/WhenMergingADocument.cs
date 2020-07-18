@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
@@ -61,7 +60,7 @@ namespace MailMerge.Tests.FunctionalSpecs
                 .GetField(sourceFieldsSource, BindingFlags.Static | BindingFlags.NonPublic)
                 .GetValue(this) as Dictionary<string, string>;
             //A
-            (var outputText, var outputXml)=MergeDocToTextAndXml(source, sourceFields);
+            (var outputText, var outputXml)=MergeDocToTextAndXml(source, sourceFields, " singleline Fields Output.");
             //A
             var singleLineSourceFields = sourceFields
                 .Values
@@ -76,7 +75,7 @@ namespace MailMerge.Tests.FunctionalSpecs
                 .GetField(sourceFieldsSource, BindingFlags.Static | BindingFlags.NonPublic)
                 .GetValue(this) as Dictionary<string, string>;
             //A
-            (var outputText, var outputXml)=MergeDocToTextAndXml(source, sourceFields);
+            (var outputText, var outputXml)=MergeDocToTextAndXml(source, sourceFields, " Multiline Fields Output");
             //A
             var multiLineSourceFields = sourceFields
                 .Values
@@ -85,7 +84,7 @@ namespace MailMerge.Tests.FunctionalSpecs
         }
 
 
-        (string outputText, string outputXml) MergeDocToTextAndXml(string source, Dictionary<string, string> sourceFields)
+        (string outputText, string outputXml) MergeDocToTextAndXml(string source, Dictionary<string, string> sourceFields, string outputFileSuffix)
         {
             source = Path.Combine(PathToExampleDocs, source);
 
@@ -97,7 +96,7 @@ namespace MailMerge.Tests.FunctionalSpecs
             {
                 (output, exceptions) = sut.Merge(original, sourceFields);
 
-                using (var outFile = new FileInfo(source.Replace(".", " Output.")).OpenWrite())
+                using (var outFile = new FileInfo(source.Replace(".", outputFileSuffix+".")).OpenWrite())
                 {
                     output.Position = 0;
                     output.CopyTo(outFile);
