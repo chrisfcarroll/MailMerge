@@ -33,9 +33,6 @@
     <Content Include="TestDocuments\ATemplate.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDocuments\AddressListForMerge.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestDocuments\TestTemplate2.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
