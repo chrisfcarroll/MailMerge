@@ -28,8 +28,18 @@ Settings
 --------
 None really, but see https://github.com/chrisfcarroll/MailMerge/blob/master/MailMerge/appsettings.json for settable limits.
 
-
 Doesn't do
 ----------
 - Anything except Merge fields and Dates
 - Overloads for multiline datasources
+
+NuGet
+-----
+https://www.nuget.org/packages/MailMerge/
+
+
+How do I create a Word document with merge fields …
+--------------------------------------------------------
+… when it insists on me providing a mailmerge datasource?
+
+https://www.cafe-encounter.net/p2247/add-merge-fields-to-a-word-document-before-adding-a-datasource
