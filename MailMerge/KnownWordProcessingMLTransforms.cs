@@ -20,6 +20,9 @@ namespace MailMerge
     /// </remarks>
     public static class KnownWordProcessingMLTransforms
     {
+        public static readonly string[] DefaultDatesToReplace = {"DATE", "PRINTDATE", "SAVEDATE"};
+        public static readonly string[] NewLineSeparators =  {"\n", "\n\r"};
+        
         /// <summary>
         /// ECMA-376 Part 1 17.16.5.35
         /// <![CDATA[<w:fldSimple w:instr=" MERGEFIELD Name "><w:t>«Name»</w:t></w:fldSimple>]]>  
@@ -240,7 +243,13 @@ namespace MailMerge
                 }
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="wrTextOrRunNode">Either a <w:r> containing a <w:t> OR a <w:t></param>
+        /// <param name="replacementText">the text to insert into <paramref name="wrTextOrRunNode"/></param>
+        /// <param name="mainDocumentPart"></param>
+        /// <param name="logger"></param>
         static void ReplaceInnerText(
                         this XmlNode wrTextOrRunNode, string replacementText, XmlDocument mainDocumentPart, ILogger logger)
         {
@@ -251,7 +260,7 @@ namespace MailMerge
                 logger.LogWarning("ReplaceInnerText called with a node type " + wrTextOrRunNode.Name);
             }
 
-            var lines = replacementText.Split(new[] {"\n", "\n\r"}, StringSplitOptions.None);
+            var lines = replacementText.Split(NewLineSeparators, StringSplitOptions.None);
             if (lines.Length == 0)
             {
                 return;
@@ -264,7 +273,6 @@ namespace MailMerge
                 
                 wtTextNode.InnerText = lines[0];
                 var lastNodeWritten = wtTextNode;
-                const string template = @"<w:r> <w:t>*</w:t>  <w:br/><w:t>*</w:t> [<w:br/><w:t>*</w:t> ...] </w:r>";
                 foreach (var line in lines.Skip(1))
                 {
                     var nodeForLine= 
@@ -279,7 +287,5 @@ namespace MailMerge
                 }
             }
         }
-
-        public static readonly string[] DefaultDatesToReplace = {"DATE", "PRINTDATE", "SAVEDATE"};
     }
 }

@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <AssemblyFileVersion>2.1.0.0</AssemblyFileVersion>
+    <AssemblyVersion>2.3.0</AssemblyVersion>
+    <AssemblyFileVersion>2.3.0</AssemblyFileVersion>
     <AssemblyProduct>MailMerge</AssemblyProduct>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

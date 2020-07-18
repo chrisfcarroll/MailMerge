@@ -8,9 +8,9 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <AssemblyProduct>MailMerge</AssemblyProduct>
     <AssemblyCompany>Chris F Carroll</AssemblyCompany>
-    <AssemblyVersion>2.2.1</AssemblyVersion>
-    <AssemblyFileVersion>2.2.1</AssemblyFileVersion>
-    <PackageVersion>2.2.1</PackageVersion>
+    <AssemblyVersion>2.3.0</AssemblyVersion>
+    <AssemblyFileVersion>2.3.0</AssemblyFileVersion>
+    <PackageVersion>2.3.0</PackageVersion>
     <PackageId>MailMerge</PackageId>
     <Title>.Net and Commandline MailMerge for docx</Title>
     <PackageDescription><![CDATA[MailMerge replaces simple and complex merge fields in WordProcessingML .docx files.
@@ -39,17 +39,18 @@ Example
 Doesn't do
 ----
 Anything except Merge fields and Dates
-Overloads for multiline datasources: Lists, CSV files & .xmlx files.
+Overloads for multi-row datasources: Lists, CSV files & .xmlx files. Write your own loop.
 Platform executables
 ]]></PackageDescription>
     <PackageReleaseNotes>
+      2.3.0 Merges multi-line (\n or \n\r) input fields into a single &lt;w:r&gt;  
       2.2.1 Should not require the existence of appsettings.json
       2.2.0 Handle more variations of w:instrText sequence. 
       2.1.0 Added support for Complex Field Character sequences.
       2.0.0 Renamed component MailMerge.MailMerge to MailMerge.MailMerger
     </PackageReleaseNotes>
-    <Copyright>(c) Chris F. Carroll, 2013-2019</Copyright>
-    <Authors>Chris F Carroll</Authors>
+    <Copyright>(c) Chris F. Carroll, 2013-2020</Copyright>
+    <Authors>Chris F Carroll, https://github.com/chrisfcarroll</Authors>
     <Owners>Chris F Carroll</Owners>
     <PackageProjectUrl>https://github.com/chrisfcarroll/MailMerge</PackageProjectUrl>
     <RepositoryUrl>https://github.com/chrisfcarroll/MailMerge</RepositoryUrl>
