@@ -158,25 +158,31 @@ namespace MailMerge
             return (Stream.Null, exceptions);
         }
 
-        internal void ApplyAllKnownMergeTransformationsToMainDocumentPart(Dictionary<string, string> fieldValues, Stream outputStream)
+        internal void ApplyAllKnownMergeTransformationsToMainDocumentPart(Dictionary<string, string> fieldValues, Stream workingStream)
         {
-            var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
-            using(var wpDocx = WordprocessingDocument.Open(outputStream, false))
-            using(var docOutStream = wpDocx.MainDocumentPart.GetStream(FileMode.Open,FileAccess.Read))
-            {
-                xdoc.Load(docOutStream);
-            }
-            
+            var xdoc = GetMainDocumentPartXml(workingStream);
+
             xdoc.SimpleMergeFields(fieldValues, Logger);
             xdoc.ComplexMergeFields(fieldValues,Logger);
             xdoc.MergeDate(Logger,  DateTime, fieldValues.ContainsKey(DATEKey) ? fieldValues[DATEKey] : DateTime?.ToLongDateString());
 
-            using (var wpDocx = WordprocessingDocument.Open(outputStream, true))
+            using (var wpDocx = WordprocessingDocument.Open(workingStream, true))
             {
                 var bodyNode = xdoc.SelectSingleNode("/w:document/w:body", OoXmlNamespaces.Manager);
                 var documentBody = new Body(bodyNode.OuterXml);
                 wpDocx.MainDocumentPart.Document.Body = documentBody;
             }
+        }
+
+        public static XmlDocument GetMainDocumentPartXml(Stream docxStream)
+        {
+            var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
+            using (var wpDocx = WordprocessingDocument.Open(docxStream, false))
+            using (var docOutStream = wpDocx.MainDocumentPart.GetStream(FileMode.Open, FileAccess.Read))
+            {
+                xdoc.Load(docOutStream);
+            }
+            return xdoc;
         }
 
         Dictionary<string, string> LogAndEnsureFieldValues(Dictionary<string, string> fieldValues, Dictionary<string, string> @default)

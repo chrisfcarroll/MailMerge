@@ -43,7 +43,7 @@ Overloads for multi-row datasources: Lists, CSV files & .xmlx files. Write your 
 Platform executables
 ]]></PackageDescription>
     <PackageReleaseNotes>
-      2.3.0 Merges multi-line (\n or \n\r) input fields into a single &lt;w:r&gt;  
+      2.3.0-pr Merges multi-line (\n or \n\r) input fields into a single &lt;w:r&gt;  
       2.2.1 Should not require the existence of appsettings.json
       2.2.0 Handle more variations of w:instrText sequence. 
       2.1.0 Added support for Complex Field Character sequences.

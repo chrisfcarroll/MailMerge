@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# manual test output
+out.docx
+
 ##Working with Docx and mailmerge temp files
 ~$*.*
 /[Tt]est*.docx
