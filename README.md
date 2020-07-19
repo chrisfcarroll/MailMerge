@@ -6,23 +6,28 @@ MailMerge replaces simple and complex merge fields in WordProcessingML .docx fil
 Component Usage
 ---------------
 ```
+// For streams:
 var (outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
 ```
 or
 ```
-var (ok,errors) = new MailMerger{DateTime=...}.Merge(inputFileName, Dictionary, outputFileName);
+//For files:
+var (ok,errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```
+
+Specify current DateTime : `new MailMerger{DateTime=...}`
 
 CommandLine Usage
 -----------------
 ```
-dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value[...] ]
+dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value [...] ]
 ```
 
 Example
 ```
 dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
 ```
+
 
 Settings
 --------
