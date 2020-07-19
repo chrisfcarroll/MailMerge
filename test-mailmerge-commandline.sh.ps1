@@ -18,7 +18,7 @@ echo > /dev/null <<"out-null" ###
 
 $scriptdir=$PSScriptRoot
 pushd $scriptdir
-if( -not Test-Path("$scriptdir/MailMerge/bin/Debug/netcoreapp2.0/MailMerge.dll"))
+if( -not (Test-Path("$scriptdir/MailMerge/bin/Debug/netcoreapp2.0/MailMerge.dll")))
   { dotnet build }
 
 
