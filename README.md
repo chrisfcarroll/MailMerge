@@ -5,17 +5,17 @@ MailMerge replaces simple and complex merge fields in WordProcessingML .docx fil
 
 Component Usage
 ---------------
+#### For streams:
 ```
-// For streams:
 var (outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
 ```
 or
+#### For files:
 ```
-//For files:
 var (ok,errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```
 
-Specify current DateTime : `new MailMerger{DateTime=...}`
+To specify current DateTime : `new MailMerger{DateTime=...}.Merge( ... )`
 
 CommandLine Usage
 -----------------
