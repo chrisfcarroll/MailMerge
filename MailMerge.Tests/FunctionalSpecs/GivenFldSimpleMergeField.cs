@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using MailMerge.CommandLine;
-using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
 

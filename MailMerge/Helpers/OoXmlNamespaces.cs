@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Xml;
 
-namespace MailMerge.Helpers
+namespace MailMerge
 {
     public class OoXmlNamespaces : Dictionary<string,string>
     {
@@ -16,7 +16,9 @@ namespace MailMerge.Helpers
             Instance 
                 = new ReadOnlyDictionary<string, string>(privateInstance);
 
-        public static XmlNamespaceManager Manager =
+        public static readonly string WpML2006MainUri = Instance["w"];
+
+        public static readonly XmlNamespaceManager Manager =
             new Lazy<XmlNamespaceManager>(
               () => {
                       var mgr = new XmlNamespaceManager(new NameTable());

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using MailMerge.CommandLine;
-using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
 

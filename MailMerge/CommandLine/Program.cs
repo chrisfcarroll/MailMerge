@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MailMerge.Helpers;
 using Microsoft.Extensions.Logging;
 
 namespace MailMerge.CommandLine

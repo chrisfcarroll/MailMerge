@@ -4,7 +4,6 @@ using System.IO;
 using System.Xml;
 using Extensions.Logging.ListOfString;
 using MailMerge.CommandLine;
-using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
 

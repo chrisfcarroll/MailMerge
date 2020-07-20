@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using DocumentFormat.OpenXml.Packaging;
 
-namespace MailMerge.Helpers
+namespace MailMerge
 {
     /// <summary>
     /// Extension Methods to read streams as OoXml documents

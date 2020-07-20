@@ -1,4 +1,4 @@
-﻿namespace MailMerge.Helpers
+﻿namespace MailMerge
 {
     public class OoXPath
     {

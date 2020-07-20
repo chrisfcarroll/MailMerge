@@ -17,17 +17,35 @@ var (ok,errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileNa
 
 To specify current DateTime : `new MailMerger{DateTime=...}.Merge( ... )`
 
+###Provides Extension Methods
+
+```
+stream.AsWordprocessingDocument(isEditable)
+stream.AsXPathDocOfWordprocessingMainDocument(isEditable)
+stream.AsXElementOfWordprocessingMainDocument(isEditable)
+stream.GetXmlDocumentOfWordprocessingMainDocument(isEditable)
+fileInfo.GetXElementOfWordprocessingMainDocument()
+fileInfo.GetXmlDocumentOfWordprocessingMainDocument()
+```
+###Provides the Xml pieces– a NamespaceManager, NameTable, Uri— for creating 
+an XmlDocument and/or XElements:
+```
+var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable)
+var xelement= mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri)
+```
+
 CommandLine Usage
 -----------------
 ```
 dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value [...] ]
+
+dotnet MailMerge.dll  --showxml file [fileN ...]
 ```
 
 Example
 ```
 dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
 ```
-
 
 Settings
 --------

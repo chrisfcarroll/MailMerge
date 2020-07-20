@@ -15,26 +15,25 @@
     <Title>.Net and Commandline MailMerge for docx</Title>
     <PackageDescription><![CDATA[MailMerge replaces simple and complex merge fields in WordProcessingML .docx files.
 
-Component Usage
----------------
+Component Usage For streams for Files:
 ```
-(outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
-(bool, errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
-```        
-or
+var (outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
+var (ok,errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```
-new MailMerger{DateTime=...}.Merge(inputFileName, Dictionary, outputFileName);
+Extension Methods
 ```
-
-CommandLine Usage
------------------
+stream.AsWordprocessingDocument(isEditable)
+stream.AsXPathDocOfWordprocessingMainDocument(isEditable)
+stream.AsXElementOfWordprocessingMainDocument(isEditable)
+stream.GetXmlDocumentOfWordprocessingMainDocument(isEditable)
+fileInfo.GetXElementOfWordprocessingMainDocument()
+fileInfo.GetXmlDocumentOfWordprocessingMainDocument()
 ```
-dotnet MailMerge.dll inputFile1 outputFile1 \[\[inputFileN outputFileN]...] [ key=value[...] ]
+Xml Pieces: a NamespaceManager, NameTable, and Uri 
 ```
-Example
-
-`dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"`
-
+var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable)
+var xelement= mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri)
+```
 
 Doesn't do
 ----

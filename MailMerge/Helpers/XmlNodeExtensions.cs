@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace MailMerge.Helpers
+namespace MailMerge
 {
     public static class XmlNodeExtensions
     {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using MailMerge.Helpers;
 using Microsoft.Extensions.Logging;
 
 namespace MailMerge
@@ -250,7 +249,7 @@ namespace MailMerge
                     }
 
                     logger.LogDebug($"Replacing <w:instrText '{dateType} '>...</w:instrText> with " + formattedFixedDate);
-                    var replacementNode = mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.Instance["w"]);
+                    var replacementNode = mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri);
                     replacementNode.InnerText = formattedFixedDate ?? (date??DateTime.Now).ToLongDateString();
                     node.ParentNode.ReplaceChild(replacementNode, node);
                 }
@@ -286,9 +285,9 @@ namespace MailMerge
                 foreach (var line in lines.Skip(1))
                 {
                     var nodeForLine= 
-                        mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.Instance["w"]);
+                        mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri);
                     var nodeForLinebreak=
-                        mainDocumentPart.CreateElement("w", "br", OoXmlNamespaces.Instance["w"]);
+                        mainDocumentPart.CreateElement("w", "br", OoXmlNamespaces.WpML2006MainUri);
                     var textNode= mainDocumentPart.CreateTextNode(line);
                     nodeForLine.AppendChild(nodeForLinebreak);
                     nodeForLine.AppendChild(textNode);

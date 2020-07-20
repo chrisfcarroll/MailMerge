@@ -2,7 +2,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace MailMerge.Helpers
+namespace MailMerge
 {
     /// <summary>
     /// Extension methods to read filesystem files as OOXml WordProcessing Documents
