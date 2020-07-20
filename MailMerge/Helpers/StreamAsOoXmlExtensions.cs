@@ -81,7 +81,7 @@ namespace MailMerge
         /// <returns></returns>
         public static XmlDocument GetXmlDocumentOfWordprocessingMainDocument(this Stream source)
         {
-            var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
+            var xdoc = new XmlDocument(OoXmlNamespace.Manager.NameTable);
             using (var wpDocx = WordprocessingDocument.Open(source, false))
             using (var docOutStream = wpDocx.MainDocumentPart.GetStream(FileMode.Open, FileAccess.Read))
             {

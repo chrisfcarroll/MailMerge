@@ -44,7 +44,7 @@ namespace MailMerge
         /// </remarks>
         public static void SimpleMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger log)
         {
-            var simpleMergeFields = mainDocumentPart.SelectNodes("//w:fldSimple[contains(@w:instr,'MERGEFIELD ')]", OoXmlNamespaces.Manager);
+            var simpleMergeFields = mainDocumentPart.SelectNodes("//w:fldSimple[contains(@w:instr,'MERGEFIELD ')]", OoXmlNamespace.Manager);
             foreach (XmlNode node in simpleMergeFields)
             {
                 var fieldName = node.Attributes[OoXPath.winstr].Value
@@ -52,7 +52,7 @@ namespace MailMerge
                                         .Skip(1).FirstOrDefault();
                 if (fieldValues.ContainsKey(fieldName))
                 {
-                    foreach (XmlNode txtNode in node.SelectNodes(".//w:t", OoXmlNamespaces.Manager))
+                    foreach (XmlNode txtNode in node.SelectNodes(".//w:t", OoXmlNamespace.Manager))
                     {
                         log.LogDebug($"Replacing <w:fldSimple w:instr='MERGEFIELD {fieldName}'>...<w:t>{txtNode.InnerText}</w:t> with {fieldValues[fieldName]}");
                         //txtNode.InnerText = fieldValues[fieldName];
@@ -106,7 +106,7 @@ namespace MailMerge
         {
             const int boilerplateCount = 3; 
 
-            var beginRuns= mainDocumentPart.SelectNodes("//w:r[w:fldChar/@w:fldCharType='begin']", OoXmlNamespaces.Manager);
+            var beginRuns= mainDocumentPart.SelectNodes("//w:r[w:fldChar/@w:fldCharType='begin']", OoXmlNamespace.Manager);
             log.LogDebug("Found " + beginRuns.Count + " <w:fldChar w:fldCharType='begin'> nodes.");
             foreach(XmlNode beginRun in beginRuns)
             {
@@ -121,21 +121,21 @@ namespace MailMerge
                 while (   (sibling = sibling.NextSibling)!= null 
                        && (++i < boilerplateCount + instrRuns.Count ))
                 {
-                    if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='end']", OoXmlNamespaces.Manager))
+                    if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='end']", OoXmlNamespace.Manager))
                     {
                         boilerPlateNodes.Add(sibling);
                         break;
                     }
-                    else if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='separate']", OoXmlNamespaces.Manager))
+                    else if (null != sibling.SelectSingleNode("w:fldChar[@w:fldCharType='separate']", OoXmlNamespace.Manager))
                     {
                         boilerPlateNodes.Add(separatorRun = sibling);
                     }
                     else if (separatorRun != null /*17.16.18 only replace after a separator; no separator=no replace*/
-                        && sibling.SelectNodes("w:t", OoXmlNamespaces.Manager).Count>0 )
+                        && sibling.SelectNodes("w:t", OoXmlNamespace.Manager).Count>0 )
                     {
                         textRun = sibling;
                     }
-                    else if (null != (instrNode=sibling.SelectSingleNode("w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespaces.Manager)))
+                    else if (null != (instrNode=sibling.SelectSingleNode("w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespace.Manager)))
                     {
                         instrRuns.Add(sibling);
                         var fieldName = instrNode.InnerText
@@ -156,7 +156,7 @@ namespace MailMerge
                             log.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
                         }
                     }
-                    else if (statePendingFieldName && null != (instrNode=sibling.SelectSingleNode("w:instrText[not( contains(text(),'MERGEFIELD '))]", OoXmlNamespaces.Manager)))
+                    else if (statePendingFieldName && null != (instrNode=sibling.SelectSingleNode("w:instrText[not( contains(text(),'MERGEFIELD '))]", OoXmlNamespace.Manager)))
                     {
                         statePendingFieldName = false;
                         instrRuns.Add(sibling);
@@ -228,7 +228,7 @@ namespace MailMerge
             foreach (var dateType in datesToReplace)
             {
                 XmlNode node;
-                while (null != (node = mainDocumentPart.SelectSingleNode($"//w:instrText[contains(text(),'{dateType} ')]", OoXmlNamespaces.Manager)))
+                while (null != (node = mainDocumentPart.SelectSingleNode($"//w:instrText[contains(text(),'{dateType} ')]", OoXmlNamespace.Manager)))
                 {
                     string format;
                     if (formattedFixedDate==null )
@@ -249,7 +249,7 @@ namespace MailMerge
                     }
 
                     logger.LogDebug($"Replacing <w:instrText '{dateType} '>...</w:instrText> with " + formattedFixedDate);
-                    var replacementNode = mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri);
+                    var replacementNode = mainDocumentPart.CreateElement("w", "t", OoXmlNamespace.WpML2006MainUri);
                     replacementNode.InnerText = formattedFixedDate ?? (date??DateTime.Now).ToLongDateString();
                     node.ParentNode.ReplaceChild(replacementNode, node);
                 }
@@ -276,7 +276,7 @@ namespace MailMerge
             }
             else
             {
-                XmlNode ItselfOrItsInnerTextNode(XmlNode n) => n.SelectSingleNode("w:t", OoXmlNamespaces.Manager) ?? n;
+                XmlNode ItselfOrItsInnerTextNode(XmlNode n) => n.SelectSingleNode("w:t", OoXmlNamespace.Manager) ?? n;
 
                 var wtTextNode = ItselfOrItsInnerTextNode(wrTextOrRunNode);
                 
@@ -285,9 +285,9 @@ namespace MailMerge
                 foreach (var line in lines.Skip(1))
                 {
                     var nodeForLine= 
-                        mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri);
+                        mainDocumentPart.CreateElement("w", "t", OoXmlNamespace.WpML2006MainUri);
                     var nodeForLinebreak=
-                        mainDocumentPart.CreateElement("w", "br", OoXmlNamespaces.WpML2006MainUri);
+                        mainDocumentPart.CreateElement("w", "br", OoXmlNamespace.WpML2006MainUri);
                     var textNode= mainDocumentPart.CreateTextNode(line);
                     nodeForLine.AppendChild(nodeForLinebreak);
                     nodeForLine.AppendChild(textNode);

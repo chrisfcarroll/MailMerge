@@ -168,7 +168,7 @@ namespace MailMerge
 
             using (var wpDocx = WordprocessingDocument.Open(workingStream, true))
             {
-                var bodyNode = xdoc.SelectSingleNode("/w:document/w:body", OoXmlNamespaces.Manager);
+                var bodyNode = xdoc.SelectSingleNode("/w:document/w:body", OoXmlNamespace.Manager);
                 var documentBody = new Body(bodyNode.OuterXml);
                 wpDocx.MainDocumentPart.Document.Body = documentBody;
             }
@@ -176,7 +176,7 @@ namespace MailMerge
 
         public static XmlDocument GetMainDocumentPartXml(Stream docxStream)
         {
-            var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
+            var xdoc = new XmlDocument(OoXmlNamespace.Manager.NameTable);
             using (var wpDocx = WordprocessingDocument.Open(docxStream, false))
             using (var docOutStream = wpDocx.MainDocumentPart.GetStream(FileMode.Open, FileAccess.Read))
             {

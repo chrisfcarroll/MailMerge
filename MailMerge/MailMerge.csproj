@@ -13,36 +13,38 @@
     <PackageVersion>2.3.0</PackageVersion>
     <PackageId>MailMerge</PackageId>
     <Title>.Net and Commandline MailMerge for docx</Title>
-    <PackageDescription><![CDATA[MailMerge replaces simple and complex merge fields in WordProcessingML .docx files.
+    <PackageDescription><![CDATA[MailMerge replaces simple and complex merge fields in WordProcessingML .docx files
+and helps you apply .Net's Xml & XPath tooling to Word documents.
 
-Component Usage For streams for Files:
+Component Usage For Streams or Files:
 ```
 var (outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
 var (ok,errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```
-Extension Methods
+Extension Methods & Helpers for working with OoXml
 ```
 stream.AsWordprocessingDocument(isEditable)
 stream.AsXPathDocOfWordprocessingMainDocument(isEditable)
 stream.AsXElementOfWordprocessingMainDocument(isEditable)
-stream.GetXmlDocumentOfWordprocessingMainDocument(isEditable)
+
+stream.GetXmlDocumentOfWordprocessingMainDocument()
 fileInfo.GetXElementOfWordprocessingMainDocument()
 fileInfo.GetXmlDocumentOfWordprocessingMainDocument()
 ```
-Xml Pieces: a NamespaceManager, NameTable, and Uri 
+A NamespaceManager, NameTable & Uri which you need when creating an XmlDocument
+and/or XElements:
 ```
 var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable)
 var xelement= mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri)
 ```
-
-Doesn't do
-----
-Anything except Merge fields and Dates
-Overloads for multi-row datasources: Lists, CSV files & .xmlx files. Write your own loop.
-Platform executables
-]]></PackageDescription>
+CommandLine Usage: Perform a merge, or show a document's Xml
+```
+dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value [...] ]
+dotnet MailMerge.dll  --showxml file [fileN ...]
+```]]></PackageDescription>
     <PackageReleaseNotes>
-      2.3.0-pr Merges multi-line (\n or \n\r) input fields into a single &lt;w:r&gt;  
+      2.3.0 Merges multi-line (\n or \n\r) input fields into a single &lt;w:r&gt;
+            Breaking Change: Moved namespace MailMerge.Helpers -&gt; MailMerge 
       2.2.1 Should not require the existence of appsettings.json
       2.2.0 Handle more variations of w:instrText sequence. 
       2.1.0 Added support for Complex Field Character sequences.

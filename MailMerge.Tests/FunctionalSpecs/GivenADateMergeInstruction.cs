@@ -18,7 +18,7 @@ namespace MailMerge.Tests.FunctionalSpecs
         public void ReplacesWithTheDate(string fragment)
         {
             const string myFormattedDate = "thisismydate";
-            var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
+            var xdoc = new XmlDocument(OoXmlNamespace.Manager.NameTable);
             xdoc.LoadXml(fragment);
             xdoc.MergeDate(new StringListLogger(), myFormattedDate);
             
@@ -31,7 +31,7 @@ namespace MailMerge.Tests.FunctionalSpecs
         public void ReplacesWithTheDateAndRespectsFormat(string format, string fragment)
         {
             var date = DateTime.Now;
-            var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable);
+            var xdoc = new XmlDocument(OoXmlNamespace.Manager.NameTable);
             xdoc.LoadXml(fragment);
 
             xdoc.MergeDate(new StringListLogger(),date);

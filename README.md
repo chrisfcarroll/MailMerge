@@ -1,34 +1,35 @@
 MailMerge for docx Documents
 ============================
 
-MailMerge replaces simple and complex merge fields in WordProcessingML .docx files.
+MailMerge replaces simple and complex merge fields in WordProcessingML .docx files
+and helps you apply .Net's Xml & XPath tooling to Word documents.
 
 Component Usage
 ---------------
-#### For streams:
+#### For Streams:
 ```
 var (outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
 ```
-or
-#### For files:
+#### For Files:
 ```
 var (ok,errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```
-
 To specify current DateTime : `new MailMerger{DateTime=...}.Merge( ... )`
 
-###Provides Extension Methods
+Extension Methods & Helpers
+---------------------------
 
 ```
 stream.AsWordprocessingDocument(isEditable)
 stream.AsXPathDocOfWordprocessingMainDocument(isEditable)
 stream.AsXElementOfWordprocessingMainDocument(isEditable)
-stream.GetXmlDocumentOfWordprocessingMainDocument(isEditable)
+
+stream.GetXmlDocumentOfWordprocessingMainDocument()
 fileInfo.GetXElementOfWordprocessingMainDocument()
 fileInfo.GetXmlDocumentOfWordprocessingMainDocument()
 ```
-###Provides the Xml pieces– a NamespaceManager, NameTable, Uri— for creating 
-an XmlDocument and/or XElements:
+A NamespaceManager, NameTable & Uri which you need when creating an XmlDocument
+and/or XElements:
 ```
 var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable)
 var xelement= mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri)
@@ -36,9 +37,9 @@ var xelement= mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006M
 
 CommandLine Usage
 -----------------
+Perform a merge, or show a document's Xml
 ```
 dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value [...] ]
-
 dotnet MailMerge.dll  --showxml file [fileN ...]
 ```
 

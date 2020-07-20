@@ -5,16 +5,15 @@ using System.Xml;
 
 namespace MailMerge
 {
-    public class OoXmlNamespaces : Dictionary<string,string>
+    public class OoXmlNamespace : Dictionary<string,string>
     {
-        static readonly OoXmlNamespaces privateInstance = new OoXmlNamespaces
+        static readonly OoXmlNamespace instance = new OoXmlNamespace
         {
             {"w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
         };
         
-        public static readonly ReadOnlyDictionary<string,string> 
-            Instance 
-                = new ReadOnlyDictionary<string, string>(privateInstance);
+        public static readonly ReadOnlyDictionary<string,string> Instance
+            = new ReadOnlyDictionary<string, string>(instance);
 
         public static readonly string WpML2006MainUri = Instance["w"];
 
