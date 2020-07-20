@@ -14,7 +14,7 @@ var (outputStream, errors) = new MailMerger().Merge(inputStream, Dictionary);
 ```
 var (ok,errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileName);
 ```
-To specify current DateTime : `new MailMerger{DateTime=...}.Merge( ... )`
+Set the current DateTime for date merge fields on `MailMerger.DateTime`, e.g. `new MailMerger{DateTime=...}`
 
 Extension Methods & Helpers
 ---------------------------
@@ -31,15 +31,18 @@ fileInfo.GetXmlDocumentOfWordprocessingMainDocument()
 A NamespaceManager, NameTable & Uri which you need when creating an XmlDocument
 and/or XElements:
 ```
-var xdoc = new XmlDocument(OoXmlNamespaces.Manager.NameTable)
-var xelement= mainDocumentPart.CreateElement("w", "t", OoXmlNamespaces.WpML2006MainUri)
+var xdoc = new XmlDocument(OoXmlNamespace.Manager.NameTable)
+var xelement= mainDocumentPart.CreateElement("w", "t", OoXmlNamespace.WpML2006MainUri)
 ```
 
 CommandLine Usage
 -----------------
-Perform a merge, or show a document's Xml
+Perform a merge
 ```
 dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value [...] ]
+```
+Show a document's Xml
+```
 dotnet MailMerge.dll  --showxml file [fileN ...]
 ```
 
@@ -51,12 +54,13 @@ dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O R
 Settings
 --------
 None really, but see https://github.com/chrisfcarroll/MailMerge/blob/master/MailMerge/appsettings.json for settable limits.
+For commandline --showxml usage in scripts, you'll want to set appsettings.json::Logging.LogLevel to Information or higher
 
 Doesn't do
 ----------
-- Anything except Merge fields and Dates
+- Anything except simple fields, complex fields, DATE, PRINTDATE & SAVEDATE fields
 - Date formatting codes except a b B d D M y & h m s
-- Style/Formatting codes in the merge fields except these Date/Time formats
+- Style/Formatting codes except these Date/Time formats
 - Multi-row datasources, just does 1 row at a time
 
 Gotchas
