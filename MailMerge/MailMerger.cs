@@ -7,6 +7,7 @@ using System.Xml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Validation;
 using DocumentFormat.OpenXml.Wordprocessing;
+using MailMerge.CommandLine;
 using MailMerge.Helpers;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

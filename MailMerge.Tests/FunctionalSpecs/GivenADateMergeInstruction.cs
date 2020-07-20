@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml;
 using Extensions.Logging.ListOfString;
+using MailMerge.CommandLine;
 using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;

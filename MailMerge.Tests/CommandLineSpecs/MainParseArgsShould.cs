@@ -1,8 +1,8 @@
-using System.Linq;
+using MailMerge.CommandLine;
 using NUnit.Framework;
 using TestBase;
 
-namespace MailMerge.Tests.NFRs
+namespace MailMerge.Tests.CommandLineSpecs
 {
     public class MainParseArgsShould
     {
@@ -13,7 +13,7 @@ namespace MailMerge.Tests.NFRs
         [TestCase("-merge","in.docx", "out.docx", "in2.docx", "out2.docx", "a=b", "aa=bb")]
         public void ParseArgsForMerge(params string[] args)
         {
-            var(command, files,mergefields) = Program.ParseArgs.FromStringArray(args);
+            var(command, files,mergefields) = ParseArgs.FromStringArray(args);
             command.ShouldBe(Program.Command.Merge);
             files[0].Item1.Name.ShouldBe(args[0]);
             files[0].Item2.Name.ShouldBe(args[1]);
@@ -26,7 +26,7 @@ namespace MailMerge.Tests.NFRs
         [TestCase("-ShowXml","in1.docx", "in2.docx", "in3.docx", "a=b", "aa=bb")]
         public void ParseArgsForShowXml(params string[] args)
         {
-            var(command, files,mergefields) = Program.ParseArgs.FromStringArray(args);
+            var(command, files,mergefields) = ParseArgs.FromStringArray(args);
             command.ShouldBe(Program.Command.ShowXml);
             files[0].Item1.Name.ShouldBe(args[1]);
             files[0].Item2.Name.ShouldBe(args[1]);

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using MailMerge.CommandLine;
 using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
@@ -11,7 +12,7 @@ using TestBase;
 namespace MailMerge.Tests.FunctionalSpecs
 {
     [TestFixture]
-    public class WhenMergingADocument
+    public class GivenComplexMergeFields
     {
         const string PathToExampleDocs = "TestDocuments";
         const string ExampleDocx1 = "ATemplate.docx";
@@ -101,13 +102,9 @@ namespace MailMerge.Tests.FunctionalSpecs
                     output.Position = 0;
                     output.CopyTo(outFile);
                 }
-
                 if (exceptions.InnerExceptions.Any()) { throw exceptions; }
 
-                var outputText = output.AsWordprocessingDocument(false)
-                    .MainDocumentPart.Document.InnerText;
-                var outputXml = output.AsWordprocessingDocument(false)
-                    .MainDocumentPart.Document.OuterXml;
+                var (outputText, outputXml) = output.AsWordDocumentMainPartTextAndXml();
             
                 sourceFields
                     .Keys
@@ -140,25 +137,6 @@ namespace MailMerge.Tests.FunctionalSpecs
                                 + "CopyToOutputDirectory=Copy if Newer."
                                  );
             }
-        }
-    }
-
-    static class TestDomain
-    {
-        public static IEnumerable<string> 
-            ShouldHaveBeenSplitOnNewLinesAndEachLineInserted(
-                this IEnumerable<string> multiLineSourceFields, string outputXml)
-        {
-            foreach (var field in multiLineSourceFields)
-            {
-                var lines = field.Split(new[] {"\n", "\n\r"}, StringSplitOptions.None);
-                outputXml.ShouldContain(lines[0]);
-                foreach (var line in lines.Skip(1))
-                {
-                    outputXml.ShouldContain($"<w:br />{line}");
-                }
-            }
-            return multiLineSourceFields;
         }
     }
 }

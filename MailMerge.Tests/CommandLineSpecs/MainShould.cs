@@ -1,7 +1,8 @@
 ﻿using System.IO;
+using MailMerge.CommandLine;
 using NUnit.Framework;
 
-namespace MailMerge.Tests.NFRs
+namespace MailMerge.Tests.CommandLineSpecs
 {
     public class MainShould
     {

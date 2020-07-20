@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using MailMerge.CommandLine;
 using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
@@ -43,7 +44,9 @@ namespace MailMerge.Tests.FunctionalSpecs
             {
                 (output, exceptions) = sut.Merge(original, sourceFields);
 
-                using (var outFile = new FileInfo(source.Replace(".", " Output.")).OpenWrite())
+                var (outputText, outputXml) = output.AsWordDocumentMainPartTextAndXml();
+
+                using (var outFile = new FileInfo(source.Replace(".", $" {sourceFieldsSource} Output.")).OpenWrite())
                 {
                     output.Position = 0;
                     output.CopyTo(outFile);
@@ -51,19 +54,15 @@ namespace MailMerge.Tests.FunctionalSpecs
 
                 if (exceptions.InnerExceptions.Any()) { throw exceptions; }
 
-                var outputText = output.AsWordprocessingDocument(false).MainDocumentPart.Document.InnerText;
 
                 sourceFields
                     .Values
-                    .ShouldAll(v => outputText.ShouldContain(v));
+                    .Cast<string>()
+                    .ShouldHaveBeenSplitOnNewLinesAndEachLineInserted(outputXml);
 
                 sourceFields
                     .Keys
                     .ShouldAll(k => outputText.ShouldNotContain("«" + k + "»"));
-
-                Regex
-                    .IsMatch(outputText, @"\<w:instrText [^>]*>MERGEFIELD")
-                    .ShouldBeFalse("Merge should have remove all complex field sequences (whether or not they were replaced with text).");
 
             }
             finally{ output?.Dispose(); }

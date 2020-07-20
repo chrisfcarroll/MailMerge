@@ -256,9 +256,6 @@ namespace MailMerge
                 }
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="wrTextOrRunNode">Either a <w:r> containing a <w:t> OR a <w:t></param>
         /// <param name="replacementText">the text to insert into <paramref name="wrTextOrRunNode"/></param>
         /// <param name="mainDocumentPart"></param>

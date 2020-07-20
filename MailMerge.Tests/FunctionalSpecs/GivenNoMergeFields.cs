@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MailMerge.CommandLine;
 using MailMerge.Properties;
 using NUnit.Framework;
 using TestBase;

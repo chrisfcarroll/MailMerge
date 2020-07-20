@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using MailMerge.CommandLine;
 using MailMerge.Helpers;
 using NUnit.Framework;
 using TestBase;
@@ -11,7 +12,7 @@ using TestBase;
 namespace MailMerge.Tests.FunctionalSpecs
 {
     [TestFixture]
-    public class WhenMergingSplitWinstrFields
+    public class GivenSplitWinstrFields
     {
         const string TestDocDir = "TestDocuments";
         const string DocWithSplitMergeFieldDocx = "DocWithSplitMergeField.docx";
