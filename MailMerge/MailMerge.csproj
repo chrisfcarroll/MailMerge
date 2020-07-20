@@ -12,6 +12,7 @@
     <AssemblyFileVersion>2.3.0</AssemblyFileVersion>
     <PackageVersion>2.3.0</PackageVersion>
     <PackageId>MailMerge</PackageId>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <Title>.Net and Commandline MailMerge for docx</Title>
     <PackageDescription><![CDATA[MailMerge replaces simple and complex merge fields in WordProcessingML .docx files
 and helps you apply .Net's Xml & XPath tooling to Word documents.
