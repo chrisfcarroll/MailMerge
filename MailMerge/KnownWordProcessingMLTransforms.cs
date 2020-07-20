@@ -37,6 +37,12 @@ namespace MailMerge
         /// 		<w:t>«FirstName»</w:t>
         /// 	</w:r>
         /// </w:fldSimple>]]></example>
+        /// <remarks>
+        /// ECMA-376 Part 1 17.16.2 XML representation
+        /// Fields shall be implemented in XML using either of two approaches:
+        /// • As a simple field implementation, using the fldSimple element, or
+        /// • As a complex field implementation, using a set of runs involving the fldChar and instrText elements.
+        /// </remarks>
         public static void SimpleMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger log)
         {
             var simpleMergeFields = mainDocumentPart.SelectNodes("//w:fldSimple[contains(@w:instr,'MERGEFIELD ')]", OoXmlNamespaces.Manager);
@@ -58,8 +64,8 @@ namespace MailMerge
         }
 
         /// <summary>ECMA-376 Part 1 17.16  <![CDATA[<w:instrText> MERGEFIELD</w:instrText>]]>
-        /// Each <![CDATA[<w:instrText> MERGEFIELD</w:instrText>]]> is found inside a sequence of 5 or more <![CDATA[<w:r >]]>
-        /// nodes, known as Runs:
+        /// Each <![CDATA[<w:instrText> MERGEFIELD</w:instrText>]]> is found inside a sequence of 5 or more
+        /// runs, <![CDATA[<w:r >]]> nodes:
         /// <list type="bullet">
         /// <item><![CDATA[<w:r><w:fldChar w:fldCharType='begin'></w:r>]]> Begin Run</item>
         /// <item><![CDATA[<w:r><w:instrText></w:r>]]> - 1 or more of these which may need to be stuck back together</item>
@@ -90,6 +96,13 @@ namespace MailMerge
         ///  <w:r>
         ///    <w:fldChar w:fldCharType="end"/>
         ///  </w:r>]]></example>
+        /// <remarks>
+        /// ECMA-376 Part 1 17.16.2 XML representation
+        /// Fields shall be implemented in XML using either of two approaches:
+        /// • As a simple field implementation, using the fldSimple element, or
+        /// • As a complex field implementation, using a set of runs involving the fldChar and instrText elements.
+        /// </remarks>
+
         public static void ComplexMergeFields(this XmlDocument mainDocumentPart, Dictionary<string, string> fieldValues, ILogger log)
         {
             const int boilerplateCount = 3; 

@@ -36,15 +36,20 @@ None really, but see https://github.com/chrisfcarroll/MailMerge/blob/master/Mail
 Doesn't do
 ----------
 - Anything except Merge fields and Dates
-- Overloads for multiline datasources
+- Date formatting codes except a b B d D M y & h m s
+- Style/Formatting codes in the merge fields except these Date/Time formats
+- Multi-row datasources, just does 1 row at a time
+
+Gotchas
+-------
+- Interprets .Net DateTime formatting codes that aren't in the WordProcessingML spec.
 
 NuGet
 -----
 https://www.nuget.org/packages/MailMerge/
 
 
-How do I create a Word document with merge fields …
+How do I create a Word document with merge fields without attaching a datasource?
 --------------------------------------------------------
-… when it insists on me providing a mailmerge datasource?
 
 https://www.cafe-encounter.net/p2247/add-merge-fields-to-a-word-document-before-adding-a-datasource
