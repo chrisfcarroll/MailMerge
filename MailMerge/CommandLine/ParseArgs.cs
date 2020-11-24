@@ -33,7 +33,7 @@ namespace MailMerge.CommandLine
         static (Program.Command, (FileInfo, FileInfo)[], Dictionary<string, string>) ParseArgsForMerge(IEnumerable<string> cargs, Program.Command command)
         {
             var files = new List<(FileInfo, FileInfo)>();
-            var mergefields = new Dictionary<string, string>();
+            var mergefields = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             var oddeven = OddEven.Even;
             string lastin = null;
             foreach (var arg in cargs)
