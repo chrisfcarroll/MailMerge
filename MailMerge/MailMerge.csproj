@@ -10,7 +10,7 @@
     <AssemblyCompany>Chris F Carroll</AssemblyCompany>
     <AssemblyVersion>2.4.0</AssemblyVersion>
     <AssemblyFileVersion>2.4.0</AssemblyFileVersion>
-    <PackageVersion>2.3.1</PackageVersion>
+    <PackageVersion>2.4.0</PackageVersion>
     <PackageId>MailMerge</PackageId>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <Title>.Net and Commandline MailMerge for docx</Title>
