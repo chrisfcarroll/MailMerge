@@ -263,7 +263,7 @@ namespace MailMerge
                         this XmlNode wrTextOrRunNode, string replacementText, XmlDocument mainDocumentPart, ILogger logger)
         {
             
-            if (string.IsNullOrEmpty(replacementText)) return;
+            if (replacementText == null) return;
             if ( (wrTextOrRunNode?.LocalName != "r" && wrTextOrRunNode?.LocalName != "t") || wrTextOrRunNode.Prefix!="w") 
             {
                 logger.LogWarning("ReplaceInnerText called with a node type " + wrTextOrRunNode.Name);
