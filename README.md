@@ -16,7 +16,22 @@ var (ok,errors) = new MailMerger().Merge(inputFileName, Dictionary, outputFileNa
 ```
 Set the current DateTime for date merge fields on `MailMerger.DateTime`, e.g. `new MailMerger{DateTime=...}`
 
-Extension Methods & Helpers
+CommandLine Usage
+-----------------
+Merge a docx file:
+```shell
+dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value [...] ]
+```
+- example:
+```shell
+dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
+```
+Show a document's Xml:
+```shell
+dotnet MailMerge.dll  --showxml file [fileN ...]
+```
+
+Component Extension Methods & Helpers
 ---------------------------
 
 ```
@@ -33,22 +48,6 @@ and/or XElements:
 ```
 var xdoc = new XmlDocument(OoXmlNamespace.Manager.NameTable)
 var xelement= mainDocumentPart.CreateElement("w", "t", OoXmlNamespace.WpML2006MainUri)
-```
-
-CommandLine Usage
------------------
-Perform a merge
-```
-dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=value [...] ]
-```
-Show a document's Xml
-```
-dotnet MailMerge.dll  --showxml file [fileN ...]
-```
-
-Example
-```
-dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
 ```
 
 Settings

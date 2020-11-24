@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Xml;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Validation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MailMerge.CommandLine;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Settings = MailMerge.Properties.Settings;
 
 namespace MailMerge
@@ -22,6 +19,7 @@ namespace MailMerge
         public const string DATEKey = "DATE";
         internal readonly ILogger Logger;
         internal readonly Settings Settings;
+        internal readonly bool MatchFieldNamesCaseSensitively;
 
         /// <summary>
         /// Use this property for DATE substitions if you require rudimentary WordProcessingML MergeFormat handling.
@@ -30,9 +28,19 @@ namespace MailMerge
         /// </summary>
         public DateTime? DateTime { get; set; }
 
-        public MailMerger(ILogger logger, Settings settings, DateTime? dateTime = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger">a logger</param>
+        /// <param name="settings"></param>
+        /// <param name="dateTime"></param>
+        /// <param name="matchFieldNamesCaseSensitively"></param>
+        public MailMerger(ILogger logger, Settings settings=null, DateTime? dateTime = null, bool matchFieldNamesCaseSensitively=false)
         {
-            Logger = logger; Settings = settings; DateTime = dateTime;
+            Logger = logger; 
+            Settings = settings??new Settings();
+            MatchFieldNamesCaseSensitively = matchFieldNamesCaseSensitively;
+            DateTime = dateTime;
         }
         
         /// <summary>Create a new MailMerger with Logger and Settings from <see cref="Startup"/></summary>
@@ -149,8 +157,15 @@ namespace MailMerge
                 var outputStream= new MemoryStream(); 
                 input.CopyTo(outputStream);                
                 fieldValues = LogAndEnsureFieldValues(fieldValues, new Dictionary<string, string>());
-                
-                if (fieldValues.Any()){ApplyAllKnownMergeTransformationsToMainDocumentPart(fieldValues, outputStream);}
+
+                if (fieldValues.Any())
+                {
+                    if (!MatchFieldNamesCaseSensitively && !new[] {StringComparer.InvariantCultureIgnoreCase, StringComparer.CurrentCultureIgnoreCase, StringComparer.OrdinalIgnoreCase}.Contains(fieldValues.Comparer))
+                    {
+                        fieldValues=new Dictionary<string,string>(fieldValues,StringComparer.CurrentCultureIgnoreCase);
+                    }
+                    ApplyAllKnownMergeTransformationsToMainDocumentPart(fieldValues, outputStream);
+                }
                 
                 return (outputStream, exceptions);
             }

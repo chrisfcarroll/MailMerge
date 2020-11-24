@@ -22,6 +22,7 @@ namespace MailMerge.CommandLine
             {
                 case Command.ShowXml:
                     Help.PrintHelpAndExitIfNot(files.Length>0);
+                    
                     ShowEachFileAsXml(files.Select(f => f.Item1).ToArray());
                     break;
                 
@@ -29,6 +30,7 @@ namespace MailMerge.CommandLine
                 default:
                     Help.PrintHelpAndExitIfNot(files.Length>0);
                     Help.PrintHelpAndExitIfNot(mergefields.Count>0);
+                    
                     MergeEachInputToOutput(files, mergefields);
                     break;
             }
