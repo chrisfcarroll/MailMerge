@@ -19,7 +19,7 @@ namespace MailMerge.Properties
 
         public class Instance
         {
-            public string LogLevel { get; set; }
+            public string LogLevel { get; set; } = "Information";
             public ILoggerProvider Provider { get; set; }
         }
     }

@@ -67,6 +67,35 @@ namespace MailMerge.Tests.FunctionalSpecs
                 .Where(v => v.DoesNotContain('\n'));
             singleLineSourceFields.ShouldAll(v => outputText.ShouldContain(v));
         }
+
+        [TestCase(ExampleDocx1, nameof(ExampleDocx1Fields))]
+        [TestCase(ExampleDocx2, nameof(ExampleDocx2Fields))]
+        public void Treats_MergeFieldNamesAsCaseInsensitive(string source, string sourceFieldsSource)
+        {
+            //A
+            var originalSourceFields = GetType()
+                .GetField(sourceFieldsSource, BindingFlags.Static | BindingFlags.NonPublic)
+                .GetValue(this) as Dictionary<string, string>;
+
+            var sourceWithLowerCaseKeys = originalSourceFields
+                .Select(kv => KeyValuePair.Create(kv.Key.ToLower(), kv.Value))
+                .ToDictionary(kv=>kv.Key,kv=>kv.Value);
+            var sourceWithUpperCaseKeys = originalSourceFields
+                .Select(kv => KeyValuePair.Create(kv.Key.ToUpper(), kv.Value))
+                .ToDictionary(kv=>kv.Key,kv=>kv.Value);
+            
+            foreach(var fieldDict in new []{sourceWithLowerCaseKeys,sourceWithUpperCaseKeys})
+            {
+                //A
+                (var outputText, var outputXml)=MergeDocToTextAndXml(source, fieldDict, " singleline Fields Output.");
+                //A
+                var singleLineSourceFields = fieldDict
+                    .Values
+                    .Where(v => v.DoesNotContain('\n'));
+                singleLineSourceFields.ShouldAll(v => outputText.ShouldContain(v));
+            }
+        }
+        
         [TestCase(ExampleDocx2, nameof(ExampleDocx2FieldsWithMultiLines))]
         public void Returns_TheDocumentWithMultilineMergeFieldsReplaced(string source, string sourceFieldsSource)
         {
