@@ -114,7 +114,6 @@ namespace MailMerge
                 var instrRuns= new List<XmlNode>();
                 XmlNode separatorRun = null, textRun = null, instrNode;
                 string replacementText = "";
-                bool statePendingFieldName = false;
                 int i = 0;
 
                 var sibling = beginRun;
@@ -137,34 +136,16 @@ namespace MailMerge
                     }
                     else if (null != (instrNode=sibling.SelectSingleNode("w:instrText[contains(text(),'MERGEFIELD ')]", OoXmlNamespace.Manager)))
                     {
-                        instrRuns.Add(sibling);
-                        var fieldName = instrNode.InnerText
+                        var nodesText = CollectSequentialInstrRuns(instrNode, ref sibling, instrRuns);
+
+                        var fieldName = nodesText
                                                 .Split(" ", StringSplitOptions.RemoveEmptyEntries)
                                                 .Skip(1).FirstOrDefault();
                         if (fieldName==null)
                         {
-                            statePendingFieldName = true;
-                            log.LogDebug("Noting <w:instrText MERGEFIELD *with no FieldName* >...</w:instrText> for potential replacement");
+                            log.LogWarning("<w:instrText MERGEFIELD *with no FieldName* >...</w:instrText> cannot be merged");
                         }
                         else if (fieldValues.ContainsKey(fieldName))
-                        {
-                            replacementText = fieldValues[fieldName];
-                            log.LogDebug($"Noting <w:instrText '{fieldName} '>...</w:instrText> for replacement with " + replacementText);
-                        }
-                        else
-                        {
-                            log.LogWarning($"Nothing in the fieldValue dictionary for {sibling.InnerText}");
-                        }
-                    }
-                    else if (statePendingFieldName && null != (instrNode=sibling.SelectSingleNode("w:instrText[not( contains(text(),'MERGEFIELD '))]", OoXmlNamespace.Manager)))
-                    {
-                        statePendingFieldName = false;
-                        instrRuns.Add(sibling);
-                        var fieldName = instrNode.InnerText
-                            .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-                            .FirstOrDefault();
-
-                        if (fieldValues.ContainsKey(fieldName))
                         {
                             replacementText = fieldValues[fieldName];
                             log.LogDebug($"Noting <w:instrText '{fieldName} '>...</w:instrText> for replacement with " + replacementText);
@@ -182,13 +163,45 @@ namespace MailMerge
                     boilerPlateNodes
                         .ForEach(n=>n.RemoveMe());
                     instrRuns
-                        .ForEach(n=> n.RemoveMe());
+                          .ForEach(n => n.RemoveMe());
                 }
                 else if(instrRuns.Any())
                 {
                     log.LogWarning($"Ignored sequence containing {instrRuns.Last()} because it was incomplete");
                 }
             }
+        }
+
+        /// <summary>Collects sequential <![CDATA[<w:instrText></w:instrText>]]>
+        /// that do not contain the text "MERGEFIELD " and joins the inner text.
+        /// <example>
+        /// <![CDATA[
+        ///  <w:r>
+        ///    <w:instrText xml:space="preserve">MERGEFIELD  Name  \* M</w:instrText>
+        ///  </w:r>
+        ///  <w:r>
+        ///    <w:instrText xml:space="preserve">ERGEFORMAT </w:instrText>
+        ///  </w:r>
+        ///  ]]></example>
+        /// <param name="instrNode">first "instrText" node</param>
+        /// <param name="sibling">run node containing the first "instrText" node, will be updated to the run containing the last sequential "instText" node</param>
+        /// <param name="instrRuns">list of instrText runs, runs will be added to this list</param>
+        /// <returns>Concatenation of all sequential instrText nodes InnerText</returns>
+        private static string CollectSequentialInstrRuns(XmlNode instrNode, ref XmlNode sibling, List<XmlNode> instrRuns)
+        {
+            instrRuns.Add(sibling);
+            var nodesText = instrNode.InnerText;
+            XmlNode instrSibling = sibling.NextSibling;
+
+            while (null != instrSibling && null != (instrNode = instrSibling.SelectSingleNode("w:instrText[not( contains(text(),'MERGEFIELD '))]", OoXmlNamespace.Manager)))
+            {
+                nodesText += instrNode.InnerText;
+                instrRuns.Add(instrSibling);
+                sibling = instrSibling;
+                instrSibling = instrSibling.NextSibling;
+            }
+
+            return nodesText;
         }
 
         /// <summary>
