@@ -14,6 +14,10 @@
     <NoWarn>1701;1702;1705;NU1701</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
     <PackageReference Include="Extensions.Logging.ListOfString" Version="4.0.8" />
     <PackageReference Include="nunit" Version="3.10.1" />
