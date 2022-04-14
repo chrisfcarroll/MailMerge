@@ -1,1 +1,0 @@
-Debug this in your IDE to step through basic OpenXmlSdk usage in OpenXmlSdk25Examples.cs

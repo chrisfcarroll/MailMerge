@@ -38,7 +38,9 @@
     <Content Include="ATemplate DocxAsZip\word\_rels\settings.xml.rels" />
     <Content Include="ATemplate DocxAsZip\[Content_Types].xml" />
     <Content Include="ATemplate DocxAsZip\_rels\.rels" />
-    <Content Include="ATemplate.docx" />
+    <Content Include="ATemplate.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="template-cc-tag.docx" />
     <Content Include="template-cc.docx" />
   </ItemGroup>
