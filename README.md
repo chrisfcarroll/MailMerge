@@ -24,7 +24,7 @@ dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=
 ```
 - example:
 ```shell
-dotnet MailMerge.dll input1.docx output1Bill.docx  FirstName=Bill  "LastName=O Reilly"
+dotnet MailMerge.dll MyTemplate.docx MyLetterToBill.docx  FirstName=Bill  "LastName=O Reilly"
 ```
 Show a document's Xml:
 ```shell
