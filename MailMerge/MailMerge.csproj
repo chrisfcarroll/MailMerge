@@ -8,9 +8,9 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <AssemblyProduct>MailMerge</AssemblyProduct>
     <AssemblyCompany>Chris F Carroll</AssemblyCompany>
-    <AssemblyVersion>2.4.0</AssemblyVersion>
-    <AssemblyFileVersion>2.4.0</AssemblyFileVersion>
-    <PackageVersion>2.4.0</PackageVersion>
+    <AssemblyVersion>2.5.0</AssemblyVersion>
+    <AssemblyFileVersion>2.5.0</AssemblyFileVersion>
+    <PackageVersion>2.5.0</PackageVersion>
     <PackageId>MailMerge</PackageId>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <Title>.Net and Commandline MailMerge for docx</Title>
@@ -44,6 +44,7 @@ dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=
 dotnet MailMerge.dll  --showxml file [fileN ...]
 ```]]></PackageDescription>
     <PackageReleaseNotes>
+      2.5.0 Merging an empty field now results in an empty output instead of the merge field being skipped over
       2.4.0 OoXml Spec requires all fields to be treated CaseInsensitively
       2.3.0 Merges multi-line (\n or \n\r) input fields into a single &lt;w:r&gt;
             Breaking Change: Moved namespace MailMerge.Helpers -&gt; MailMerge 

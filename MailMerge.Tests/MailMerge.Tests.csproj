@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyVersion>2.4.0</AssemblyVersion>
-    <AssemblyFileVersion>2.4.0</AssemblyFileVersion>
+    <AssemblyVersion>2.5.0</AssemblyVersion>
+    <AssemblyFileVersion>2.5.0</AssemblyFileVersion>
     <AssemblyProduct>MailMerge</AssemblyProduct>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
