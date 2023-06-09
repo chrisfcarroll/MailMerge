@@ -13,23 +13,33 @@ namespace MailMerge.Tests.FunctionalSpecs
     [TestFixture]
     public class GivenSplitWinstrFields
     {
-        const string TestDocDir = "TestDocuments";
-        const string DocWithSplitMergeFieldDocx = "DocWithSplitMergeField.docx";
-        const string DocProblem1Docx = "DocProblem1.docx";
-        const string DocWithWinstrTextDateRundocx = "DocWithWinstrTextDateRun.docx";
         MailMerger sut;
 
-        static Dictionary<string, string> SplitField = new Dictionary<string, string>
+        class TestCases
         {
-            {"CurrentUser:LastName","CurrentUserLastName"},
-        };
+            public const string TestDocDir = "TestDocuments";
+            public const string DocWithSplitMergeFieldDocx = "DocWithSplitMergeField.docx";
+            public const string DocProblem1Docx = "DocProblem1.docx";
+            public const string DocWithWinstrTextDateRundocx = "DocWithWinstrTextDateRun.docx";
+            public const string DocWithVerySplitMergeFielddocx = "DocWithVerySplitMergeField.docx";
 
-        static Dictionary<string, string> DocProblem1Fields = new Dictionary<string, string>
-        {
-            {"CurrentUser:FirstName","CurrentUserFirstName"}
-        };
+            public static Dictionary<string, string> VerySplitMergeField = new()
+            {
+                { "SPLITMERGEFIELD", "Split Mergefield After Replacement" }
+            };
 
-        static Dictionary<string, string> DateOnly = new Dictionary<string, string>();
+            public static Dictionary<string, string> SplitField = new Dictionary<string, string>
+            {
+                {"CurrentUser:LastName","CurrentUserLastName"},
+            };
+
+            public static Dictionary<string, string> DocProblem1Fields = new Dictionary<string, string>
+            {
+                {"CurrentUser:FirstName","CurrentUserFirstName"}
+            };
+
+            public static Dictionary<string, string> DateOnly = new Dictionary<string, string>();
+        }
 
         [SetUp]
         public void Setup()
@@ -37,14 +47,15 @@ namespace MailMerge.Tests.FunctionalSpecs
             sut = new MailMerger(Startup.Configure().CreateLogger(GetType()), Startup.Settings);
         }
 
-        [TestCase(DocWithWinstrTextDateRundocx, nameof(DateOnly))]
-        [TestCase(DocWithSplitMergeFieldDocx, nameof(SplitField))]
-        [TestCase(DocProblem1Docx, nameof(DocProblem1Fields))]
+        [TestCase(TestCases.DocWithWinstrTextDateRundocx, nameof(TestCases.DateOnly))]
+        [TestCase(TestCases.DocWithSplitMergeFieldDocx, nameof(TestCases.SplitField))]
+        [TestCase(TestCases.DocProblem1Docx, nameof(TestCases.DocProblem1Fields))]
+        [TestCase(TestCases.DocWithVerySplitMergeFielddocx, nameof(TestCases.VerySplitMergeField) )]
         public void Returns_TheDocumentWithMergeFieldsReplaced(string source, string sourceFieldsSource)
         {
-            source = Path.Combine(TestDocDir, source);
-            var sourceFields = GetType()
-                              .GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.NonPublic)
+            source = Path.Combine(TestCases.TestDocDir, source);
+            var sourceFields = typeof(TestCases)
+                              .GetField(sourceFieldsSource,BindingFlags.Static|BindingFlags.Public)
                               .GetValue(this) as Dictionary<string,string>;
 
             Stream output = null; AggregateException exceptions;
@@ -83,9 +94,9 @@ namespace MailMerge.Tests.FunctionalSpecs
         [OneTimeSetUp]
         public void EnsureTestDependencies()
         {
-            foreach(var testDoc in new[]{DocWithSplitMergeFieldDocx, DocProblem1Docx})
+            foreach(var testDoc in new[]{ TestCases.DocWithSplitMergeFieldDocx, TestCases.DocProblem1Docx})
             {
-                var expectedTestDoc = Path.Combine(TestDocDir, testDoc);
+                var expectedTestDoc = Path.Combine(TestCases.TestDocDir, testDoc);
                 File.Exists(expectedTestDoc)
                     .ShouldBeTrue(
                         $"Expected to find TestDependency \n\n\"{expectedTestDoc}\"\n\n at "
