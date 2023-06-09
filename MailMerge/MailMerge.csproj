@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net6.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+    <OutputType Condition="! $(TargetFramework.StartsWith('netstandard'))">Exe</OutputType>
+    <OutputType Condition="$(TargetFramework.StartsWith('netstandard'))">Library</OutputType>
     <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
     <LangVersion>latest</LangVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -14,6 +15,7 @@
     <PackageId>MailMerge</PackageId>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <Title>.Net and Commandline MailMerge for docx</Title>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageDescription><![CDATA[MailMerge replaces simple and complex merge fields in WordProcessingML .docx files
 and helps you apply .Net's Xml & XPath tooling to Word documents.
 
@@ -45,6 +47,7 @@ dotnet MailMerge.dll  --showxml file [fileN ...]
 ```]]></PackageDescription>
     <PackageReleaseNotes>
       2.5.0 Merging an empty field now results in an empty output instead of the merge field being skipped over
+            Supported targets changed from netcoreapp2 to net6.0;netcoreapp3.1;netstandard2.1
       2.4.0 OoXml Spec requires all fields to be treated CaseInsensitively
       2.3.0 Merges multi-line (\n or \n\r) input fields into a single &lt;w:r&gt;
             Breaking Change: Moved namespace MailMerge.Helpers -&gt; MailMerge 
@@ -61,6 +64,9 @@ dotnet MailMerge.dll  --showxml file [fileN ...]
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <PackageTags>mailmerge;merge;docx;ooxml;word</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <NoWarn>1701;1702;1705;NU1701</NoWarn>
