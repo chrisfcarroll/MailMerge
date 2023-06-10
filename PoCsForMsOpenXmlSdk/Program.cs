@@ -2,6 +2,10 @@
 
 namespace MsOpenXmlSdk
 {
+    /// <summary>
+    /// This project is largely microsoft code intended to demo the OpenXml Sdk 2.5
+    /// Debug-Run it in your IDE to step through the code in <see cref="OpenXmlSdk25Examples"/>.
+    /// </summary>
     class Program
     {
         static void Main(string[] args)

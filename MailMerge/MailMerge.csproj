@@ -66,7 +66,7 @@ dotnet MailMerge.dll  --showxml file [fileN ...]
     <PackageTags>mailmerge;merge;docx;ooxml;word</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -89,8 +89,5 @@ dotnet MailMerge.dll  --showxml file [fileN ...]
   </ItemGroup>
   <ItemGroup>
     <None Include="appsettings.json" CopyToOutputDirectory="Always" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>

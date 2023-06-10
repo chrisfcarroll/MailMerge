@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailMerge", "MailMerge\Mail
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailMerge.Tests", "MailMerge.Tests\MailMerge.Tests.csproj", "{9EC8A6BB-B112-4237-BB0F-0BBCB0CFF00C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsOpenXmlSdk", "PoCsForMsOpenXmlSdk\MsOpenXmlSdk.csproj", "{1E1C0CC1-1F77-453D-AC02-0AAEC6B71763}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learn.Some.OpenXml.Sdk", "PoCsForMsOpenXmlSdk\Learn.Some.OpenXml.Sdk.csproj", "{1E1C0CC1-1F77-453D-AC02-0AAEC6B71763}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{7741C152-66A0-4B8D-A96E-3FBD920C1B4B}"
 ProjectSection(SolutionItems) = preProject

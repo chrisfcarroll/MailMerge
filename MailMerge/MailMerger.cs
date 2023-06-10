@@ -7,12 +7,29 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MailMerge.CommandLine;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Settings = MailMerge.Properties.Settings;
 
 namespace MailMerge
 {
     /// <summary>
     /// A component for editing Word Docx files, and in particular for populating merge fields.
+    /// Works with streams or files.
+    ///
+    /// <list type="bullet">
+    ///     <item>
+    ///         <term>Capabilities Implemented So Far</term>
+    ///         <description><see cref="KnownWordProcessingMLTransformationsReadMe.AllKnown"/></description>
+    ///     </item>
+    ///     <item>
+    ///         <term>Full Spec</term>
+    ///         <description>https://www.ecma-international.org/publications/standards/Ecma-376.htm</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>Much more readable abbreviated spec</term>
+    ///         <description>http://officeopenxml.com/</description>
+    ///     </item>
+    /// </list>
     /// </summary>
     public class MailMerger
     {
@@ -31,13 +48,13 @@ namespace MailMerge
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="logger">a logger</param>
+        /// <param name="logger">a logger. If you pass null, then <see cref="NullLogger.Instance"/> will be used.</param>
         /// <param name="settings"></param>
         /// <param name="dateTime"></param>
         /// <param name="matchFieldNamesCaseSensitively"></param>
         public MailMerger(ILogger logger, Settings settings=null, DateTime? dateTime = null, bool matchFieldNamesCaseSensitively=false)
         {
-            Logger = logger; 
+            Logger = logger?? NullLogger.Instance; 
             Settings = settings??new Settings();
             MatchFieldNamesCaseSensitively = matchFieldNamesCaseSensitively;
             DateTime = dateTime;
@@ -173,15 +190,21 @@ namespace MailMerge
             return (Stream.Null, exceptions);
         }
 
-        internal void ApplyAllKnownMergeTransformationsToMainDocumentPart(Dictionary<string, string> fieldValues, Stream workingStream)
+        /// <summary>Use the power of OOXml to edit the given <paramref name="editableWPXmlStream"/>
+        /// by applying all known merge transformations. As at June 2023, all known transformations
+        /// are <see cref="KnownWordProcessingMLTransformationsReadMe.AllKnown"/>
+        /// </summary>
+        /// <param name="fieldValues">The merge field replacements dictionary</param>
+        /// <param name="editableWPXmlStream">an editable stream containing a WordProcessingML document</param>
+        internal void ApplyAllKnownMergeTransformationsToMainDocumentPart(Dictionary<string, string> fieldValues, Stream editableWPXmlStream)
         {
-            var xdoc = GetMainDocumentPartXml(workingStream);
+            var xdoc = GetMainDocumentPartXml(editableWPXmlStream);
 
-            xdoc.SimpleMergeFields(fieldValues, Logger);
-            xdoc.ComplexMergeFields(fieldValues,Logger);
-            xdoc.MergeDate(Logger,  DateTime, fieldValues.ContainsKey(DATEKey) ? fieldValues[DATEKey] : DateTime?.ToLongDateString());
+            xdoc.MergeSimpleMergeFields(fieldValues, Logger);
+            xdoc.MergeComplexMergeFields(fieldValues,Logger);
+            xdoc.MergeDateFields(Logger,  DateTime, fieldValues.ContainsKey(DATEKey) ? fieldValues[DATEKey] : DateTime?.ToLongDateString());
 
-            using (var wpDocx = WordprocessingDocument.Open(workingStream, true))
+            using (var wpDocx = WordprocessingDocument.Open(editableWPXmlStream, true))
             {
                 var bodyNode = xdoc.SelectSingleNode("/w:document/w:body", OoXmlNamespace.Manager);
                 var documentBody = new Body(bodyNode.OuterXml);
@@ -247,9 +270,5 @@ namespace MailMerge
 
             return null;
         }
-    }
-
-    static class OoXmlWPValidator
-    {
     }
 }
