@@ -8,23 +8,21 @@ on:
   schedule:
     - cron: "0 0 * * 6" # every Saturday
 
-env:
-  DotNetFxVersion: net6.0
-  DotNetSDKVersion: 6.0.x
-
 jobs:
-  Build-and-Test:
+  build:
     runs-on: ubuntu-latest
-    steps:   
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup .NET Core
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.x', '6.0.x' ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '${{env.DotNetSDKVersion}}'
+          dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
-        run: dotnet test -f ${{env.DotNetFxVersion}} --no-build --no-restore
+        run: dotnet test --no-restore --verbosity normal
