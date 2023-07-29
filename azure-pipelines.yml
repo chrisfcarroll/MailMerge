@@ -15,12 +15,6 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet6 net test'
-  inputs:
-    command: 'test'
-    projects: '**/net6.0/*Test*.*proj'
-    testRunTitle: 'UnitTests net6'
 
 - task: UseDotNet@2
   inputs:
@@ -28,8 +22,8 @@ steps:
     version: '3.1.x' # string. Optional. Use when useGlobalJson = false || packageType = runtime. Version. 
 
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet test on netcoreapp3.1'
+  displayName: 'dotnet test'
   inputs:
     command: 'test'
-    projects: '**/netcoreapp3*/*Test*.*proj'
-    testRunTitle: 'UnitTests netcoreapp3.1'
+    projects: '**/*Test*.*proj'
+    testRunTitle: 'UnitTests '
