@@ -8,8 +8,12 @@ on:
   schedule:
     - cron: "0 0 * * 6" # every Saturday
 
+env:
+  DotNetFxVersion: net6.0
+  DotNetSDKVersion: 6.0.x
+
 jobs:
-  Build:
+  Build-and-Test:
     runs-on: ubuntu-latest
     steps:   
       - name: Checkout
@@ -17,10 +21,10 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '$DotNetSDKVersion'
       - name: Install dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true
+        run: dotnet test -f $DotNetFxVersion --no-build --no-restore --verbosity normal /p:CollectCoverage=true
