@@ -30,8 +30,9 @@ jobs:
       - name: Show DotNetFxVersions
         run: |
           echo "matrix-version=${{matrix.dotnet-version}}, Fx-versions=${{env.DotNetFxVersions}}
-          echo "Version to select: $${{env.DotNetFxVersions[matrix.dotnet-version]}}"
-          echo "Version to select: $${{env.DotNetFxVersions[format('{0}',matrix.dotnet-version)]}}"
-          echo "FxVersionToTest=$${{env.DotNetFxVersions[format('{0}',matrix.dotnet-version)]}}" >> $GITHUB_ENV
+          echo "Version to select: ${{env.DotNetFxVersions[matrix.dotnet-version]}}"
+          echo "Version to select: ${{env.DotNetFxVersions[format('{0}',matrix.dotnet-version)]}}"
+          echo "Version to select: $DotNetFxVersions[${{matrix.dotnet-version}}]"
+          echo "FxVersionToTest=$DotNetFxVersions[${{matrix.dotnet-version}}]" >> $GITHUB_ENV
       - name: Test
         run: dotnet test -f ${{env.FxVersionToTest}}  --no-restore --verbosity normal
