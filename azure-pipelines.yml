@@ -11,15 +11,11 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  testableFxVersion: 'net6.0'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
-
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk' # 'runtime' | 'sdk'. Package to install. Default: sdk.
-    version: '3.1.x' # string. Optional. Use when useGlobalJson = false || packageType = runtime. Version. 
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
@@ -27,3 +23,4 @@ steps:
     command: 'test'
     projects: '**/*Test*.*proj'
     testRunTitle: 'UnitTests '
+    arguments: '-f $(testableFxVersion)'
