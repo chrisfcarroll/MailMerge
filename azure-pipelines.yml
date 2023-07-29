@@ -16,7 +16,8 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet6 net test'
   inputs:
     command: 'test'
-    projects: '**/*Test*.*proj'
+    projects: '**/*net6*/*Test*.*proj'
     testRunTitle: 'UnitTests'
