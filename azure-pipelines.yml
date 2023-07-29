@@ -19,5 +19,17 @@ steps:
   displayName: 'dotnet6 net test'
   inputs:
     command: 'test'
-    projects: '**/*net6*/*Test*.*proj'
+    projects: '**/net6.0/*Test*.*proj'
+    testRunTitle: 'UnitTests'
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'runtime' # 'runtime' | 'sdk'. Package to install. Default: sdk.
+    version: '3.1.x' # string. Optional. Use when useGlobalJson = false || packageType = runtime. Version. 
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test on netcoreapp3.1'
+  inputs:
+    command: 'test'
+    projects: '**/netcoreapp3*/*Test*.*proj'
     testRunTitle: 'UnitTests'
