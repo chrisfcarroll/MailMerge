@@ -27,4 +27,4 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
-        run: dotnet test -f ${{env.DotNetFxVersion}} --no-build --no-restore --verbosity normal /p:CollectCoverage=true
+        run: dotnet test -f ${{env.DotNetFxVersion}} --no-build --no-restore
