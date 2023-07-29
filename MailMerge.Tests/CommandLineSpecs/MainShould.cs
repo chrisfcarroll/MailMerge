@@ -15,7 +15,7 @@ namespace MailMerge.Tests.CommandLineSpecs
                 NUnit.Framework.Assert.Inconclusive(thereWasNoAppsettingsIn);
             }
             System.IO.File.Delete("appsettings.json.bak");
-            System.IO.File.Move("appSettings.json", "appsettings.json.bak");
+            System.IO.File.Move("appsettings.json", "appsettings.json.bak");
             
             Program.Main("in.docx", "out.docx", "a=b");
             
