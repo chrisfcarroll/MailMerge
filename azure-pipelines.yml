@@ -18,7 +18,7 @@ steps:
 
 - task: UseDotNet@2
   inputs:
-    packageType: 'runtime' # 'runtime' | 'sdk'. Package to install. Default: sdk.
+    packageType: 'sdk' # 'runtime' | 'sdk'. Package to install. Default: sdk.
     version: '3.1.x' # string. Optional. Use when useGlobalJson = false || packageType = runtime. Version. 
 
 - task: DotNetCoreCLI@2
