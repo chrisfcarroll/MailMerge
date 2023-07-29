@@ -20,7 +20,7 @@ steps:
   inputs:
     command: 'test'
     projects: '**/net6.0/*Test*.*proj'
-    testRunTitle: 'UnitTests'
+    testRunTitle: 'UnitTests net6'
 
 - task: UseDotNet@2
   inputs:
@@ -32,4 +32,4 @@ steps:
   inputs:
     command: 'test'
     projects: '**/netcoreapp3*/*Test*.*proj'
-    testRunTitle: 'UnitTests'
+    testRunTitle: 'UnitTests netcoreapp3.1'
