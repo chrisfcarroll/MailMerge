@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: "0 0 * * 6" # every Saturday
 
+env:
+  DotNetFxVersions: (['3.1.x']='netcoreapp3.1', ['6.0.x']='net6.0')
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,4 +28,4 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test -f ${{env.DotNetFxVersions[${{matrix.dotnet-version}}]}}  --no-restore --verbosity normal
