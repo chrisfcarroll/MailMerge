@@ -8,9 +8,6 @@ on:
   schedule:
     - cron: "0 0 * * 6" # every Saturday
 
-env:
-  DotNetFxVersions: (['3.1.x']='netcoreapp3.1', ['6.0.x']='net6.0')
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,12 +24,5 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
-      - name: Show DotNetFxVersions
-        run: |
-          echo "matrix-version=${{matrix.dotnet-version}}, Fx-versions=${{env.DotNetFxVersions}}
-          echo "Version to select: ${{env.DotNetFxVersions[matrix.dotnet-version]}}"
-          echo "Version to select: ${{env.DotNetFxVersions[format('{0}',matrix.dotnet-version)]}}"
-          echo "Version to select: $DotNetFxVersions[${{matrix.dotnet-version}}]"
-          echo "FxVersionToTest=$DotNetFxVersions[${{matrix.dotnet-version}}]" >> $GITHUB_ENV
       - name: Test
-        run: dotnet test -f ${{env.FxVersionToTest}}  --no-restore --verbosity normal
+        run: dotnet test --no-build --no-restore --verbosity normal
