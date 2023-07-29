@@ -21,7 +21,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '$DotNetSDKVersion'
+          dotnet-version: '${{env.DotNetSDKVersion}}'
       - name: Install dependencies
         run: dotnet restore
       - name: Build
