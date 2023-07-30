@@ -17,12 +17,13 @@ jobs:
     steps:
       - name: Calculate Fx version from dotnet-version
         run: |
-          echo matrix.dotnet-version=${{matrix.dotnet-version}} 
           declare -A FxVersions
           FxVersions[3.1.x]=netcoreapp3.1
           FxVersions[6.0.x]=net6.0
-          echo FxVersions=${FxVersions[@]}
           FxVersion=${FxVersions[${{matrix.dotnet-version}}]}
+          echo Testing framework version:
+          echo matrix.dotnet-version=${{matrix.dotnet-version}} 
+          echo FxVersions=${FxVersions[@]}
           echo FxVersion=$FxVersion
           if [[ -z $FxVersion ]] ; then
             echo "Exiting: failed to set FxVersion"
@@ -39,5 +40,5 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
-      - name: Test
-        run: dotnet test --no-build --no-restore --verbosity normal
+      - name: Test FxVersion
+        run: dotnet test --framework ${{env.FxVersion}} --no-build --no-restore --verbosity normal
