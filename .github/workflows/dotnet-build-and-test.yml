@@ -9,7 +9,7 @@ on:
     - cron: "0 0 * * 6" # every Saturday
 
 jobs:
-  build:
+  Build-and-Test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -32,13 +32,12 @@ jobs:
             echo "FxVersion=$FxVersion" >> $GITHUB_ENV
           fi          
       - uses: actions/checkout@v3
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Install dependencies
+      - name: Dotnet Restore
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test FxVersion
-        run: dotnet test --framework ${{env.FxVersion}} --no-build --no-restore --verbosity normal
+        run: dotnet test --framework ${{env.FxVersion}} --no-restore --verbosity normal /p:CollectCoverage=true
