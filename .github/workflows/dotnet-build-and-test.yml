@@ -38,6 +38,6 @@ jobs:
       - name: Dotnet Restore
         run: dotnet restore
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --framework ${{env.FxVersion}} --configuration Release --no-restore
       - name: Test FxVersion
         run: dotnet test --framework ${{env.FxVersion}} --no-restore --verbosity normal /p:CollectCoverage=true
