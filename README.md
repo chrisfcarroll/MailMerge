@@ -1,6 +1,8 @@
 MailMerge for docx Documents
 ============================
 
+[![dotnet-build-and-test (3.1,6.0)](https://github.com/chrisfcarroll/MailMerge/actions/workflows/dotnet-build-and-test.yml/badge.svg)](https://github.com/chrisfcarroll/MailMerge/actions/workflows/dotnet-build-and-test.yml)
+
 MailMerge replaces simple and complex merge fields in WordProcessingML .docx files
 and helps you apply .Net's Xml & XPath tooling to Word documents.
 
