@@ -17,14 +17,19 @@ jobs:
     steps:
       - name: Calculate Fx version from dotnet-version
         run: |
-          echo ${{matrix.dotnet-version}} 
+          echo matrix.dotnet-version=${{matrix.dotnet-version}} 
           declare -A FxVersions
-          FxVersions['3.1.x']=netcoreapp3.1
-          FxVersions['6.0.x']=net6.0
-          FxVersion=$FxVersions[${{matrix.dotnet-version}}]
-          echo FxVersion=$FxVersions matrixdotnetversion=${{matrix.dotnet-version}}
-          echo $FxVersion
-          
+          FxVersions[3.1.x]=netcoreapp3.1
+          FxVersions[6.0.x]=net6.0
+          echo FxVersions=${FxVersions[@]}
+          FxVersion=${FxVersions[${{matrix.dotnet-version}}]}
+          echo FxVersion=$FxVersion
+          if [[ -z $FxVersion ]] ; then
+            echo "Exiting: failed to set FxVersion"
+            exit 1
+          else
+            echo "FxVersion=$FxVersion" >> $GITHUB_ENV
+          fi          
       - uses: actions/checkout@v3
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v3
