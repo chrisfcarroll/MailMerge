@@ -13,13 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: [ '3.1.x', '6.0.x' ]
+        dotnet-version: [ '8.0.x' ]
     steps:
       - name: Calculate Fx version from dotnet-version
         run: |
           declare -A FxVersions
-          FxVersions[3.1.x]=netcoreapp3.1
-          FxVersions[6.0.x]=net6.0
+          FxVersions[8.0.x]=net8.0
           FxVersion=${FxVersions[${{matrix.dotnet-version}}]}
           echo Testing framework version:
           echo matrix.dotnet-version=${{matrix.dotnet-version}} 
