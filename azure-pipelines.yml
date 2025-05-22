@@ -11,7 +11,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  testableFxVersion: 'net6.0'
+  testableFxVersion: 'net8.0'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
@@ -22,5 +22,4 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*Test*.*proj'
-    testRunTitle: 'UnitTests '
-    arguments: '-f $(testableFxVersion)'
+    testRunTitle: 'UnitTests'
