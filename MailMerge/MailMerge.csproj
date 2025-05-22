@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net8.0;netcoreapp3.1;netstandard2.1</TargetFrameworks>
     <OutputType Condition="! $(TargetFramework.StartsWith('netstandard'))">Exe</OutputType>
     <OutputType Condition="$(TargetFramework.StartsWith('netstandard'))">Library</OutputType>
-    <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
     <LangVersion>latest</LangVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
