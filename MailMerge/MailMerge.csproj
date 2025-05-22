@@ -8,9 +8,9 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <AssemblyProduct>MailMerge</AssemblyProduct>
     <AssemblyCompany>Chris F Carroll</AssemblyCompany>
-    <AssemblyVersion>2.5.1</AssemblyVersion>
-    <AssemblyFileVersion>2.5.1</AssemblyFileVersion>
-    <PackageVersion>2.5.1</PackageVersion>
+    <AssemblyVersion>2.6.0</AssemblyVersion>
+    <AssemblyFileVersion>2.6-preview</AssemblyFileVersion>
+    <PackageVersion>2.6-preview</PackageVersion>
     <PackageId>MailMerge</PackageId>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <Title>.Net and Commandline MailMerge for docx</Title>
@@ -45,6 +45,7 @@ dotnet MailMerge.dll inputFile1 outputFile1 [inputFileN [...outputFileN]] [ key=
 dotnet MailMerge.dll  --showxml file [fileN ...]
 ```]]></PackageDescription>
     <PackageReleaseNotes>
+      2.6.0 feat:Process merge fields in header
       2.5.1 Fix: Handle mergefields that Word has split across xml elements (@AllTaken)
       2.5.0 Merging an empty field now results in an empty output instead of the merge field being skipped over (@dr-consit) 
             Supported targets changed from netcoreapp2 to net6.0;netcoreapp3.1;netstandard2.1
@@ -56,7 +57,7 @@ dotnet MailMerge.dll  --showxml file [fileN ...]
       2.1.0 Added support for Complex Field Character sequences.
       2.0.0 Renamed component MailMerge.MailMerge to MailMerge.MailMerger
     </PackageReleaseNotes>
-    <Copyright>(c) Chris F. Carroll, 2013-2020</Copyright>
+    <Copyright>(c) Chris F. Carroll, 2013-2025</Copyright>
     <Authors>Chris F Carroll, https://github.com/chrisfcarroll and contributors</Authors>
     <Owners>Chris F Carroll</Owners>
     <PackageProjectUrl>https://github.com/chrisfcarroll/MailMerge</PackageProjectUrl>
