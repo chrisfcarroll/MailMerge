@@ -18,7 +18,7 @@ echo > /dev/null <<"out-null" ###
 
 $scriptdir=$PSScriptRoot
 pushd $scriptdir
-if( -not (Test-Path("$scriptdir/MailMerge/bin/Debug/net6.0/MailMerge.dll")))
+if( -not (Test-Path("$scriptdir/MailMerge/bin/Debug/net8.0/MailMerge.dll")))
   { dotnet build }
 
 
@@ -28,10 +28,10 @@ if( -not (Test-Path("$scriptdir/MailMerge/bin/Debug/net6.0/MailMerge.dll")))
 out-null
 
 echo "------------------------------------------------"
-dotnet MailMerge/bin/Debug/net6.0/MailMerge.dll
+dotnet MailMerge/bin/Debug/net8.0/MailMerge.dll
 echo "------------------------------------------------"
-dotnet MailMerge/bin/Debug/net6.0/MailMerge.dll  --showxml MailMerge.Tests/TestDocuments/ATemplate.docx
+dotnet MailMerge/bin/Debug/net8.0/MailMerge.dll  --showxml MailMerge.Tests/TestDocuments/ATemplate.docx
 echo "------------------------------------------------"
-dotnet MailMerge/bin/Debug/net6.0/MailMerge.dll  MailMerge.Tests/TestDocuments/ATemplate.docx TestOutput.docx  FirstName=Bill  'LastName=O Reilly'
+dotnet MailMerge/bin/Debug/net8.0/MailMerge.dll  MailMerge.Tests/TestDocuments/ATemplate.docx TestOutput.docx  FirstName=Bill  'LastName=O Reilly'
 
 popd
