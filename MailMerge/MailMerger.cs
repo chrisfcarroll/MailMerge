@@ -202,13 +202,38 @@ namespace MailMerge
 
             xdoc.MergeSimpleMergeFields(fieldValues, Logger);
             xdoc.MergeComplexMergeFields(fieldValues,Logger);
-            xdoc.MergeDateFields(Logger,  DateTime, fieldValues.ContainsKey(DATEKey) ? fieldValues[DATEKey] : DateTime?.ToLongDateString());
+            var dateValueForMerge = fieldValues.ContainsKey(DATEKey) ? fieldValues[DATEKey] : DateTime?.ToLongDateString();
+            xdoc.MergeDateFields(Logger, DateTime, dateValueForMerge);
 
             using (var wpDocx = WordprocessingDocument.Open(editableWPXmlStream, true))
             {
                 var bodyNode = xdoc.SelectSingleNode("/w:document/w:body", OoXmlNamespace.Manager);
                 var documentBody = new Body(bodyNode.OuterXml);
                 wpDocx.MainDocumentPart.Document.Body = documentBody;
+
+                if (wpDocx.MainDocumentPart?.HeaderParts is not null)
+                {
+                    foreach (var headerPart in wpDocx.MainDocumentPart.HeaderParts)
+                    {
+                        var headerXDoc = new XmlDocument(OoXmlNamespace.Manager.NameTable);
+
+                        using (var partStream = headerPart.GetStream(FileMode.Open, FileAccess.Read))
+                        {
+                            headerXDoc.Load(partStream);
+                        }
+
+                        // Apply merge transformations
+                        headerXDoc.MergeSimpleMergeFields(fieldValues, Logger);
+                        headerXDoc.MergeComplexMergeFields(fieldValues, Logger);
+                        headerXDoc.MergeDateFields(Logger, DateTime, dateValueForMerge);
+
+                        // Save modified XML back to the header part
+                        using (var partStream = headerPart.GetStream(FileMode.Create, FileAccess.Write))
+                        {
+                            headerXDoc.Save(partStream);
+                        }
+                    }
+                }
             }
         }
 
