@@ -21,6 +21,5 @@ steps:
   displayName: 'dotnet test'
   inputs:
     command: 'test'
-    projects: '**/*Test*.*proj'
+    projects: '**/$(testableFxVersion)/*Test*.*proj'
     testRunTitle: 'UnitTests'
-    arguments: '-f $(testableFxVersion)'
