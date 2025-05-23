@@ -15,6 +15,7 @@ namespace MailMerge.Tests.FunctionalSpecs
     {
         const string TestDocDir = "TestDocuments";
         const string DocWithSimpleMergeFieldDocx = "DocWithSimpleMergeField.docx";
+        const string DocWithFieldInHeaderDocx = "DocWithFieldInHeader.docx";
         MailMerger sut;
 
         static Dictionary<string, string> SingleLine = new Dictionary<string, string>
@@ -26,9 +27,17 @@ namespace MailMerge.Tests.FunctionalSpecs
         {
             {"SimpleMergeField","SimpleMergeField Was\nReplaced\nwith multiple lines\ndelimited by newlines/"}
         };
-        
+
+        static readonly Dictionary<string, string> HeaderAndBodyFields = new Dictionary<string, string>
+        {
+            { "FieldInHeader", "Yes, you can!" }, // Expected in header
+            { "FirstName", "A replaced first name field" }, // Expected in body
+            { "LastName", "A replaced last name field" } // Expected in body
+        };
+
         [TestCase(DocWithSimpleMergeFieldDocx, nameof(SingleLine))]
         [TestCase(DocWithSimpleMergeFieldDocx, nameof(MultiLine))]
+        [TestCase(DocWithFieldInHeaderDocx, nameof(HeaderAndBodyFields))]
         public void Returns_TheDocumentWithMergeFieldsReplaced(string source, string sourceFieldsSource)
         {
             source = Path.Combine(TestDocDir, source);
@@ -45,6 +54,9 @@ namespace MailMerge.Tests.FunctionalSpecs
 
                 var (outputText, outputXml) = output.AsWordDocumentMainPartTextAndXml();
 
+                var (headerPartText, headerXml) = output.GetCombinedHeadersTextAndXml();
+                
+                var combinedDocumentText = outputText + " " + headerPartText;
                 using (var outFile = new FileInfo(source.Replace(".", $" {sourceFieldsSource} Output.")).OpenWrite())
                 {
                     output.Position = 0;
@@ -53,15 +65,16 @@ namespace MailMerge.Tests.FunctionalSpecs
 
                 if (exceptions.InnerExceptions.Any()) { throw exceptions; }
 
+                var combinedOutputXml = outputXml + " " + headerXml;
 
                 sourceFields
                     .Values
                     .Cast<string>()
-                    .ShouldHaveBeenSplitOnNewLinesAndEachLineInserted(outputXml);
+                    .ShouldHaveBeenSplitOnNewLinesAndEachLineInserted(combinedOutputXml);
 
                 sourceFields
                     .Keys
-                    .ShouldAll(k => outputText.ShouldNotContain("«" + k + "»"));
+                    .ShouldAll(k => combinedDocumentText.ShouldNotContain("«" + k + "»"));
 
             }
             finally{ output?.Dispose(); }
