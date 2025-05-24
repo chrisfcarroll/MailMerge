@@ -1,7 +1,9 @@
+using DocumentFormat.OpenXml.Packaging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using TestBase;
 
 namespace MailMerge.Tests.FunctionalSpecs
@@ -33,6 +35,33 @@ namespace MailMerge.Tests.FunctionalSpecs
             var asXml = documentStream.AsWordprocessingDocument().MainDocumentPart.Document.OuterXml;
             return (asText, asXml);
 
+        }
+
+        public static (string allHeaderText, string allHeaderXml) GetCombinedHeadersTextAndXml(this Stream documentStream)
+        {
+            var sbHeaderText = new StringBuilder();
+            var sbHeaderXml = new StringBuilder();
+
+            if (documentStream.CanSeek)
+            {
+                documentStream.Position = 0;
+            }
+
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(documentStream, isEditable: false))
+            {
+                if (wordDoc.MainDocumentPart != null)
+                {
+                    foreach (HeaderPart headerPart in wordDoc.MainDocumentPart.HeaderParts)
+                    {
+                        if (headerPart.Header != null)
+                        {
+                            sbHeaderText.Append(headerPart.Header.InnerText);
+                            sbHeaderXml.Append(headerPart.Header.OuterXml);
+                        }
+                    }
+                }
+            }
+            return (sbHeaderText.ToString(), sbHeaderXml.ToString());
         }
     }
 }
